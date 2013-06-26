@@ -1,8 +1,8 @@
 // Various, visual effects
 
-function scanlines() {
+function scanlines(lineOpacity) {
     for (var i = 0; i < window.innerHeight; i = i + 2) {
-        canvas.strokeStyle = "rgba(0, 0, 0, 0.25)";
+        canvas.strokeStyle = "rgba(0, 0, 0," + lineOpacity + ")";
         canvas.beginPath();
         canvas.moveTo(0, i);
         canvas.lineTo(window.innerWidth, i);

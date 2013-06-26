@@ -1,16 +1,16 @@
 // General game controls
 
-function setup(gameX, gameY, gameW, gameH, gameColor, gameFPS) {
-    setup = {x: gameX, y: gameY, w: gameW, h: gameH, color: gameColor, fps: gameFPS};
+function setupGame(gameX, gameY, gameW, gameH, gameColor, gameFPS, gameScale) {
+    setup = {x: gameX, y: gameY, w: gameW, h: gameH, color: gameColor, fps: gameFPS, scale: gameScale};
     canvas = document.getElementById('canvas').getContext("2d");
     canvas.imageSmoothingEnabled = false;
     enableTouchInput();
 }
 
-function run() {
+function runGame() {
     gameRunning = setInterval(gameLoop, 1000 / setup.fps);
 }
 
-function pause() {
+function pauseGame() {
     clearInterval(gameRunning);
 }

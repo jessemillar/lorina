@@ -1,10 +1,10 @@
 // Object manipulation
 
-function makeObject(objectName, objectX, objectY, objectW, objectH, objectSprite, objectFrameCount) {
+function makeObject(objectName, objectX, objectY, objectW, objectH, objectSprite, objectColor) {
     var spriteReference = new Image();
     spriteReference.src = objectSprite;
     
-    window[objectName] = {x: objectX, y: objectY, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: spriteReference};
+    window[objectName] = {x: objectX, y: objectY, w: objectW * setup.scale, h: objectH * setup.scale, boundX: objectX, boundY: objectY, boundW: objectW * setup.scale, boundH: objectH * setup.scale, sprite: spriteReference, color: objectColor};
 }
 
 function setBound(objectName, xBound, yBound, wBound, hBound) {
