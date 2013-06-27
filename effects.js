@@ -2,7 +2,7 @@
 
 function scanlines(lineOpacity) {
     for (var i = 0; i < window.innerHeight; i = i + 2) {
-        canvas.strokeStyle = "rgba(0, 0, 0," + lineOpacity + ")";
+        canvas.strokeStyle = "rgba(255, 255, 255," + lineOpacity + ")";
         canvas.beginPath();
         canvas.moveTo(0, i);
         canvas.lineTo(window.innerWidth, i);

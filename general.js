@@ -1,16 +1,7 @@
-// General game controls
-
-function setupGame(gameX, gameY, gameW, gameH, gameColor, gameFPS, gameScale) {
-    setup = {x: gameX, y: gameY, w: gameW, h: gameH, color: gameColor, fps: gameFPS, scale: gameScale};
-    canvas = document.getElementById('canvas').getContext("2d");
-    canvas.imageSmoothingEnabled = false;
-    enableTouchInput();
-}
-
-function runGame() {
-    gameRunning = setInterval(gameLoop, 1000 / setup.fps);
-}
-
-function pauseGame() {
-    clearInterval(gameRunning);
+function distanceFrom(objectA, objectB) {
+    var distance = new Object();
+    distance.x = Math.abs((objectA.x + objectA.w / 2) - (objectB.x + objectB.w / 2));
+    distance.y = Math.abs((objectA.y + objectA.h / 2) - (objectB.y + objectB.h / 2));
+    
+    return Math.floor(Math.sqrt(distance.x * distance.x + distance.y * distance.y));
 }
