@@ -1,6 +1,6 @@
 // Draw controls
 
-function clearCanvas() {
+function clear() {
     canvas.fillStyle = setup.color;
     canvas.fillRect(setup.x, setup.y, setup.w, setup.h);
 }

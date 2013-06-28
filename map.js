@@ -1,4 +1,4 @@
-function drawMap(mapString, mapWidth, mapHeight, tileSize) {
+function map(mapString, mapWidth, mapHeight, tileSize) {
     for (currentTile = 0; currentTile < mapWidth * mapHeight; currentTile++) {
         if (mapString.charAt(currentTile) == "t") {
             canvas.fillStyle = colorGreen;

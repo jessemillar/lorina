@@ -28,7 +28,7 @@ function handleCancel(event) {
     touched = null;
 }
 
-function drawTouches() {
+function touches() {
     if (touched) {
         // Loop through and catch all touch events (five on iPhone and ten on iPad)
         for (var i = 0; i < touchDatabase.length; i++) {

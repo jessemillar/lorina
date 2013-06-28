@@ -1,8 +1,8 @@
-function loadAudio(fileName, fileLocation) {
+function audio(fileName, fileLocation) {
     window[fileName] = new Audio(fileLocation);
 }
 
-function playAudio(audioFile) {
+function play(audioFile) {
     if (window[audioFile].ended == true) {
         window[audioFile].pause();
     }
@@ -11,14 +11,14 @@ function playAudio(audioFile) {
     }
 }
 
-function loopAudio(audioFile) {
+function loop(audioFile) {
     if (window[audioFile].paused) {
         window[audioFile].loop = true;
         window[audioFile].play();
     }
 }
 
-function stopAudio(audioFile) {
+function mute(audioFile) {
     if (!window[audioFile].paused) {
         window[audioFile].pause();
     }

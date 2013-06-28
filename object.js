@@ -1,15 +1,15 @@
 // Object manipulation
 
-function makeObject(objectName, objectX, objectY, objectW, objectH, objectSprite, objectColor) {
+function make(objectName, objectX, objectY, objectW, objectH, objectSprite, objectColor) {
     if (objectSprite) {
-        var spriteReference = new Image();
-        spriteReference.src = objectSprite;
+        var spriteReference = new Image(objectSprite);
+        // spriteReference.src = objectSprite;
     }
 
     window[objectName] = {x: objectX, y: objectY, w: objectW * setup.scale, h: objectH * setup.scale, boundX: objectX, boundY: objectY, boundW: objectW * setup.scale, boundH: objectH * setup.scale, sprite: spriteReference, color: objectColor};
 }
 
-function setBound(objectName, xBound, yBound, wBound, hBound) {
+function bound(objectName, xBound, yBound, wBound, hBound) {
     window[objectName].boundX = window[objectName].x + xBound;
     window[objectName].boundY = window[objectName].y + yBound;
     window[objectName].boundW = wBound;
@@ -32,7 +32,7 @@ function move(objectName, moveDirection, moveSpeed) {
     }
 }
 
-function snapObject(objectName, destinationX, destinationY) {
+function snap(objectName, destinationX, destinationY) {
     objectName.x = destinationX;
     objectName.boundX = destinationX;
     objectName.y = destinationY;
