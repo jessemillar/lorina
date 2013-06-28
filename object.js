@@ -2,8 +2,8 @@
 
 function make(objectName, objectX, objectY, objectW, objectH, objectSprite, objectColor) {
     if (objectSprite) {
-        var spriteReference = new Image(objectSprite);
-        // spriteReference.src = objectSprite;
+        var spriteReference = new Image();
+        spriteReference.src = objectSprite;
     }
 
     window[objectName] = {x: objectX, y: objectY, w: objectW * setup.scale, h: objectH * setup.scale, boundX: objectX, boundY: objectY, boundW: objectW * setup.scale, boundH: objectH * setup.scale, sprite: spriteReference, color: objectColor};
