@@ -2,13 +2,11 @@ function audio(fileName, fileLocation) {
     window[fileName] = new Audio(fileLocation);
 }
 
+// Play audio once and reset upon sound completion
+
 function play(audioFile) {
-    if (audioFile.ended == true) {
-        audioFile.pause();
-    }
-    if (audioFile.paused) {
-        audioFile.play();
-    }
+    audioFile.currentTime = 0;
+    audioFile.play();
 }
 
 function loop(audioFile) {

@@ -38,3 +38,50 @@ function snap(objectName, destinationX, destinationY) {
     objectName.y = destinationY;
     objectName.boundY = destinationY;
 }
+
+function measure(objectA, objectB, desiredMeasure) {
+    var distance = new Object();
+    distance.x = Math.floor(Math.abs((objectA.x + objectA.w / 2) - (objectB.x + objectB.w / 2)));
+    distance.y = Math.floor(Math.abs((objectA.y + objectA.h / 2) - (objectB.y + objectB.h / 2)));
+    distance.total = Math.floor(Math.sqrt(distance.x * distance.x + distance.y * distance.y));
+    
+    if (desiredMeasure == "total" || desiredMeasure == "t") {
+        if (isNaN(distance.total)) {
+            return 0;
+        } else {
+            return distance.total;
+        }
+    } else if (desiredMeasure == "x") {
+        if (isNaN(distance.x)) {
+            return 0;
+        } else {
+            return distance.x;
+        }
+    } else if (desiredMeasure == "y") {
+        if (isNaN(distance.y)) {
+            return 0;
+        } else {
+            return distance.y;
+        }
+    }
+}
+
+function toward(objectA, objectB, moveSpeed) {
+    var speed = new Object();
+    speed.x = measure(objectA, objectB, 'x') / measure(objectA, objectB, 'total') * moveSpeed;
+    speed.y = measure(objectA, objectB, 'y') / measure(objectA, objectB, 'total') * moveSpeed;
+    
+    if (measure(objectA, objectB, 'total') > 0) {
+        if (objectA.x + objectA.w / 2 < objectB.x + objectB.w / 2) {
+            move(objectA, 'right', speed.x);
+        } else {
+            move(objectA, 'left', speed.x);
+        }
+        
+        if (objectA.y + objectA.h / 2 < objectB.y + objectB.h / 2) {
+            move(objectA, 'down', speed.y);
+        } else {
+            move(objectA, 'up', speed.y);
+        }
+    }
+}
