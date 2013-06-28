@@ -3,23 +3,23 @@ function audio(fileName, fileLocation) {
 }
 
 function play(audioFile) {
-    if (window[audioFile].ended == true) {
-        window[audioFile].pause();
+    if (audioFile.ended == true) {
+        audioFile.pause();
     }
-    if (window[audioFile].paused) {
-        window[audioFile].play();
+    if (audioFile.paused) {
+        audioFile.play();
     }
 }
 
 function loop(audioFile) {
-    if (window[audioFile].paused) {
-        window[audioFile].loop = true;
-        window[audioFile].play();
+    if (audioFile.paused) {
+        audioFile.loop = true;
+        audioFile.play();
     }
 }
 
 function mute(audioFile) {
-    if (!window[audioFile].paused) {
-        window[audioFile].pause();
+    if (!audioFile.paused) {
+        audioFile.pause();
     }
 }
