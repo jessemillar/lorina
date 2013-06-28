@@ -6,7 +6,7 @@ function make(objectName, objectX, objectY, objectW, objectH, objectSprite, obje
         spriteReference.src = objectSprite;
     }
 
-    window[objectName] = {x: objectX, y: objectY, w: objectW * setup.scale, h: objectH * setup.scale, boundX: objectX, boundY: objectY, boundW: objectW * setup.scale, boundH: objectH * setup.scale, sprite: spriteReference, color: objectColor};
+    window[objectName] = {x: objectX, y: objectY, w: objectW * setup.scale, h: objectH * setup.scale, boundX: objectX, boundY: objectY, boundW: objectW * setup.scale, boundH: objectH * setup.scale, sprite: spriteReference, color: objectColor, rotation: 0};
 }
 
 function bound(objectName, xBound, yBound, wBound, hBound) {
@@ -14,6 +14,16 @@ function bound(objectName, xBound, yBound, wBound, hBound) {
     window[objectName].boundY = window[objectName].y + yBound;
     window[objectName].boundW = wBound;
     window[objectName].boundH = hBound;
+}
+
+function rotate(objectName, rotateDegree, rotateMode) {
+    var radian = rotateDegree * Math.PI / 180;
+    
+    if (rotateMode == "relative" || rotateMode == "r") {
+        objectName.rotation = objectName.rotation + radian;
+    } else if (rotateMode == "absolute" || rotateMode == "a") {
+        objectName.rotation = radian;
+    }
 }
 
 function move(objectName, moveDirection, moveSpeed) {
