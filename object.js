@@ -16,14 +16,8 @@ function bound(objectName, xBound, yBound, wBound, hBound) {
     window[objectName].boundH = hBound;
 }
 
-function rotate(objectName, rotateDegree, rotateMode) {
-    var radian = rotateDegree * Math.PI / 180;
-    
-    if (rotateMode == "relative" || rotateMode == "r") {
-        objectName.rotation = objectName.rotation + radian;
-    } else if (rotateMode == "absolute" || rotateMode == "a") {
-        objectName.rotation = radian;
-    }
+function degree(rotateDegree) {
+    return rotateDegree * Math.PI / 180;
 }
 
 function move(objectName, moveDirection, moveSpeed) {
