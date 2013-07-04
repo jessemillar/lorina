@@ -4,13 +4,24 @@ function audio(fileName, fileLocation) {
 
 // Play audio once and reset upon sound completion
 
-function play(audioFile) {
+function play(audioFile, playVolume) {
+    if (playVolume == null) {
+        audioFile.volume = 0;
+    } else {
+        audioFile.volume = playVolume;
+    }
     audioFile.currentTime = 0;
     audioFile.play();
 }
 
-function loop(audioFile) {
+function loop(audioFile, playVolume) {
     if (audioFile.paused) {
+        if (playVolume == null) {
+            audioFile.volume = 0;
+        } else {
+            audioFile.volume = playVolume;
+        }
+        audioFile.volume = playVolume;
         audioFile.loop = true;
         audioFile.play();
     }

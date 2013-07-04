@@ -3,7 +3,7 @@
 touched = null;
 touchDatabase = new Array();
 
-function enableTouchInput() {
+function enableTouch() {
     document.addEventListener("touchstart", handleStart, false);
     document.addEventListener("touchmove", handleMove, false);
     document.addEventListener("touchend", handleEnd, false);
@@ -33,11 +33,9 @@ function touches() {
         // Loop through and catch all touch events (five on iPhone and ten on iPad)
         for (var i = 0; i < touchDatabase.length; i++) {
             var touch = touchDatabase[i];
-            canvas.beginPath();
-            canvas.strokeStyle = "#00FFFF";
-            canvas.lineWidth = 3;
-            canvas.arc(touch.clientX, touch.clientY, 45, 0, Math.PI * 2, true);
-            canvas.stroke();
+            object();
+            circle(touch.clientX - 50, touch.clientY - 50, 100);
+            decorate(null, "#00ffff", 3);
         }
     }
 }

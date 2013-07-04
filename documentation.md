@@ -1,0 +1,1 @@
+I would recommend using full quotations ("...") for object names and single quotes ('...') for all other values.
