@@ -1,13 +1,13 @@
 function makeGroup(groupName) {
-    window[groupname] = new Array();
+    window[groupName] = new Array();
 }
 
-function addToGroup(groupName, objectName) {
-    if (!window[groupName].indexOf(objectName)) {
-        window[groupName].unshift(objectName);
+function addToGroup(objectName, groupName) {
+    if (groupName.indexOf(objectName) == -1) {
+        groupName.unshift(objectName);
     }
 }
 
 function removeFromGroup(groupName, objectName) {
-    window[groupName].splice(window[groupName].indexOf(objectName), 1);
+    groupName.splice(groupName.indexOf(objectName), 1);
 }

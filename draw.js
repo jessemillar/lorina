@@ -53,7 +53,33 @@ function drawPath(fillColor, strokeColor, strokeWidth) {
 }
 
 function draw(objectName, drawType) {
-    if (drawType == "box" || drawType == "b") {
+    if (objectName.length > 1) {
+        for (var i = 0; i < objectName.length; i++) {
+            if (drawType == "box" || drawType == "b") {
+                if (objectName[i].rotation == null || objectName[i].rotation == 0) {
+                    canvas.fillStyle = objectName[i].color;
+                    canvas.fillRect(objectName[i].x, objectName[i].y, objectName[i].w, objectName[i].h);
+                } else {
+                    canvas.save();
+                    canvas.translate(objectName[i].x + objectName[i].w / 2, objectName[i].y + objectName[i].h / 2);
+                    canvas.rotate(objectName[i].rotation);
+                    canvas.fillStyle = objectName[i].color;
+                    canvas.fillRect(0 - objectName[i].w / 2, 0 - objectName[i].h / 2, objectName[i].w, objectName[i].h);
+                    canvas.restore();
+                }
+            } else if (drawType == "sprite" || drawType == "s") {
+                if (objectName[i].rotation == null || objectName[i].rotation == 0) {
+                    canvas.drawImage(objectName[i].sprite, objectName[i].x, objectName[i].y, objectName[i].w, objectName[i].h);
+                } else {
+                    canvas.save();
+                    canvas.translate(objectName[i].x + objectName[i].w / 2, objectName[i].y + objectName[i].h / 2);
+                    canvas.rotate(objectName[i].rotation);
+                    canvas.drawImage(objectName[i].sprite, 0 - objectName[i].w / 2, 0 - objectName[i].h / 2, objectName[i].w, objectName[i].h);
+                    canvas.restore();
+                }
+            }
+        }
+    } else if (drawType == "box" || drawType == "b") {
         if (objectName.rotation == null || objectName.rotation == 0) {
             canvas.fillStyle = objectName.color;
             canvas.fillRect(objectName.x, objectName.y, objectName.w, objectName.h);
