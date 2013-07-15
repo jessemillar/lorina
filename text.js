@@ -1,10 +1,10 @@
 function font(textColor, textSize, textFont) {
-    canvas.textAlign = "left";
-    canvas.textBaseline = "top";
-    canvas.fillStyle = textColor;
-    canvas.font = textSize + "px " + textFont;
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    ctx.fillStyle = textColor;
+    ctx.font = textSize + "px " + textFont;
 }
 
 function write(textX, textY, textString) {
-    canvas.fillText(textString, textX, textY);
+    ctx.fillText(textString, textX, textY);
 }

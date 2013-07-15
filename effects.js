@@ -2,12 +2,12 @@
 
 function scanlines(lineOpacity) {
     for (var i = 0; i < window.innerHeight; i = i + 2) {
-        canvas.strokeStyle = "rgba(255, 255, 255," + lineOpacity + ")";
-        canvas.beginPath();
-        canvas.moveTo(0, i);
-        canvas.lineTo(window.innerWidth, i);
-        canvas.lineWidth = 1;
-        canvas.stroke();
-        canvas.closePath();
+        ctx.strokeStyle = "rgba(255, 255, 255," + lineOpacity + ")";
+        ctx.beginPath();
+        ctx.moveTo(0, i);
+        ctx.lineTo(window.innerWidth, i);
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        ctx.closePath();
     }
 }
