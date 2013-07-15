@@ -1,8 +1,13 @@
 // Draw controls
 
 function clear() {
-    ctx.fillStyle = setup.color;
-    ctx.fillRect(setup.x, setup.y, setup.w, setup.h);
+    rectangle(setup.x, setup.y, setup.w, setup.h, setup.color);
+}
+
+// Doesn't need start or end path declarations
+function rectangle(drawX, drawY, drawW, drawH, drawColor) {
+    ctx.fillStyle = drawColor;
+    ctx.fillRect(drawX, drawY, drawW, drawH);
 }
 
 function startPath() {
@@ -20,10 +25,6 @@ function line(startX, startY, endX, endY) {
 
 function arc(drawX, drawY, drawDiameter, startAngle, engAngle) {
     ctx.arc(drawX, drawY, drawDiameter / 2, degree(startAngle) + 1.5 * Math.PI, degree(engAngle) + 1.5 * Math.PI);
-}
-
-function rectangle(drawX, drawY, drawW, drawH) {
-    ctx.fillRect(drawX, drawY, drawW, drawH);
 }
 
 function circle(drawX, drawY, drawDiameter) {
@@ -53,18 +54,16 @@ function drawPath(fillColor, strokeColor, strokeWidth) {
 }
 
 function draw(objectName, drawType) {
-    if (objectName.length > 1) {
+    if (objectName.length) {
         for (var i = 0; i < objectName.length; i++) {
             if (drawType == "box" || drawType == "b") {
                 if (objectName[i].rotation == null || objectName[i].rotation == 0) {
-                    ctx.fillStyle = objectName[i].color;
-                    ctx.fillRect(objectName[i].x, objectName[i].y, objectName[i].w, objectName[i].h);
+                    rectangle(objectName[i].x, objectName[i].y, objectName[i].w, objectName[i].h, objectName[i].color);
                 } else {
                     ctx.save();
                     ctx.translate(objectName[i].x + objectName[i].w / 2, objectName[i].y + objectName[i].h / 2);
                     ctx.rotate(objectName[i].rotation);
-                    ctx.fillStyle = objectName[i].color;
-                    ctx.fillRect(0 - objectName[i].w / 2, 0 - objectName[i].h / 2, objectName[i].w, objectName[i].h);
+                    rectangle(0 - objectName[i].w / 2, 0 - objectName[i].h / 2, objectName[i].w, objectName[i].h, objectName[i].color);
                     ctx.restore();
                 }
             } else if (drawType == "sprite" || drawType == "s") {
@@ -78,17 +77,16 @@ function draw(objectName, drawType) {
                     ctx.restore();
                 }
             }
+
         }
     } else if (drawType == "box" || drawType == "b") {
         if (objectName.rotation == null || objectName.rotation == 0) {
-            ctx.fillStyle = objectName.color;
-            ctx.fillRect(objectName.x, objectName.y, objectName.w, objectName.h);
+            rectangle(objectName.x, objectName.y, objectName.w, objectName.h, objectName.color);
         } else {
             ctx.save();
             ctx.translate(objectName.x + objectName.w / 2, objectName.y + objectName.h / 2);
             ctx.rotate(objectName.rotation);
-            ctx.fillStyle = objectName.color;
-            ctx.fillRect(0 - objectName.w / 2, 0 - objectName.h / 2, objectName.w, objectName.h);
+            rectangle(0 - objectName.w / 2, 0 - objectName.h / 2, objectName.w, objectName.h, objectName.color);
             ctx.restore();
         }
     } else if (drawType == "sprite" || drawType == "s") {

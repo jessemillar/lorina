@@ -4,7 +4,7 @@ function make(objectName, objectX, objectY, objectW, objectH, objectSprite, obje
         spriteReference.src = objectSprite;
     }
 
-    window[objectName] = {x: objectX, y: objectY, w: objectW * setup.scale, h: objectH * setup.scale, boundX: objectX, boundY: objectY, boundW: objectW * setup.scale, boundH: objectH * setup.scale, sprite: spriteReference, color: objectColor, rotation: 0};
+    window[objectName] = {x: objectX, y: objectY, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: spriteReference, color: objectColor, rotation: 0};
 }
 
 function bound(objectName, xBound, yBound, wBound, hBound) {

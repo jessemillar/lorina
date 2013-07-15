@@ -13,7 +13,7 @@ function setup(gameX, gameY, gameW, gameH, gameColor, gameFPS, gameScale, smooth
     dom = document.getElementById('canvas');
     if (smoothPixels == 'smooth') {
         dom.MSAAEnabled = true;
-        dom.MSAASamples = 5;
+        dom.MSAASamples = 4;
     } else if (smoothPixels == 'rough'){
         dom.MSAAEnabled = false;
     }
