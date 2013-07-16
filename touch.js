@@ -33,9 +33,10 @@ function touches() {
         // Loop through and catch all touch events (five on iPhone and ten on iPad)
         for (var i = 0; i < touchDatabase.length; i++) {
             var touch = touchDatabase[i];
-            object();
+            startPath();
             circle(touch.clientX - 50, touch.clientY - 50, 100);
-            decorate(null, "#00ffff", 3);
+            endPath();
+            drawPath(null, "#00ffff", 3);
         }
     }
 }

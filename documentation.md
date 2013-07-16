@@ -3,6 +3,7 @@ Framework development rules:
 Use full quotations ("...") for object names and single quotes ('...') for all other values.
 
 !!! Why are quotations needed sporadically?
+// Because they're needed when creating a variable but not when referencing one.
 
 ***
 
@@ -16,11 +17,9 @@ Start out by including Lorina in your Ejecta Xcode project:
 
 Then set up your game canvas:
 
-	setup(gameX, gameY, gameW, gameH, gameColor, gameFPS, gameScale);
+	setup(gameColor, pixelSmoothing);
 
 	EG: setup(0, 0, 800, 600, "#ffffff", 60, 2);
-
-		Note: gameScale is the scaling of pixels.  It's hard to see a single pixel on a modern iPhone screen, so we can use this value to "blow up" a pixel and make it more visible.  Good for 8-Bit.
 
 Start by adding an object to the database:
 
@@ -58,3 +57,6 @@ toward(objectA, objectB, moveSpeed)
 degree(rotateDegree)
 
 map(mapString, mapWidth, mapHeight, tileSize);
+
+// Objects should be at least 3px by 3px to have proper collision detection.
+collision(...)

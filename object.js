@@ -2,20 +2,30 @@ function make(objectName, objectX, objectY, objectW, objectH, objectSprite, obje
     if (objectSprite) {
         var spriteReference = new Image();
         spriteReference.src = objectSprite;
-        
+                
+        window[objectName] = {name: objectName, x: objectX, y: objectY, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, color: objectColor, rotation: 0};
+                
         spriteReference.onload = function () {
-            window[objectName] = {x: objectX, y: objectY, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: spriteReference, color: objectColor, rotation: 0};
+            window[objectName].sprite = spriteReference;
         }
     } else {
-        window[objectName] = {x: objectX, y: objectY, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: null, color: objectColor, rotation: 0};
+        window[objectName] = {name: objectName, x: objectX, y: objectY, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: null, color: objectColor, rotation: 0};
+    }
+    
+    if (objectName.boundW < 3 || objectName.boundH < 3) {
+        log("Objects should be at least 3px by 3px to have proper collision detection");
     }
 }
 
 function bound(objectName, xBound, yBound, wBound, hBound) {
-    window[objectName].boundX = window[objectName].x + xBound;
-    window[objectName].boundY = window[objectName].y + yBound;
-    window[objectName].boundW = wBound;
-    window[objectName].boundH = hBound;
+    objectName.boundX = objectName.x + xBound;
+    objectName.boundY = objectName.y + yBound;
+    objectName.boundW = wBound;
+    objectName.boundH = hBound;
+    
+    if (objectName.boundW < 3 || objectName.boundH < 3) {
+        log("Objects should be at least 3px by 3px to have proper collision detection");
+    }
 }
 
 function degree(rotateDegree) {

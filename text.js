@@ -1,4 +1,4 @@
-function font(textColor, textSize, textFont) {
+function font(textFont, textSize, textColor) {
     ctx.textAlign = "left";
     ctx.textBaseline = "top";
     ctx.fillStyle = textColor;

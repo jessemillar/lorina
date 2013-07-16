@@ -67,6 +67,9 @@ function draw(objectName, drawType) {
                     ctx.restore();
                 }
             } else if (drawType == "sprite" || drawType == "s") {
+                if (!objectName.sprite) {
+                    log("No loaded sprite for " + objectName[i].name);
+                }
                 if (objectName[i].rotation == null || objectName[i].rotation == 0) {
                     ctx.drawImage(objectName[i].sprite, objectName[i].x, objectName[i].y, objectName[i].w, objectName[i].h);
                 } else {
@@ -90,6 +93,9 @@ function draw(objectName, drawType) {
             ctx.restore();
         }
     } else if (drawType == "sprite" || drawType == "s") {
+        if (!objectName.sprite) {
+            log("No loaded sprite for " + objectName.name);
+        }
         if (objectName.rotation == null || objectName.rotation == 0) {
             ctx.drawImage(objectName.sprite, objectName.x, objectName.y, objectName.w, objectName.h);
         } else {

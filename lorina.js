@@ -15,8 +15,8 @@ ejecta.include('engine/touch.js');
     };
 */
 
-function setup(gameX, gameY, gameW, gameH, gameColor, smoothPixels) {
-    setup = {x: gameX, y: gameY, w: gameW, h: gameH, color: gameColor};
+function setup(gameColor, smoothPixels) {
+    setup = {x: 0, y: 0, w: 480, h: 320, color: gameColor};
     dom = document.getElementById('canvas');
     if (smoothPixels == 'smooth') {
         dom.MSAAEnabled = true;
