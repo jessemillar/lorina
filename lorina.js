@@ -8,8 +8,15 @@ ejecta.include('engine/object.js');
 ejecta.include('engine/text.js');
 ejecta.include('engine/touch.js');
 
-function setup(gameX, gameY, gameW, gameH, gameColor, gameFPS, gameScale, smoothPixels) {
-    setup = {x: gameX, y: gameY, w: gameW, h: gameH, color: gameColor, fps: gameFPS, scale: gameScale};
+// Timer code
+/*
+    if(typeof timerName === 'undefined'){
+        // Code
+    };
+*/
+
+function setup(gameX, gameY, gameW, gameH, gameColor, smoothPixels) {
+    setup = {x: gameX, y: gameY, w: gameW, h: gameH, color: gameColor};
     dom = document.getElementById('canvas');
     if (smoothPixels == 'smooth') {
         dom.MSAAEnabled = true;
@@ -27,9 +34,13 @@ function setup(gameX, gameY, gameW, gameH, gameColor, gameFPS, gameScale, smooth
 }
 
 function run() {
-    gameRunning = setInterval(game, 1000 / setup.fps);
+    gameRunning = setInterval(game, 1000 / 60);
 }
 
 function pause() {
     clearInterval(gameRunning);
+}
+
+function log(logString) {
+    console.log(logString);
 }

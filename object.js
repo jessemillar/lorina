@@ -2,9 +2,13 @@ function make(objectName, objectX, objectY, objectW, objectH, objectSprite, obje
     if (objectSprite) {
         var spriteReference = new Image();
         spriteReference.src = objectSprite;
+        
+        spriteReference.onload = function () {
+            window[objectName] = {x: objectX, y: objectY, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: spriteReference, color: objectColor, rotation: 0};
+        }
+    } else {
+        window[objectName] = {x: objectX, y: objectY, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: null, color: objectColor, rotation: 0};
     }
-
-    window[objectName] = {x: objectX, y: objectY, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: spriteReference, color: objectColor, rotation: 0};
 }
 
 function bound(objectName, xBound, yBound, wBound, hBound) {
