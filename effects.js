@@ -1,5 +1,3 @@
-// Various, visual effects
-
 function scanlines(lineOpacity) {
     for (var i = 0; i < window.innerHeight; i = i + 2) {
         ctx.strokeStyle = "rgba(255, 255, 255," + lineOpacity + ")";

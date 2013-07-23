@@ -1,7 +1,5 @@
-// Draw controls
-
 function clear() {
-    rectangle(setup.x, setup.y, setup.w, setup.h, setup.color);
+    rectangle(setup.x, setup.y, setup.width, setup.height, setup.color);
 }
 
 // Doesn't need start or end path declarations
@@ -10,12 +8,9 @@ function rectangle(drawX, drawY, drawW, drawH, drawColor) {
     ctx.fillRect(drawX, drawY, drawW, drawH);
 }
 
+// End the path with the drawPath() command
 function startPath() {
     ctx.beginPath();
-}
-
-function endPath() {
-    ctx.closePath();
 }
 
 function line(startX, startY, endX, endY) {
@@ -36,18 +31,27 @@ function curve(startX, startY, modifyX, modifyY, endX, endY) {
     ctx.quadraticCurveTo(startX + modifyX, startY + modifyY, startX + endX, startY + endY);
 }
 
-function drawPath(fillColor, strokeColor, strokeWidth) {
+function opacity(desiredOpacity) {
+    ctx.globalAlpha = desiredOpacity;
+}
+
+function drawPath(fillColor, strokeColor, strokeWidth, strokeOpacity) {
+    ctx.closePath();
     if (!fillColor) {
-        fillColor = "rgba(0, 0, 0, 0.0000)";
+        opacity(strokeOpacity);
+        fillColor = strokeColor;
     }
     if (!strokeColor) {
-        strokeColor = "rgba(0, 0, 0, 0.0000)";
+        opacity(strokeOpacity);
+        strokeColor = strokeColor;
     }
     if (!strokeWidth) {
-        strokeWidth = "rgba(0, 0, 0, 0.0000)";
+        opacity(strokeOpacity);
+        strokeWidth = strokeColor;
     }
     ctx.fillStyle = fillColor;
     ctx.fill();
+    ctx.lineCap = 'butt';
     ctx.strokeStyle = strokeColor;
     ctx.lineWidth = strokeWidth;
     ctx.stroke();
