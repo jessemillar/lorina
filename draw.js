@@ -35,23 +35,17 @@ function opacity(desiredOpacity) {
     ctx.globalAlpha = desiredOpacity;
 }
 
-function drawPath(fillColor, strokeColor, strokeWidth, strokeOpacity) {
-    ctx.closePath();
+function drawPath(fillColor, strokeColor, strokeWidth, objectOpacity) {
     if (!fillColor) {
-        opacity(strokeOpacity);
-        fillColor = strokeColor;
+        fillColor = 'rgba(0, 0, 0, 0)';
     }
     if (!strokeColor) {
-        opacity(strokeOpacity);
-        strokeColor = strokeColor;
+        strokeColor = 'rgba(0, 0, 0, 0)';
     }
-    if (!strokeWidth) {
-        opacity(strokeOpacity);
-        strokeWidth = strokeColor;
-    }
+    ctx.closePath();
+    opacity(objectOpacity);
     ctx.fillStyle = fillColor;
     ctx.fill();
-    ctx.lineCap = 'butt';
     ctx.strokeStyle = strokeColor;
     ctx.lineWidth = strokeWidth;
     ctx.stroke();

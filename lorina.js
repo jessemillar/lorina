@@ -6,6 +6,7 @@ ejecta.include('engine/grid.js');
 ejecta.include('engine/groups.js');
 ejecta.include('engine/map.js');
 ejecta.include('engine/object.js');
+ejecta.include('engine/preloader.js');
 ejecta.include('engine/text.js');
 ejecta.include('engine/touch.js');
 
@@ -21,7 +22,7 @@ function setup(gameColor, smoothPixels) {
     dom = document.getElementById('canvas');
     if (smoothPixels == 'smooth') {
         dom.MSAAEnabled = true;
-        dom.MSAASamples = 4;
+        dom.MSAASamples = 2;
     } else if (smoothPixels == 'rough'){
         dom.MSAAEnabled = false;
     }
@@ -35,12 +36,7 @@ function setup(gameColor, smoothPixels) {
 }
 
 function run() {
-    // Check if the images are ready
-    if (imagesLoaded) {
-        gameRunning = setInterval(game, 1000 / 60);
-    } else {
-        // Loading bar
-    }
+    gameRunning = setInterval(game, 1000 / 60);
 }
 
 function pause() {
@@ -49,11 +45,4 @@ function pause() {
 
 function log(logString) {
     console.log(logString);
-}
-
-function preload(imageArray) {
-    for (imageArray.length) {
-        var spriteReference = new Image();
-        spriteReference.src = objectSprite;
-    }
 }
