@@ -17,8 +17,8 @@ ejecta.include('engine/touch.js');
     };
 */
 
-function setup(gameColor, smoothPixels) {
-    setup = {x: 0, y: 0, width: screen.availWidth, height: screen.availHeight, color: gameColor};
+function camera(gameColor, smoothPixels) {
+    camera = {x: 0, y: 0, width: screen.availWidth, height: screen.availHeight, color: gameColor};
     dom = document.getElementById('canvas');
     if (smoothPixels == 'smooth') {
         dom.MSAAEnabled = true;
@@ -36,10 +36,12 @@ function setup(gameColor, smoothPixels) {
 }
 
 function run() {
+    log("Running");
     gameRunning = setInterval(game, 1000 / 60);
 }
 
 function pause() {
+    // Only works once the game is running; no effect during loading or setup
     clearInterval(gameRunning);
 }
 

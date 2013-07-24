@@ -1,13 +1,7 @@
+// window[...] is needed for dynamic, global variable creation
 function make(objectName, objectX, objectY, objectW, objectH, objectSprite, objectColor) {
     if (objectSprite) {
-        var spriteReference = new Image();
-        spriteReference.src = objectSprite;
-                
-        window[objectName] = {name: objectName, x: objectX, y: objectY, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, color: objectColor, rotation: 0};
-                
-        spriteReference.onload = function () {
-            window[objectName].sprite = spriteReference;
-        }
+        window[objectName] = {name: objectName, x: objectX, y: objectY, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: objectSprite, color: objectColor, rotation: 0};
     } else {
         window[objectName] = {name: objectName, x: objectX, y: objectY, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: null, color: objectColor, rotation: 0};
     }

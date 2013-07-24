@@ -1,5 +1,5 @@
 function clear() {
-    rectangle(setup.x, setup.y, setup.width, setup.height, setup.color);
+    rectangle(camera.x, camera.y, camera.width, camera.height, camera.color);
 }
 
 // Doesn't need start or end path declarations

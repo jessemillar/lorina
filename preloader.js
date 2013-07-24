@@ -1,6 +1,20 @@
+imagesLoaded = 0;
+
 function preload(imageArray) {
-    // for (var i = 0, i < imageArray.length, i++) {
-        // var spriteReference = new Image();
-        // spriteReference.src = objectSprite;
-    // }
+    log("Loading");
+    totalImages = Object.keys(imageArray).length;
+    
+    for (var key in imageArray) {        
+        var spriteReference = new Image();
+        spriteReference.src = imageArray[key];
+        
+        spriteReference.onload = function () {
+            imagesLoaded++;
+            log("Loaded " + imagesLoaded + "/" + totalImages + " images");
+            if (imagesLoaded == totalImages) {
+                log("All images loaded");
+                setup();
+            }
+        }
+    }
 }
