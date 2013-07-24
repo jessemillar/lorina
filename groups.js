@@ -4,7 +4,7 @@ function makeGroup(groupName) {
 
 function addToGroup(objectName, groupName) {
     if (groupName.indexOf(objectName) == -1) {
-        groupName.unshift(objectName);
+        groupName.push(objectName);
     }
 }
 

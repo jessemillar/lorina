@@ -1,4 +1,8 @@
 function clear() {
+    if (typeof zIndex === 'undefined') {
+        zIndex = new Array();
+    }
+    zIndex.length = 0;
     rectangle(camera.x, camera.y, camera.width, camera.height, camera.color);
 }
 
@@ -51,36 +55,43 @@ function drawPath(fillColor, strokeColor, strokeWidth, objectOpacity) {
     ctx.stroke();
 }
 
-function draw(objectName, drawType) {
+function animate(objectName, animationSpeed) {
+    if(objectName.animating == null){
+        objectName.animating = setInterval(function() { if (objectName.frame < objectName.frameCount) { objectName.frame++; } else { objectName.frame = 1; } }, animationSpeed);
+    };
+    drawToScreen(objectName);
+}
+
+function buffer(objectName, animationSpeed) {
+    // If animationSpeed is a valid number, make an animation timer
+    if (animationSpeed) {
+        if(objectName.animating == null){
+            objectName.animating = setInterval(function() { if (objectName.frame < objectName.frameCount) { objectName.frame++; } else { objectName.frame = 1; } }, animationSpeed);
+        };
+    }
+    
+    // If we're dealing with a group, loop through the group and add each item to the zIndex array
     if (objectName.length) {
         for (var i = 0; i < objectName.length; i++) {
-            if (drawType == "box" || drawType == "b") {
-                if (objectName[i].rotation == null || objectName[i].rotation == 0) {
-                    rectangle(objectName[i].x, objectName[i].y, objectName[i].w, objectName[i].h, objectName[i].color);
-                } else {
-                    ctx.save();
-                    ctx.translate(objectName[i].x + objectName[i].w / 2, objectName[i].y + objectName[i].h / 2);
-                    ctx.rotate(objectName[i].rotation);
-                    rectangle(0 - objectName[i].w / 2, 0 - objectName[i].h / 2, objectName[i].w, objectName[i].h, objectName[i].color);
-                    ctx.restore();
-                }
-            } else if (drawType == "sprite" || drawType == "s") {
-                if (!objectName.sprite) {
-                    log("No loaded sprite for " + objectName[i].name);
-                }
-                if (objectName[i].rotation == null || objectName[i].rotation == 0) {
-                    ctx.drawImage(objectName[i].sprite, objectName[i].x, objectName[i].y, objectName[i].w, objectName[i].h);
-                } else {
-                    ctx.save();
-                    ctx.translate(objectName[i].x + objectName[i].w / 2, objectName[i].y + objectName[i].h / 2);
-                    ctx.rotate(objectName[i].rotation);
-                    ctx.drawImage(objectName[i].sprite, 0 - objectName[i].w / 2, 0 - objectName[i].h / 2, objectName[i].w, objectName[i].h);
-                    ctx.restore();
-                }
-            }
-
+            zIndex.push(objectName[i]);
         }
-    } else if (drawType == "box" || drawType == "b") {
+    } else {
+        zIndex.push(objectName);
+    }
+}
+
+function draw() {
+    zIndex.sort(function(a, b){
+        return a.z - b.z;
+    });
+    
+    for(var i = 0; i < zIndex.length; i++) {
+        drawToScreen(zIndex[i]);
+    }
+}
+
+function drawToScreen(objectName) {
+    if (objectName.drawType == "box") {
         if (objectName.rotation == null || objectName.rotation == 0) {
             rectangle(objectName.x, objectName.y, objectName.w, objectName.h, objectName.color);
         } else {
@@ -90,17 +101,17 @@ function draw(objectName, drawType) {
             rectangle(0 - objectName.w / 2, 0 - objectName.h / 2, objectName.w, objectName.h, objectName.color);
             ctx.restore();
         }
-    } else if (drawType == "sprite" || drawType == "s") {
+    } else if (objectName.drawType == "sprite") {
         if (!objectName.sprite) {
             log("No loaded sprite for " + objectName.name);
         }
         if (objectName.rotation == null || objectName.rotation == 0) {
-            ctx.drawImage(objectName.sprite, objectName.x, objectName.y, objectName.w, objectName.h);
+            ctx.drawImage(objectName.sprite, (objectName.frame - 1) * objectName.w, 0, objectName.w, objectName.h, objectName.x, objectName.y, objectName.w, objectName.h);
         } else {
             ctx.save();
             ctx.translate(objectName.x + objectName.w / 2, objectName.y + objectName.h / 2);
             ctx.rotate(objectName.rotation);
-            ctx.drawImage(objectName.sprite, 0 - objectName.w / 2, 0 - objectName.h / 2, objectName.w, objectName.h);
+            ctx.drawImage(objectName.sprite, (objectName.frame - 1) * objectName.w, 0, objectName.w, objectName.h, 0 - objectName.w / 2, 0 - objectName.h / 2, objectName.w, objectName.h);
             ctx.restore();
         }
     }

@@ -1,9 +1,9 @@
 // window[...] is needed for dynamic, global variable creation
-function make(objectName, objectX, objectY, objectW, objectH, objectSprite, objectColor) {
+function make(objectName, objectX, objectY, objectW, objectH, objectSprite, objectFrameCount, objectColor) {
     if (objectSprite) {
-        window[objectName] = {name: objectName, x: objectX, y: objectY, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: objectSprite, color: objectColor, rotation: 0};
+        window[objectName] = {name: objectName, x: objectX, y: objectY, z: 0, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: objectSprite, frame: 1, frameCount: objectFrameCount, animating: null, color: objectColor, drawType: 'sprite', rotation: 0};
     } else {
-        window[objectName] = {name: objectName, x: objectX, y: objectY, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: null, color: objectColor, rotation: 0};
+        window[objectName] = {name: objectName, x: objectX, y: objectY, z: 0, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: null, frame: null, frameCount: null, animating: null, color: objectColor, drawType: 'box', rotation: 0};
     }
     
     if (objectName.boundW < 3 || objectName.boundH < 3) {
