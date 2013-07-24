@@ -33,10 +33,7 @@ function touchDebug() {
         // Loop through and catch all touch events (five on iPhone and ten on iPad)
         for (var i = 0; i < touchDatabase.length; i++) {
             var touch = touchDatabase[i];
-            // log("X: " + touch.clientX + " Y: " + touch.clientY);
-            startPath();
-            circle(touch.clientX - 50, touch.clientY - 50, 100);
-            drawPath(null, "#00ffff", 3, 1);
+            log("X: " + touch.clientX + " Y: " + touch.clientY);
         }
     }
 }

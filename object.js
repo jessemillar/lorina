@@ -1,10 +1,6 @@
 // window[...] is needed for dynamic, global variable creation
-function make(objectName, objectX, objectY, objectW, objectH, objectSprite, objectFrameCount, objectColor) {
-    if (objectSprite) {
-        window[objectName] = {name: objectName, x: objectX, y: objectY, z: 0, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: objectSprite, frame: 1, frameCount: objectFrameCount, animating: null, color: objectColor, drawType: 'sprite', rotation: 0};
-    } else {
-        window[objectName] = {name: objectName, x: objectX, y: objectY, z: 0, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: null, frame: null, frameCount: null, animating: null, color: objectColor, drawType: 'box', rotation: 0};
-    }
+function make(objectName, objectX, objectY, objectW, objectH, objectSprite, objectFrameCount) {
+    window[objectName] = {name: objectName, x: objectX, y: objectY, z: 0, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: objectSprite, frame: 1, frameCount: objectFrameCount, animating: null, rotation: 0};
     
     if (objectName.boundW < 3 || objectName.boundH < 3) {
         log("Objects should be at least 3px by 3px to have proper collision detection");

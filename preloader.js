@@ -11,7 +11,7 @@ function preload(imageArray) {
         
         spriteReference.onload = function () {
             imagesLoaded++;
-            log("Loaded " + imagesLoaded + "/" + totalImages + " images (" + spriteReference.src + ")");
+            log("Loaded " + imagesLoaded + "/" + totalImages + " images");
             if (imagesLoaded == totalImages) {
                 setup();
             }
