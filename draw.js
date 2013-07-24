@@ -1,65 +1,17 @@
 function clear() {
+    // Create the zIndex database if it doesn't already exist
     if (typeof zIndex === 'undefined') {
         zIndex = new Array();
     }
+    // Clear the database
     zIndex.length = 0;
-    rectangle(camera.x, camera.y, camera.width, camera.height, camera.color);
-}
-
-// Doesn't need start or end path declarations
-function rectangle(drawX, drawY, drawW, drawH, drawColor) {
-    ctx.fillStyle = drawColor;
-    ctx.fillRect(drawX, drawY, drawW, drawH);
-}
-
-// End the path with the drawPath() command
-function startPath() {
-    ctx.beginPath();
-}
-
-function line(startX, startY, endX, endY) {
-    ctx.moveTo(startX, startY);
-    ctx.lineTo(startX + endX, startY + endY);
-}
-
-function arc(drawX, drawY, drawDiameter, startAngle, engAngle) {
-    ctx.arc(drawX, drawY, drawDiameter / 2, degree(startAngle) + 1.5 * Math.PI, degree(engAngle) + 1.5 * Math.PI);
-}
-
-function circle(drawX, drawY, drawDiameter) {
-    ctx.arc(drawX + drawDiameter / 2, drawY + drawDiameter / 2, drawDiameter / 2, 0, 2 * Math.PI);
-}
-
-function curve(startX, startY, modifyX, modifyY, endX, endY) {
-    ctx.moveTo(startX, startY);
-    ctx.quadraticCurveTo(startX + modifyX, startY + modifyY, startX + endX, startY + endY);
+    // Draw a rectangle over the current screen
+    ctx.fillStyle = camera.color;
+    ctx.fillRect(camera.x, camera.y, camera.width, camera.height);
 }
 
 function opacity(desiredOpacity) {
     ctx.globalAlpha = desiredOpacity;
-}
-
-function drawPath(fillColor, strokeColor, strokeWidth, objectOpacity) {
-    if (!fillColor) {
-        fillColor = 'rgba(0, 0, 0, 0)';
-    }
-    if (!strokeColor) {
-        strokeColor = 'rgba(0, 0, 0, 0)';
-    }
-    ctx.closePath();
-    opacity(objectOpacity);
-    ctx.fillStyle = fillColor;
-    ctx.fill();
-    ctx.strokeStyle = strokeColor;
-    ctx.lineWidth = strokeWidth;
-    ctx.stroke();
-}
-
-function animate(objectName, animationSpeed) {
-    if(objectName.animating == null){
-        objectName.animating = setInterval(function() { if (objectName.frame < objectName.frameCount) { objectName.frame++; } else { objectName.frame = 1; } }, animationSpeed);
-    };
-    drawToScreen(objectName);
 }
 
 function buffer(objectName, animationSpeed) {
@@ -98,7 +50,8 @@ function drawToScreen(objectName) {
             ctx.save();
             ctx.translate(objectName.x + objectName.w / 2, objectName.y + objectName.h / 2);
             ctx.rotate(objectName.rotation);
-            rectangle(0 - objectName.w / 2, 0 - objectName.h / 2, objectName.w, objectName.h, objectName.color);
+            ctx.fillStyle = objectName.color;
+            ctx.fillRect(objectName.x, objectName.y, objectName.width, objectName.height);
             ctx.restore();
         }
     } else if (objectName.drawType == "sprite") {
@@ -116,3 +69,54 @@ function drawToScreen(objectName) {
         }
     }
 }
+
+/*
+ 
+// Archived shape drawing functions
+
+    // Doesn't need start or end path declarations
+    function rectangle(drawX, drawY, drawW, drawH, drawColor) {
+        ctx.fillStyle = drawColor;
+        ctx.fillRect(drawX, drawY, drawW, drawH);
+    }
+
+    // End the path with the drawPath() command
+    function startPath() {
+        ctx.beginPath();
+    }
+
+    function line(startX, startY, endX, endY) {
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(startX + endX, startY + endY);
+    }
+
+    function arc(drawX, drawY, drawDiameter, startAngle, engAngle) {
+        ctx.arc(drawX, drawY, drawDiameter / 2, degree(startAngle) + 1.5 * Math.PI, degree(engAngle) + 1.5 * Math.PI);
+    }
+
+    function circle(drawX, drawY, drawDiameter) {
+        ctx.arc(drawX + drawDiameter / 2, drawY + drawDiameter / 2, drawDiameter / 2, 0, 2 * Math.PI);
+    }
+
+    function curve(startX, startY, modifyX, modifyY, endX, endY) {
+        ctx.moveTo(startX, startY);
+        ctx.quadraticCurveTo(startX + modifyX, startY + modifyY, startX + endX, startY + endY);
+    }
+
+    function drawPath(fillColor, strokeColor, strokeWidth, objectOpacity) {
+        if (!fillColor) {
+            fillColor = 'rgba(0, 0, 0, 0)';
+        }
+        if (!strokeColor) {
+            strokeColor = 'rgba(0, 0, 0, 0)';
+        }
+        ctx.closePath();
+        opacity(objectOpacity);
+        ctx.fillStyle = fillColor;
+        ctx.fill();
+        ctx.strokeStyle = strokeColor;
+        ctx.lineWidth = strokeWidth;
+        ctx.stroke();
+    }
+
+*/
