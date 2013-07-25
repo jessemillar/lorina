@@ -15,19 +15,34 @@ function opacity(desiredOpacity) {
 }
 
 function buffer(objectName, animationSpeed) {
-    // If animationSpeed is a valid number, make an animation timer
-    if (animationSpeed) {
-        if(objectName.animating == null){
-            objectName.animating = setInterval(function() { if (objectName.frame < objectName.frameCount) { objectName.frame++; } else { objectName.frame = 1; } }, animationSpeed);
-        };
-    }
-    
     // If we're dealing with a group, loop through the group and add each item to the zIndex array
     if (objectName.length) {
         for (var i = 0; i < objectName.length; i++) {
-            zIndex.push(objectName[i]);
+            for (var i = 0; i < objectName.length; i++) {
+                if (animationSpeed) {
+                    if (objectName[i].animating == null) {
+                        setAnimatingWithInterval(i);
+                    }
+                }
+                zIndex.push(objectName[i]);
+            }
+            
+            function setAnimatingWithInterval(n) {
+                objectName[n].animating = setInterval(function() {
+                                                            if (objectName[n].frame < objectName[n].frameCount) {
+                                                                objectName[n].frame++; 
+                                                            } else {
+                                                                objectName[n].frame = 1; 
+                                                            }
+                                                        }, animationSpeed);
+            }
         }
     } else {
+        if (animationSpeed) {
+            if (objectName.animating == null) {
+                objectName.animating = setInterval(function() { if (objectName.frame < objectName.frameCount) { objectName.frame++; } else { objectName.frame = 1; } }, animationSpeed);
+            };
+        }
         zIndex.push(objectName);
     }
 }
