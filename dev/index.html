@@ -1,0 +1,58 @@
+<html>
+	<head>
+		<title>Lorina</title>
+		<style>
+			html, body
+			{
+				padding: 0px;
+				margin: 0px;
+			}
+
+			#tooltip
+			{
+				position: absolute;
+				left: 0px;
+				top: 0px;
+
+				background-color: #ffffff;
+				color: #000000;
+				font-family: "Helvetica";
+				font-size: 12px;
+				font-weight: bold;
+				letter-spacing: 2px;
+				opacity: 0.3;
+				padding: 20px;
+				z-index: 1;
+			}
+
+			#canvas
+			{
+				position: absolute;
+				left: 50%;
+				top: 50%;
+				margin-left: -150px;
+				margin-top: -150px;
+				z-index: 0;
+			}
+		</style>
+		<script src = "../lorina.js"></script>
+		<script src = "../lorina-draw.js"></script>
+	</head>
+	<body>
+		<div id = "tooltip">This is a test</div>
+		<canvas id = "canvas" width = "300px" height = "300px"></canvas>
+	</body>
+	<script>
+		var corgi = new Image()
+    		corgi.src = 'images/corgi.png'
+
+		l.setup('#111111')
+		l.run()
+
+		function game()
+		{
+			l.draw.blank()
+			l.draw.image(corgi, 0, 0)
+		}
+	</script>
+</html>

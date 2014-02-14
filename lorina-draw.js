@@ -1,15 +1,26 @@
-function clear() {
+l.draw = new Object()
+
+l.draw.blank = function()
+{
+    /*
     // Create the zIndex database if it doesn't already exist
     if (typeof zIndex === 'undefined') {
         zIndex = new Array();
     }
     // Clear the database
     zIndex.length = 0;
+    */
     // Draw a rectangle over the current screen
-    ctx.fillStyle = camera.color;
-    ctx.fillRect(camera.x, camera.y, camera.width, camera.height);
+    l.ctx.fillStyle = l.camera.color
+    l.ctx.fillRect(l.camera.x, l.camera.y, l.camera.width, l.camera.height)
 }
 
+l.draw.image = function(image, x, y)
+{
+    l.ctx.drawImage(image, x, y)
+}
+
+/*
 function opacity(desiredOpacity) {
     ctx.globalAlpha = desiredOpacity;
 }
@@ -71,3 +82,4 @@ function drawToScreen(objectName) {
         ctx.restore();
     }
 }
+*/

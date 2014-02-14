@@ -1,48 +1,39 @@
-ejecta.include('engine/audio.js');
-ejecta.include('engine/collision.js');
-ejecta.include('engine/draw.js');
-ejecta.include('engine/groups.js');
-ejecta.include('engine/map.js');
-ejecta.include('engine/object.js');
-ejecta.include('engine/preloader.js');
-ejecta.include('engine/text.js');
-ejecta.include('engine/touch.js');
+// ejecta.include('engine/audio.js');
+// ejecta.include('engine/collision.js');
+// ejecta.include('engine/draw.js');
+// ejecta.include('engine/groups.js');
+// ejecta.include('engine/map.js');
+// ejecta.include('engine/object.js');
+// ejecta.include('engine/preloader.js');
+// ejecta.include('engine/text.js');
+// ejecta.include('engine/touch.js');
 
-// Timer code
-/*
-    if(typeof timerName === 'undefined'){
-        // Code
-    };
-*/
+var l = new Object() // The Lorina object that keeps engine functions out of the way
 
-function camera(gameColor, smoothPixels) {
-    camera = {x: 0, y: 0, width: screen.availWidth, height: screen.availHeight, color: gameColor};
-    dom = document.getElementById('canvas');
-    if (smoothPixels == 'smooth') {
-        dom.MSAAEnabled = true;
-        dom.MSAASamples = 2;
-    } else if (smoothPixels == 'rough'){
-        dom.MSAAEnabled = false;
-    }
-    ctx = document.getElementById('canvas').getContext('2d');
-    if (smoothPixels == 'smooth') {
-        ctx.imageSmoothingEnabled = true;
-    } else if (smoothPixels == 'rough'){
-        ctx.imageSmoothingEnabled = false;
-    }
-    enableTouch();
+l.setup = function(gameColor)
+{
+    l.dom = document.getElementById('canvas')
+    l.ctx = document.getElementById('canvas').getContext('2d')
+
+    l.camera = new Object()
+        l.camera.x = 0
+        l.camera.y = 0
+        l.camera.width = parseInt(document.getElementById('canvas').width)
+        l.camera.height = parseInt(document.getElementById('canvas').height)
+        l.camera.color = gameColor
 }
 
-function run() {
-    log("Running");
-    gameRunning = setInterval(game, 1000 / 60);
+l.run = function()
+{
+    l.loop = setInterval(game, 1000 / 60)
 }
 
-function pause() {
-    // Only works once the game is running; no effect during loading or setup
-    clearInterval(gameRunning);
+l.pause = function() // Only works once the game is running; no effect during loading or setup
+{
+    clearInterval(l.loop)
 }
 
-function log(logString) {
-    console.log(logString);
+l.parse = function(string)
+{
+    return JSON.stringify(string)
 }
