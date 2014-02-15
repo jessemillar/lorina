@@ -11,27 +11,33 @@ l.object.make = function(name, x, y, sprite, width, height, anchorX, anchorY)
         {
             l.entities[name].width = width
             l.entities[name].height = height
+            l.entities[name].bounding = new Object()
+                l.entities[name].bounding.x = x
+                l.entities[name].bounding.y = y
+                l.entities[name].bounding.offset = new Object()
+                    l.entities[name].bounding.offset.x = 0
+                    l.entities[name].bounding.offset.y = 0
+                l.entities[name].bounding.width = width
+                l.entities[name].bounding.height = height
             l.entities[name].anchor = new Object()
                 l.entities[name].anchor.offset = new Object()
-            if (anchorX >= 0 && anchorY >= 0) // If we supply an anchor point (including 0, 0), tell the engine
-            {
-                    l.entities[name].anchor.offset.x = anchorX
-                    l.entities[name].anchor.offset.y = anchorY
-                l.entities[name].anchor.x = x + anchorX
-                l.entities[name].anchor.y = y + anchorY
-            }
-            else // ...or set the anchor to the center of the image
-            {
                     l.entities[name].anchor.offset.x = width / 2
                     l.entities[name].anchor.offset.y = height / 2
                 l.entities[name].anchor.x = x + width / 2
                 l.entities[name].anchor.y = y + height / 2
-            }
         }
         else // ...or make an object that's just a point in space
         {
             l.entities[name].width = 0
             l.entities[name].height = 0
+            l.entities[name].bounding = new Object()
+                l.entities[name].bounding.x = x
+                l.entities[name].bounding.y = y
+                l.entities[name].bounding.offset = new Object()
+                    l.entities[name].bounding.offset.x = 0
+                    l.entities[name].bounding.offset.y = 0
+                l.entities[name].bounding.width = 0
+                l.entities[name].bounding.height = 0
             l.entities[name].anchor = new Object()
                 l.entities[name].anchor.offset = new Object()
                     l.entities[name].anchor.offset.x = 0
@@ -46,11 +52,28 @@ l.object.make = function(name, x, y, sprite, width, height, anchorX, anchorY)
         }
 }
 
+l.object.anchor = function(name, x, y)
+{
+    l.entities[name].anchor.offset.x = x
+    l.entities[name].anchor.offset.y = y
+}
+
+l.object.bounding = function(name, x, y, width, height)
+{
+    l.entities[name].bounding.offset.x = x
+    l.entities[name].bounding.offset.y = y
+    l.entities[name].bounding.width = width
+    l.entities[name].bounding.height = height
+}
+
 l.object.update = function(name) // Update "hidden" values that relate to the position of the object
 {
-    // Shift the anchor point (whether manually supplied or automatically centered) to reflec the object's new position
+    // Shift the anchor point (whether manually supplied or automatically centered) to reflect the object's new position
     l.entities[name].anchor.x = l.entities[name].x + l.entities[name].anchor.offset.x
     l.entities[name].anchor.y = l.entities[name].y + l.entities[name].anchor.offset.y
+    // Shift the bounding box (whether manually supplied or automatically encompassing) to reflect the object's new position
+    l.entities[name].bounding.x = l.entities[name].x + l.entities[name].bounding.offset.x
+    l.entities[name].bounding.y = l.entities[name].y + l.entities[name].bounding.offset.y
 }
 
 l.move = new Object() // Create an object to organize the move functions into

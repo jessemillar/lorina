@@ -30,7 +30,9 @@
 		var speed = 45
 
 		l.object.make('marker', 300, 0)
-		l.object.make('corgi1', 10, 10, 'images/corgi.png', 35, 35, 0, 0)
+		l.object.make('corgi1', 10, 10, 'images/corgi.png', 35, 35)
+			l.object.anchor('corgi1', 0, 0)
+			l.object.bounding('corgi1', 0, 0, 3, 3)
 		l.object.make('corgi2', 120, 120, 'images/corgi.png', 35, 35)
 
 		l.game.setup('#111111')
