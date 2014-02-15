@@ -68,6 +68,7 @@ l.object.anchor = function(name, x, y)
     l.entities[name].y -= y
     l.entities[name].anchor.offset.x = x
     l.entities[name].anchor.offset.y = y
+    l.object.update(name)
 }
 
 l.object.bounding = function(name, x, y, width, height)
@@ -76,6 +77,7 @@ l.object.bounding = function(name, x, y, width, height)
     l.entities[name].bounding.offset.y = y
     l.entities[name].bounding.width = width
     l.entities[name].bounding.height = height
+    l.object.update(name)
 }
 
 l.object.update = function(name) // Update "hidden" values that relate to the position of the object
