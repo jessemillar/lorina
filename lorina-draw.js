@@ -2,22 +2,27 @@ l.draw = new Object()
 
 l.draw.blank = function()
 {
-    /*
-    // Create the zIndex database if it doesn't already exist
-    if (typeof zIndex === 'undefined') {
-        zIndex = new Array();
-    }
-    // Clear the database
-    zIndex.length = 0;
-    */
-    // Draw a rectangle over the current screen
     l.ctx.fillStyle = l.camera.color
     l.ctx.fillRect(l.camera.x, l.camera.y, l.camera.width, l.camera.height)
 }
 
-l.draw.image = function(image, x, y)
+l.draw.object = function(name)
 {
-    l.ctx.drawImage(image, x, y)
+    for (var i = 0; i < l.entities.length; i++)
+    {
+        if (l.entities[i].name == name)
+        {
+            if (l.entities[i].sprite)
+            {
+                l.ctx.drawImage(l.entities[i].sprite, l.entities[i].x, l.entities[i].y)
+            }
+            else
+            {
+                console.log('No loaded sprite for the ' + l.entities[i].name + ' entity')
+            }
+            break
+        }
+    }
 }
 
 /*

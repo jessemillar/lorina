@@ -1,12 +1,34 @@
-// window[...] is needed for dynamic, global variable creation
-function make(objectName, objectX, objectY, objectW, objectH, objectSprite, objectFrameCount) {
-    window[objectName] = {name: objectName, x: objectX, y: objectY, z: 0, w: objectW, h: objectH, boundX: objectX, boundY: objectY, boundW: objectW, boundH: objectH, sprite: objectSprite, frame: 1, frameCount: objectFrameCount, animating: null, rotation: 0};
+l.entities = new Array() // The array that keeps track of our game objects
+
+l.make = function(name, kind, x, y, sprite, width, height)
+{
+    var thingy = new Object()
+        thingy.name = name
+        thingy.kind = kind
+        thingy.x = x
+        thingy.y = y
+        thingy.z = 0 // Modify mostly with automatic functions
+        thingy.width = width
+        thingy.height = height
+        thingy.sprite = new Image()
+            thingy.sprite.src = sprite
+        thingy.rotation = 0 // Change later with other functions
+        thingy.bound = new Object()
+            thingy.bound.x = x
+            thingy.bound.y = y
+            thingy.bound.width = width
+            thingy.bound.height = height
     
-    if (objectName.boundW < 3 || objectName.boundH < 3) {
-        log("Objects should be at least 3px by 3px to have proper collision detection");
+    if (thingy.bound.width < 3 || thingy.bound.height < 3) {
+        console.log('Objects must be at least 3px by 3px to have proper collision detection')
+    }
+    else
+    {
+        l.entities.push(thingy)
     }
 }
 
+/*
 function bound(objectName, xBound, yBound, wBound, hBound) {
     objectName.boundX = objectName.x + xBound;
     objectName.boundY = objectName.y + yBound;
@@ -16,10 +38,6 @@ function bound(objectName, xBound, yBound, wBound, hBound) {
     if (objectName.boundW < 3 || objectName.boundH < 3) {
         log("Objects should be at least 3px by 3px to have proper collision detection");
     }
-}
-
-function degree(rotateDegree) {
-    return rotateDegree * Math.PI / 180;
 }
 
 function move(objectName, moveDirection, moveSpeed) {
@@ -137,3 +155,4 @@ function toward(objectA, objectB, moveSpeed) {
         }
     }
 }
+*/
