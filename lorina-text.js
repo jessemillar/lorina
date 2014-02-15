@@ -10,5 +10,5 @@ l.text.write = function(string, x, y, color)
 	{
 		l.ctx.fillStyle = '#000000'
 	}
-    l.ctx.fillText(string, x, y)
+    l.ctx.fillText(string, x - l.camera.x, y - l.camera.y)
 }

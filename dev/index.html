@@ -39,10 +39,11 @@
 		// l.touches.enable()
 		l.mouse.enable()
 		l.keyboard.enable()
-		l.debug.all = false
+		l.debug.all = true
 			l.debug.keyboard = false
 			l.debug.mouse = false
-			l.debug.anchor = true
+			l.debug.camera = true
+			l.debug.anchor = false
 			l.debug.bounding = false
 			l.debug.names = false
 			l.debug.position = false
@@ -51,7 +52,7 @@
 
 		l.object.make('marker', 300, 150)
 		l.object.make('corgi1', 100, 100, 'images/corgi.png', 35, 35)
-			l.object.anchor('corgi1', 0, 0)
+			l.object.anchor('corgi1', 35 / 2, 35)
 			l.object.bounding('corgi1', 8, 8, 5, 5)
 		l.object.make('corgi2', 120, 120, 'images/corgi.png', 35, 35)
 
@@ -66,7 +67,18 @@
 			}
 			else if (l.game.state == 'running')
 			{
+				l.camera.follow('corgi1', 100, 100)
+
 				// l.audio.play('music')
+
+				if (l.keyboard.a)
+				{
+					l.camera.move.left(1)
+				}
+				else if (l.keyboard.s)
+				{
+					l.camera.move.right(1)
+				}
 
 			    if (l.keyboard.up)
 			    {
@@ -104,6 +116,7 @@
 				}
 
 				l.draw.blank()
+				l.draw.rectangle(l.camera.x + l.camera.width / 2 - 100 / 2, l.camera.y + l.camera.height / 2 - 100 / 2, 100, 100, '#ff0000', 0.25)
 				l.draw.object('corgi1')
 				l.draw.object('corgi2')
 			}
