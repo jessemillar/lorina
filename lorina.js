@@ -15,9 +15,9 @@ l.game.setup = function(gameColor)
         l.camera.color = gameColor
 }
 
-l.game.run = function()
+l.game.start = function()
 {
-    l.loop = setInterval(game, 1000 / 60)
+    l.game.loop = setInterval(game, 1000 / 60)
 }
 
 l.game.pause = function() // Only works once the game is running; no effect during loading or setup

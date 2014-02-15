@@ -47,8 +47,25 @@ l.object.make = function(name, x, y, sprite, width, height, anchorX, anchorY)
         }
         if (sprite) // Add a sprite if specified (allow adding sprites to points as well as objects that have substance)
         {
+            l.game.state = 'loading'
+            if (l.game.preloader) // Add an image to the preloader queue
+            {
+                l.game.preloader += 1
+            }
+            else
+            {
+                l.game.preloader = 1
+            }
             l.entities[name].sprite = new Image()
                 l.entities[name].sprite.src = sprite
+                l.entities[name].sprite.onload = function()
+                {
+                    l.game.preloader -= 1 // Remove an image from the preloader queue once it's loaded
+                    if (l.game.preloader == 0)
+                    {
+                        l.game.state = 'running'
+                    }
+                }
         }
 }
 
