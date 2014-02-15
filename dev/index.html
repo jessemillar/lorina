@@ -37,7 +37,12 @@
 		l.game.setup('#111111')
 		// l.touches.enable()
 		l.mouse.enable()
-		l.game.debug = true
+		l.debug.all = false
+			l.debug.mouse = false
+			l.debug.anchor = false
+			l.debug.bounding = true
+			l.debug.names = false
+			l.debug.position = true
 
 		l.audio.make('music', 'sounds/music.wav')
 
@@ -58,10 +63,15 @@
 			}
 			else if (l.game.state == 'running')
 			{
+				if (l.mouse.x && l.mouse.y)
+				{
+					l.move.snap('marker', l.mouse.x, l.mouse.y)
+				}
+
 				// l.audio.loop('music')
 
-				l.move.toward('corgi1', 'marker', corgiSpeed)
-				l.move.toward('corgi2', 'corgi1', corgiSpeed)
+				l.move.toward('corgi1', 'marker', corgiSpeed) // Track the marker
+				l.move.toward('corgi2', 'corgi1', corgiSpeed / 2) // Chase the other corgi
 
 				if (l.collision.overlap('corgi1', 'corgi2'))
 				{

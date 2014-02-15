@@ -2,6 +2,8 @@ var l = new Object() // The Lorina object that keeps the engine functions out of
 
 l.game = new Object() // Group the game functions
 
+l.debug = new Object() // Keep track of the various debug options
+
 l.game.setup = function(gameColor)
 {
     l.dom = document.getElementById('canvas')

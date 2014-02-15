@@ -43,7 +43,7 @@ l.mouse.cancel = function(event)
 
 l.mouse.debug = function()
 {
-    if (l.game.debug)
+    if (l.debug.mouse || l.debug.all)
     {
         if (l.mouse.x && l.mouse.y)
         {

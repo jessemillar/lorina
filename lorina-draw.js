@@ -28,12 +28,22 @@ l.draw.object = function(name)
     if (Math.round(l.entities[name].x + l.entities[name].width) > l.camera.x && Math.round(l.entities[name].x) < l.camera.width && Math.round(l.entities[name].y + l.entities[name].height) > l.camera.y && Math.round(l.entities[name].y) < l.camera.height)  // Only draw if visible on the screen
     {
         l.ctx.drawImage(l.entities[name].sprite, Math.round(l.entities[name].x), Math.round(l.entities[name].y))
-        if (l.game.debug)
+
+        if (l.debug.anchor || l.debug.all)
+        {
+            l.draw.rectangle(l.entities[name].anchor.x, l.entities[name].anchor.y, 1, 1, '#ffff00')
+        }
+        if (l.debug.bounding || l.debug.all)
         {
             l.draw.rectangle(l.entities[name].x + l.entities[name].bounding.offset.x, l.entities[name].y + l.entities[name].bounding.offset.y, l.entities[name].bounding.width, l.entities[name].bounding.height, '#00ff00', 0.5)
-            l.draw.rectangle(l.entities[name].x, l.entities[name].y, 1, 1, '#0000ff')
-            l.draw.rectangle(l.entities[name].anchor.x, l.entities[name].anchor.y, 1, 1, '#ffff00')
+        }
+        if (l.debug.names || l.debug.all)
+        {
             l.text.write(name, l.entities[name].x + l.entities[name].width, l.entities[name].y, '#ff0000')
+        }
+        if (l.debug.position || l.debug.all)
+        {
+            l.draw.rectangle(l.entities[name].x, l.entities[name].y, 1, 1, '#0000ff')
         }
     }
 }
