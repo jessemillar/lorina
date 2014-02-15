@@ -19,5 +19,6 @@ l.draw.object = function(name)
     {
         l.draw.rectangle(l.entities[name].x, l.entities[name].y, 1, 1, '#0000ff')
         l.draw.rectangle(l.entities[name].anchor.x, l.entities[name].anchor.y, 1, 1, '#ffff00')
+        l.text.write(name, l.entities[name].x + l.entities[name].width, l.entities[name].y, '#ff0000')
     }
 }

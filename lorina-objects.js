@@ -58,7 +58,6 @@ l.object.anchor = function(name, x, y)
     l.entities[name].y -= y
     l.entities[name].anchor.offset.x = x
     l.entities[name].anchor.offset.y = y
-    console.log('Changed to ' + x + ' and ' + y)
 }
 
 l.object.bounding = function(name, x, y, width, height)

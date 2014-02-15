@@ -22,11 +22,13 @@
 		<script src = "../lorina-collisions.js"></script>
 		<script src = "../lorina-draw.js"></script>
 		<script src = "../lorina-objects.js"></script>
+		<script src = "../lorina-text.js"></script>
 	</head>
 	<body onkeydown = 'key(event)'>
 		<canvas id = "canvas" width = "400px" height = "400px"></canvas>
 	</body>
 	<script>
+		l.game.debug = true
 		var speed = 45
 
 		l.object.make('marker', 300, 100)
@@ -36,7 +38,6 @@
 		l.object.make('corgi2', 120, 120, 'images/corgi.png', 35, 35)
 
 		l.game.setup('#111111')
-		// l.game.debug = true
 		l.game.run()
 
 		function game()
