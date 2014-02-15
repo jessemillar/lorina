@@ -21,22 +21,16 @@ l.audio.play = function(name)
     l.audio.files[name].play()
 }
 
+l.audio.loop = function(name)
+{
+    if (l.audio.files[name].paused)
+    {
+        l.audio.files[name].loop = true
+        l.audio.files[name].play()
+    }
+}
+
 l.audio.pause = function(name)
 {
     l.audio.files[name].pause()
 }
-
-/*
-function loop(audioFile, playVolume) {
-    if (audioFile.paused) {
-        if (playVolume == null) {
-            audioFile.volume = 0;
-        } else {
-            audioFile.volume = playVolume;
-        }
-        audioFile.volume = playVolume;
-        audioFile.loop = true;
-        audioFile.play();
-    }
-}
-*/
