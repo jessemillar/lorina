@@ -39,7 +39,7 @@
 		// l.touches.enable()
 		l.mouse.enable()
 		l.keyboard.enable()
-		l.debug.all = true
+		l.debug.all = false
 			l.debug.keyboard = false
 			l.debug.mouse = false
 			l.debug.camera = true
@@ -63,22 +63,13 @@
 			if (l.game.state == 'loading')
 			{
 				l.draw.blank()
-				l.text.write(l.preloader.percent + '% loaded', 10, l.camera.height - 10, '#ffffff')
+				l.text.write(l.preloader.percent + '% loaded', 10, l.entities.camera.height - 10, '#ffffff')
 			}
 			else if (l.game.state == 'running')
 			{
 				l.camera.follow('corgi1', 100, 100)
 
 				// l.audio.play('music')
-
-				if (l.keyboard.a)
-				{
-					l.camera.move.left(1)
-				}
-				else if (l.keyboard.s)
-				{
-					l.camera.move.right(1)
-				}
 
 			    if (l.keyboard.up)
 			    {
@@ -108,15 +99,14 @@
 
 				if (l.collision.overlap('corgi1', 'corgi2'))
 				{
-					l.camera.color = '#ff0000'
+					l.entities.camera.color = '#ff0000'
 				}
 				else
 				{
-					l.camera.color = '#111111'
+					l.entities.camera.color = '#111111'
 				}
 
 				l.draw.blank()
-				l.draw.rectangle(l.camera.x + l.camera.width / 2 - 100 / 2, l.camera.y + l.camera.height / 2 - 100 / 2, 100, 100, '#ff0000', 0.25)
 				l.draw.object('corgi1')
 				l.draw.object('corgi2')
 			}

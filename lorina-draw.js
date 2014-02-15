@@ -2,20 +2,20 @@ l.draw = new Object() // Organize all the draw functions into one object
 
 l.draw.blank = function()
 {
-    l.ctx.fillStyle = l.camera.color
-    l.ctx.fillRect(0, 0, l.camera.width, l.camera.height)
+    l.ctx.fillStyle = l.entities.camera.color
+    l.ctx.fillRect(0, 0, l.entities.camera.width, l.entities.camera.height)
 }
 
 l.draw.rectangle = function(x, y, width, height, color, opacity) // Mainly for debug purposes
 {
-    if (Math.round(x + width) > Math.round(l.camera.x) && Math.round(x) < Math.round(l.camera.x + l.camera.width) && Math.round(y + height) > Math.round(l.camera.y) && Math.round(y) < Math.round(l.camera.y + l.camera.height)) // Only draw if visible on the screen
+    if (Math.round(x + width) > Math.round(l.entities.camera.x) && Math.round(x) < Math.round(l.entities.camera.x + l.entities.camera.width) && Math.round(y + height) > Math.round(l.entities.camera.y) && Math.round(y) < Math.round(l.entities.camera.y + l.entities.camera.height)) // Only draw if visible on the screen
     {
         if (opacity)
         {
             l.ctx.globalAlpha = opacity
         }
         l.ctx.fillStyle = color
-        l.ctx.fillRect(Math.round(x - l.camera.x), Math.round(y - l.camera.y), width, height)
+        l.ctx.fillRect(Math.round(x - l.entities.camera.x), Math.round(y - l.entities.camera.y), width, height)
         if (opacity)
         {
             l.ctx.globalAlpha = 1 // Reset the opacity after drawing the rectangle
@@ -25,9 +25,9 @@ l.draw.rectangle = function(x, y, width, height, color, opacity) // Mainly for d
 
 l.draw.object = function(name)
 {
-    if (Math.round(l.entities[name].x + l.entities[name].width) > Math.round(l.camera.x) && Math.round(l.entities[name].x) < Math.round(l.camera.x + l.camera.width) && Math.round(l.entities[name].y + l.entities[name].height) > Math.round(l.camera.y) && Math.round(l.entities[name].y) < Math.round(l.camera.y + l.camera.height))  // Only draw if visible on the screen
+    if (Math.round(l.entities[name].x + l.entities[name].width) > Math.round(l.entities.camera.x) && Math.round(l.entities[name].x) < Math.round(l.entities.camera.x + l.entities.camera.width) && Math.round(l.entities[name].y + l.entities[name].height) > Math.round(l.entities.camera.y) && Math.round(l.entities[name].y) < Math.round(l.entities.camera.y + l.entities.camera.height))  // Only draw if visible on the screen
     {
-        l.ctx.drawImage(l.entities[name].sprite, Math.round(l.entities[name].x - l.camera.x), Math.round(l.entities[name].y - l.camera.y))
+        l.ctx.drawImage(l.entities[name].sprite, Math.round(l.entities[name].x - l.entities.camera.x), Math.round(l.entities[name].y - l.entities.camera.y))
 
         if (l.debug.anchor || l.debug.all)
         {
