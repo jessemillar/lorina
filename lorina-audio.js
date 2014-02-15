@@ -15,22 +15,28 @@ l.audio.make = function(name, location)
         }
 }
 
+l.audio.pause = function(name)
+{
+    l.audio.files[name].pause()
+}
+
 l.audio.play = function(name)
 {
+    if (l.audio.files[name].paused && l.audio.files[name].currentTime == 0)
+    {
+        l.audio.files[name].play()
+    }
+}
+
+l.audio.rewind = function(name)
+{
     l.audio.files[name].currentTime = 0
-    l.audio.files[name].play()
 }
 
 l.audio.loop = function(name)
 {
     if (l.audio.files[name].paused)
     {
-        l.audio.files[name].loop = true
         l.audio.files[name].play()
     }
-}
-
-l.audio.pause = function(name)
-{
-    l.audio.files[name].pause()
 }
