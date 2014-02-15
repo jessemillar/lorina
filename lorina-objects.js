@@ -45,7 +45,7 @@ l.object.make = function(name, x, y, sprite, width, height, anchorX, anchorY)
                 l.entities[name].anchor.x = x
                 l.entities[name].anchor.y = y
         }
-        if (sprite)
+        if (sprite) // Add a sprite if specified (allow adding sprites to points as well as objects that have substance)
         {
             l.entities[name].sprite = new Image()
                 l.entities[name].sprite.src = sprite
@@ -54,8 +54,11 @@ l.object.make = function(name, x, y, sprite, width, height, anchorX, anchorY)
 
 l.object.anchor = function(name, x, y)
 {
+    l.entities[name].x -= x
+    l.entities[name].y -= y
     l.entities[name].anchor.offset.x = x
     l.entities[name].anchor.offset.y = y
+    console.log('Changed to ' + x + ' and ' + y)
 }
 
 l.object.bounding = function(name, x, y, width, height)

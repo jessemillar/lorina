@@ -29,17 +29,19 @@
 	<script>
 		var speed = 45
 
-		l.object.make('marker', 300, 0)
-		l.object.make('corgi1', 10, 10, 'images/corgi.png', 35, 35)
-			l.object.anchor('corgi1', 0, 0)
+		l.object.make('marker', 300, 100)
+		l.object.make('corgi1', 0, 0, 'images/corgi.png', 35, 35)
+			l.object.anchor('corgi1', 35, 35)
 			l.object.bounding('corgi1', 0, 0, 3, 3)
 		l.object.make('corgi2', 120, 120, 'images/corgi.png', 35, 35)
 
 		l.game.setup('#111111')
+		// l.game.debug = true
 		l.game.run()
 
 		function game()
 		{
+			// console.log(l.entities.corgi1.anchor.x, l.entities.corgi1.anchor.y)
 			l.move.toward('corgi1', 'marker', speed)
 			l.move.toward('corgi2', 'corgi1', speed)
 
@@ -61,7 +63,7 @@
 		{
 			if (event.keyCode == 32) // Spacebar
 			{
-				l.move.snap('marker', 0, 0)
+				l.move.snap('marker', l.camera.width, l.camera.height)
 			}
 
 			if (event.keyCode == 38) // Up arrow
