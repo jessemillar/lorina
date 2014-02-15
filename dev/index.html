@@ -19,9 +19,11 @@
 			}
 		</style>
 		<script src = "../lorina.js"></script>
+		<script src = "../lorina-audio.js"></script>
 		<script src = "../lorina-collisions.js"></script>
 		<script src = "../lorina-draw.js"></script>
 		<script src = "../lorina-objects.js"></script>
+		<script src = "../lorina-preloader.js"></script>
 		<script src = "../lorina-text.js"></script>
 	</head>
 	<body onkeydown = 'key(event)'>
@@ -32,6 +34,8 @@
 
 		l.game.setup('#111111')
 		l.game.debug = true
+
+		l.audio.make('music', 'sounds/music.wav')
 
 		l.object.make('marker', 300, 100)
 		l.object.make('corgi1', 0, 0, 'images/corgi.png', 35, 35)
@@ -46,7 +50,7 @@
 			if (l.game.state == 'loading')
 			{
 				l.draw.blank()
-				l.text.write('loading', 50, 50, '#ffffff')
+				l.text.write(l.preloader.percent + '% loaded', 10, l.camera.height - 10, '#ffffff')
 			}
 			else if (l.game.state == 'running')
 			{
