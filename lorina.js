@@ -10,7 +10,9 @@
 
 var l = new Object() // The Lorina object that keeps engine functions out of the way
 
-l.setup = function(gameColor)
+l.game = new Object() // Group the game functions
+
+l.game.setup = function(gameColor)
 {
     l.dom = document.getElementById('canvas')
     l.ctx = document.getElementById('canvas').getContext('2d')
@@ -23,17 +25,12 @@ l.setup = function(gameColor)
         l.camera.color = gameColor
 }
 
-l.run = function()
+l.game.run = function()
 {
     l.loop = setInterval(game, 1000 / 60)
 }
 
-l.pause = function() // Only works once the game is running; no effect during loading or setup
+l.game.pause = function() // Only works once the game is running; no effect during loading or setup
 {
     clearInterval(l.loop)
-}
-
-l.parse = function(string)
-{
-    return JSON.stringify(string)
 }
