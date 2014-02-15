@@ -27,14 +27,18 @@
 	</body>
 	<script>
 		l.make('corgi', 'player', 10, 10, 'images/corgi.png', 35, 35)
+		l.make('corgi2', 'player', 120, 120, 'images/corgi.png', 35, 35)
 
 		l.setup('#111111')
 		l.run()
 
 		function game()
 		{
+			l.move.toward('corgi2', 'corgi', 1)
+
 			l.draw.blank()
 			l.draw.object('corgi')
+			l.draw.object('corgi2')
 		}
 
 		function key(event)

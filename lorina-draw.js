@@ -1,4 +1,4 @@
-l.draw = new Object()
+l.draw = new Object() // Organize all the draw functions into one object
 
 l.draw.blank = function()
 {
