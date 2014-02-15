@@ -1,9 +1,8 @@
-l.entities = new Array() // The array that keeps track of our game objects
+l.entities = new Object() // The object that keeps track of our game objects
 
 l.make = function(name, kind, x, y, sprite, width, height)
 {
     var thingy = new Object()
-        thingy.name = name
         thingy.kind = kind
         thingy.x = x
         thingy.y = y
@@ -11,70 +10,35 @@ l.make = function(name, kind, x, y, sprite, width, height)
         thingy.height = height
         thingy.sprite = new Image()
             thingy.sprite.src = sprite
-    l.entities.push(thingy)
+    l.entities[name] = thingy
 }
 
-l.move = new Object()
+l.move = new Object() // Create an object to organize the move functions into
 
 l.move.snap = function(name, x, y)
 {
-    for (var i = 0; i < l.entities.length; i++)
-    {
-        if (l.entities[i].name == name)
-        {
-            l.entities[i].x = x
-            l.entities[i].y = y
-            break
-        }
-    }
+    l.entities[name].x = x
+    l.entities[name].y = y
 }
 
 l.move.up = function(name, speed)
 {
-    for (var i = 0; i < l.entities.length; i++)
-    {
-        if (l.entities[i].name == name)
-        {
-            l.entities[i].y -= speed
-            break
-        }
-    }
+    l.entities[name].y -= speed
 }
 
 l.move.down = function(name, speed)
 {
-    for (var i = 0; i < l.entities.length; i++)
-    {
-        if (l.entities[i].name == name)
-        {
-            l.entities[i].y += speed
-            break
-        }
-    }
+    l.entities[name].y += speed
 }
 
 l.move.left = function(name, speed)
 {
-    for (var i = 0; i < l.entities.length; i++)
-    {
-        if (l.entities[i].name == name)
-        {
-            l.entities[i].x -= speed
-            break
-        }
-    }
+    l.entities[name].x -= speed
 }
 
 l.move.right = function(name, speed)
 {
-    for (var i = 0; i < l.entities.length; i++)
-    {
-        if (l.entities[i].name == name)
-        {
-            l.entities[i].x += speed
-            break
-        }
-    }
+    l.entities[name].x += speed
 }
 
 /*

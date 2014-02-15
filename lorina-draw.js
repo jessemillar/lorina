@@ -8,20 +8,13 @@ l.draw.blank = function()
 
 l.draw.object = function(name)
 {
-    for (var i = 0; i < l.entities.length; i++)
+    if (l.entities[name].sprite)
     {
-        if (l.entities[i].name == name)
-        {
-            if (l.entities[i].sprite)
-            {
-                l.ctx.drawImage(l.entities[i].sprite, l.entities[i].x, l.entities[i].y)
-            }
-            else
-            {
-                console.log('No loaded sprite for the ' + l.entities[i].name + ' entity')
-            }
-            break
-        }
+        l.ctx.drawImage(l.entities[name].sprite, l.entities[name].x, l.entities[name].y)
+    }
+    else
+    {
+        console.log('No loaded sprite for the ' + l.entities[name].name + ' entity')
     }
 }
 
