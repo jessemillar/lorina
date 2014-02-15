@@ -4,10 +4,10 @@ l.touches.database = new Array() // Keep track of where we're touching on the sc
 
 l.touches.enable = function()
 {
-    document.addEventListener('touchstart', l.touches.touched(event), false)
-    document.addEventListener('touchmove', l.touches.touched(event), false)
-    document.addEventListener('touchend', l.touches.cancel(), false)
-    document.addEventListener('touchcancel', l.touches.cancel(), false)
+    l.dom.addEventListener('touchstart', l.touches.touched(event), false)
+    l.dom.addEventListener('touchmove', l.touches.touched(event), false)
+    l.dom.addEventListener('touchend', l.touches.cancel(), false)
+    l.dom.addEventListener('touchcancel', l.touches.cancel(), false)
 }
 
 l.touches.touched = function(event)

@@ -22,6 +22,7 @@
 		<script src = "../lorina-audio.js"></script>
 		<script src = "../lorina-collisions.js"></script>
 		<script src = "../lorina-draw.js"></script>
+		<script src = "../lorina-mouse.js"></script>
 		<script src = "../lorina-objects.js"></script>
 		<script src = "../lorina-preloader.js"></script>
 		<script src = "../lorina-text.js"></script>
@@ -31,9 +32,11 @@
 		<canvas id = "canvas" width = "400px" height = "400px"></canvas>
 	</body>
 	<script>
-		var corgiSpeed = 45
+		var corgiSpeed = 75
 
 		l.game.setup('#111111')
+		// l.touches.enable()
+		l.mouse.enable()
 		l.game.debug = true
 
 		l.audio.make('music', 'sounds/music.wav')
