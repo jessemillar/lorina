@@ -8,12 +8,5 @@ l.draw.blank = function()
 
 l.draw.object = function(name)
 {
-    if (l.entities[name].sprite)
-    {
-        l.ctx.drawImage(l.entities[name].sprite, Math.round(l.entities[name].x), Math.round(l.entities[name].y))
-    }
-    else
-    {
-        console.log('No loaded sprite for the ' + l.entities[name].name + ' entity')
-    }
+    l.ctx.drawImage(l.entities[name].sprite, Math.round(l.entities[name].x), Math.round(l.entities[name].y))
 }

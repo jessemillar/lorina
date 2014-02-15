@@ -27,17 +27,21 @@
 		<canvas id = "canvas" width = "400px" height = "400px"></canvas>
 	</body>
 	<script>
-		l.object.make('corgi', 'player', 10, 10, 'images/corgi.png', 35, 35)
-		l.object.make('corgi2', 'player', 120, 120, 'images/corgi.png', 35, 35)
+		var speed = 45
+
+		l.object.make('marker', 300, 0)
+		l.object.make('corgi1', 10, 10, 'images/corgi.png', 35, 35, 0, 0)
+		l.object.make('corgi2', 120, 120, 'images/corgi.png', 35, 35)
 
 		l.game.setup('#111111')
 		l.game.run()
 
 		function game()
 		{
-			l.move.toward('corgi2', 'corgi', 45)
+			l.move.toward('corgi1', 'marker', speed)
+			l.move.toward('corgi2', 'corgi1', speed)
 
-			if (l.collision.overlap('corgi', 'corgi2'))
+			if (l.collision.overlap('corgi1', 'corgi2'))
 			{
 				l.camera.color = '#ff0000'
 			}
@@ -47,32 +51,33 @@
 			}
 
 			l.draw.blank()
-			l.draw.object('corgi')
+			l.draw.object('corgi1')
 			l.draw.object('corgi2')
 		}
 
 		function key(event)
 		{
-			// console.log(event.keyCode)
-			
-			var speed = 55
+			if (event.keyCode == 32) // Spacebar
+			{
+				l.move.snap('marker', 0, 0)
+			}
 
 			if (event.keyCode == 38) // Up arrow
 			{
-				l.move.up('corgi', speed)
+				l.move.up('corgi1', speed)
 			}
 			else if (event.keyCode == 40) // Down arrow
 			{
-				l.move.down('corgi', speed)
+				l.move.down('corgi1', speed)
 			}
 
 			if (event.keyCode == 37) // Left arrow
 			{
-				l.move.left('corgi', speed)
+				l.move.left('corgi1', speed)
 			}
 			else if (event.keyCode == 39) // Right arrow
 			{
-				l.move.right('corgi', speed)
+				l.move.right('corgi1', speed)
 			}
 		}
 	</script>

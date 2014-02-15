@@ -1,14 +1,4 @@
-// ejecta.include('engine/audio.js');
-// ejecta.include('engine/collision.js');
-// ejecta.include('engine/draw.js');
-// ejecta.include('engine/groups.js');
-// ejecta.include('engine/map.js');
-// ejecta.include('engine/object.js');
-// ejecta.include('engine/preloader.js');
-// ejecta.include('engine/text.js');
-// ejecta.include('engine/touch.js');
-
-var l = new Object() // The Lorina object that keeps engine functions out of the way
+var l = new Object() // The Lorina object that keeps the engine functions out of the way
 
 l.game = new Object() // Group the game functions
 
