@@ -22,13 +22,14 @@
 		<script src = "../lorina-audio.js"></script>
 		<script src = "../lorina-collisions.js"></script>
 		<script src = "../lorina-draw.js"></script>
+		<script src = "../lorina-keyboard.js"></script>
 		<script src = "../lorina-mouse.js"></script>
 		<script src = "../lorina-objects.js"></script>
 		<script src = "../lorina-preloader.js"></script>
 		<script src = "../lorina-text.js"></script>
 		<script src = "../lorina-touches.js"></script>
 	</head>
-	<body onkeydown = 'key(event)'>
+	<body>
 		<canvas id = "canvas" width = "400px" height = "400px"></canvas>
 	</body>
 	<script>
@@ -37,17 +38,19 @@
 		l.game.setup('#111111')
 		// l.touches.enable()
 		l.mouse.enable()
+		l.keyboard.enable()
 		l.debug.all = false
+			l.debug.keyboard = false
 			l.debug.mouse = false
 			l.debug.anchor = false
-			l.debug.bounding = true
+			l.debug.bounding = false
 			l.debug.names = false
-			l.debug.position = true
+			l.debug.position = false
 
 		l.audio.make('music', 'sounds/music.wav')
 
-		l.object.make('marker', 300, 100)
-		l.object.make('corgi1', 0, 0, 'images/corgi.png', 35, 35)
+		l.object.make('marker', 300, 150)
+		l.object.make('corgi1', 100, 100, 'images/corgi.png', 35, 35)
 			l.object.anchor('corgi1', 35, 35)
 			l.object.bounding('corgi1', 8, 8, 5, 5)
 		l.object.make('corgi2', 120, 120, 'images/corgi.png', 35, 35)
@@ -63,14 +66,32 @@
 			}
 			else if (l.game.state == 'running')
 			{
+				// l.audio.loop('music')
+
+			    if (l.keyboard.up)
+			    {
+			        l.move.up('corgi1', corgiSpeed)
+			    }
+			    else if (l.keyboard.down)
+			    {
+			        l.move.down('corgi1', corgiSpeed)
+			    }
+
+			    if (l.keyboard.left)
+			    {
+			        l.move.left('corgi1', corgiSpeed)
+			    }
+			    else if (l.keyboard.right)
+			    {
+			        l.move.right('corgi1', corgiSpeed)
+			    }
+
 				if (l.mouse.x && l.mouse.y)
 				{
 					l.move.snap('marker', l.mouse.x, l.mouse.y)
 				}
 
-				// l.audio.loop('music')
-
-				l.move.toward('corgi1', 'marker', corgiSpeed) // Track the marker
+				// l.move.toward('corgi1', 'marker', corgiSpeed) // Track the marker
 				l.move.toward('corgi2', 'corgi1', corgiSpeed / 2) // Chase the other corgi
 
 				if (l.collision.overlap('corgi1', 'corgi2'))
@@ -85,32 +106,6 @@
 				l.draw.blank()
 				l.draw.object('corgi1')
 				l.draw.object('corgi2')
-			}
-		}
-
-		function key(event)
-		{
-			if (event.keyCode == 32) // Spacebar
-			{
-				l.move.snap('marker', l.camera.width, l.camera.height)
-			}
-
-			if (event.keyCode == 38) // Up arrow
-			{
-				l.move.up('corgi1', corgiSpeed)
-			}
-			else if (event.keyCode == 40) // Down arrow
-			{
-				l.move.down('corgi1', corgiSpeed)
-			}
-
-			if (event.keyCode == 37) // Left arrow
-			{
-				l.move.left('corgi1', corgiSpeed)
-			}
-			else if (event.keyCode == 39) // Right arrow
-			{
-				l.move.right('corgi1', corgiSpeed)
 			}
 		}
 	</script>

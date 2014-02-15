@@ -57,6 +57,11 @@ l.object.make = function(name, x, y, sprite, width, height, anchorX, anchorY)
         }
 }
 
+l.object.set = function(name, property, value)
+{
+    l.entities[name].property = value
+}
+
 l.object.anchor = function(name, x, y)
 {
     l.entities[name].x -= x
