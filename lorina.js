@@ -13,8 +13,6 @@ l.game.setup = function(gameColor)
         l.camera.width = parseInt(document.getElementById('canvas').width)
         l.camera.height = parseInt(document.getElementById('canvas').height)
         l.camera.color = gameColor
-
-    l.touches.enable()
 }
 
 l.game.start = function()

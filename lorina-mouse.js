@@ -4,8 +4,24 @@ l.mouse.clicks = new Object() // Keep track of where we click
 
 l.mouse.enable = function()
 {
+    document.onmousemove = l.mouse.moved
     l.dom.setAttribute('onmousedown', 'l.mouse.clicked(event)')
     l.dom.setAttribute('onmouseup', 'l.mouse.cancel()')
+}
+
+l.mouse.moved = function(event)
+{
+    if (event)
+    {
+        l.mouse.x = event.clientX - l.dom.offsetLeft
+        l.mouse.y = event.clientY - l.dom.offsetTop
+        if (l.mouse.x < 0 || l.mouse.x > l.camera.width || l.mouse.y < 0 || l.mouse.y > l.camera.height)
+        {
+            l.mouse.x = null
+            l.mouse.y = null
+        }
+        l.mouse.debug()
+    }
 }
 
 l.mouse.clicked = function(event)
@@ -27,8 +43,16 @@ l.mouse.cancel = function(event)
 
 l.mouse.debug = function()
 {
-    if (l.game.debug && l.mouse.clicked.x && l.mouse.clicked.y)
+    if (l.game.debug)
     {
-        console.log('X: ' + l.mouse.clicked.x + ' Y: ' + l.mouse.clicked.y)
+        if (l.mouse.x && l.mouse.y)
+        {
+            console.log('Mouse at X: ' + l.mouse.x + ' Y: ' + l.mouse.y)
+        }
+
+        if (l.mouse.clicked.x && l.mouse.clicked.y)
+        {
+            console.log('Click at X: ' + l.mouse.clicked.x + ' Y: ' + l.mouse.clicked.y)
+        }
     }
 }
