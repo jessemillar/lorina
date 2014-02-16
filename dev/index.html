@@ -8,11 +8,23 @@
 				margin: 0px;
 			}
 
+			#tv
+			{
+				position: absolute;
+				left: 50%;
+				top: 55%;
+				width: 410px;
+				height: 435px;
+				margin-left: -158px;
+				margin-top: -253px;
+				z-index: 1;
+			}
+
 			#canvas
 			{
 				position: absolute;
 				left: 50%;
-				top: 50%;
+				top: 55%;
 				margin-left: -125px;
 				margin-top: -125px;
 				z-index: 0;
@@ -30,6 +42,9 @@
 		<script src = "../lorina-touches.js"></script>
 	</head>
 	<body>
+		<div id = 'tv'>
+			<img src = 'images/tv.png'>
+		</div>
 		<canvas id = "canvas" width = "250px" height = "250px"></canvas>
 	</body>
 	<script>
