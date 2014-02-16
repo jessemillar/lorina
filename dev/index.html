@@ -50,13 +50,25 @@
 
 		l.audio.make('music', 'sounds/music.wav')
 
-		l.object.make('marker', 300, 150)
-		l.object.make('corgi1', 100, 100, 'images/corgi.png', 35, 35)
+		// l.object.make('marker', 300, 150)
+		l.object.make('meteor', 50, 50, 35, 35)
+			l.object.sprite('meteor', 'images/meteor.png', 24, 21, 2, 100)
+			l.object.anchor('meteor', 12 / 2, 21)
+			l.object.bounding('meteor', 0, 0, 12, 21)
+		/*
+		l.object.make('corgi1', 100, 100, 35, 35)
+			l.object.sprite('corgi1', 'images/corgi.png', 35, 35, 1)
 			l.object.anchor('corgi1', 35 / 2, 35)
 			l.object.bounding('corgi1', 8, 8, 5, 5)
-		l.object.make('corgi2', 120, 120, 'images/corgi.png', 35, 35)
+		l.object.make('corgi2', 120, 120, 35, 35)
+			l.object.sprite('corgi2', 'images/corgi.png', 35, 35, 1)
+			l.object.anchor('corgi2', 35 / 2, 35)
+			l.object.bounding('corgi2', 8, 8, 5, 5)
+		*/
 
 		l.game.start() // Start the game which fires the preloader which then "starts" the game via a variable change after all images are loaded
+
+		l.game.state = 'running'
 
 		function game()
 		{
@@ -67,7 +79,7 @@
 			}
 			else if (l.game.state == 'running')
 			{
-				l.camera.follow('corgi1', 100, 100)
+				// l.camera.follow('corgi1', 100, 100)
 
 				// l.audio.play('music')
 
@@ -89,14 +101,17 @@
 			        l.move.right('corgi1', corgiSpeed)
 			    }
 
+			    /*
 				if (l.mouse.x && l.mouse.y)
 				{
 					l.move.snap('marker', l.mouse.x, l.mouse.y)
 				}
+				*/
 
 				// l.move.toward('corgi1', 'marker', corgiSpeed) // Track the marker
-				l.move.toward('corgi2', 'corgi1', corgiSpeed / 2) // Chase the other corgi
+				// l.move.toward('corgi2', 'corgi1', corgiSpeed / 2) // Chase the other corgi
 
+				/*
 				if (l.collision.overlap('corgi1', 'corgi2'))
 				{
 					l.entities.camera.color = '#ff0000'
@@ -105,10 +120,12 @@
 				{
 					l.entities.camera.color = '#111111'
 				}
+				*/
 
 				l.draw.blank()
-				l.draw.object('corgi1')
-				l.draw.object('corgi2')
+				// l.draw.object('corgi1')
+				// l.draw.object('corgi2')
+				l.draw.object('meteor')
 			}
 		}
 	</script>

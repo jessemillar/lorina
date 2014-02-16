@@ -2,59 +2,77 @@ l.entities = new Object() // The object that keeps track of our game objects
 
 l.object = new Object() // Group the object functions
 
-l.object.make = function(name, x, y, sprite, width, height, anchorX, anchorY)
+l.object.make = function(name, x, y, width, height)
 {
+    // Make it okay to make an object that's just a point
+    if (!width)
+    {
+        width = 0
+    }
+    if (!height)
+    {
+        height = 0
+    }
+
     l.entities[name] = new Object()
         l.entities[name].x = x
         l.entities[name].y = y
-        if (width && height) // Do some stuff if the object we're trying to create is more than just a point
+        l.entities[name].width = width
+        l.entities[name].height = height
+        l.entities[name].bounding = new Object()
+            l.entities[name].bounding.x = x
+            l.entities[name].bounding.y = y
+            l.entities[name].bounding.offset = new Object()
+                l.entities[name].bounding.offset.x = 0
+                l.entities[name].bounding.offset.y = 0
+            l.entities[name].bounding.width = width
+            l.entities[name].bounding.height = height
+        l.entities[name].anchor = new Object()
+            l.entities[name].anchor.offset = new Object()
+                l.entities[name].anchor.offset.x = width / 2
+                l.entities[name].anchor.offset.y = height / 2
+            l.entities[name].anchor.x = x + width / 2
+            l.entities[name].anchor.y = y + height / 2
+}
+
+l.object.sprite = function(name, sprite, width, height, count, timer)
+{
+    if (!count) // Make it okay to have an image that doesn't animate
+    {
+        count = 0
+    }
+
+    l.preloader.queue()
+    l.entities[name].sprite = new Image()
+        l.entities[name].sprite.src = sprite
+        l.entities[name].animate = new Object() // Group the non-src-related properties
+            l.entities[name].animate.width = width
+            l.entities[name].animate.height = height
+            l.entities[name].animate.count = count
+            l.entities[name].animate.frame = 0
+            if (timer)
+            {
+                l.entities[name].animate.interval = l.object.animate(name, timer)
+            }
+    l.entities[name].sprite.onload = function()
+    {
+        l.preloader.update()
+    }
+}
+
+l.object.animate = function(name, timer)
+{
+    setInterval(function()
+    {
+        if (l.entities[name].animate.frame < l.entities[name].animate.count - 1)
         {
-            l.entities[name].width = width
-            l.entities[name].height = height
-            l.entities[name].bounding = new Object()
-                l.entities[name].bounding.x = x
-                l.entities[name].bounding.y = y
-                l.entities[name].bounding.offset = new Object()
-                    l.entities[name].bounding.offset.x = 0
-                    l.entities[name].bounding.offset.y = 0
-                l.entities[name].bounding.width = width
-                l.entities[name].bounding.height = height
-            l.entities[name].anchor = new Object()
-                l.entities[name].anchor.offset = new Object()
-                    l.entities[name].anchor.offset.x = width / 2
-                    l.entities[name].anchor.offset.y = height / 2
-                l.entities[name].anchor.x = x + width / 2
-                l.entities[name].anchor.y = y + height / 2
+            l.entities[name].animate.frame += 1
         }
-        else // ...or make an object that's just a point in space
+        else
         {
-            l.entities[name].width = 0
-            l.entities[name].height = 0
-            l.entities[name].bounding = new Object()
-                l.entities[name].bounding.x = x
-                l.entities[name].bounding.y = y
-                l.entities[name].bounding.offset = new Object()
-                    l.entities[name].bounding.offset.x = 0
-                    l.entities[name].bounding.offset.y = 0
-                l.entities[name].bounding.width = 0
-                l.entities[name].bounding.height = 0
-            l.entities[name].anchor = new Object()
-                l.entities[name].anchor.offset = new Object()
-                    l.entities[name].anchor.offset.x = 0
-                    l.entities[name].anchor.offset.y = 0
-                l.entities[name].anchor.x = x
-                l.entities[name].anchor.y = y
+            l.entities[name].animate.frame = 0
         }
-        if (sprite) // Add a sprite if specified (allow adding sprites to points as well as objects that have substance)
-        {
-            l.preloader.queue()
-            l.entities[name].sprite = new Image()
-                l.entities[name].sprite.src = sprite
-                l.entities[name].sprite.onload = function()
-                {
-                    l.preloader.update()
-                }
-        }
+    }, timer)
 }
 
 l.object.anchor = function(name, x, y)

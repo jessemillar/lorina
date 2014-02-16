@@ -13,8 +13,8 @@ l.mouse.moved = function(event)
 {
     if (event)
     {
-        l.mouse.x = event.clientX - l.dom.offsetLeft
-        l.mouse.y = event.clientY - l.dom.offsetTop
+        l.mouse.x = event.clientX - l.dom.offsetLeft + l.entities.camera.x
+        l.mouse.y = event.clientY - l.dom.offsetTop + l.entities.camera.y
         if (l.mouse.x < 0 || l.mouse.x > l.camera.width || l.mouse.y < 0 || l.mouse.y > l.camera.height)
         {
             l.mouse.x = null
