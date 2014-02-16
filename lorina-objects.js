@@ -35,7 +35,7 @@ l.object.make = function(name, x, y, width, height)
             l.entities[name].anchor.y = y + height / 2
 }
 
-l.object.sprite = function(name, sprite, width, height, count, timer)
+l.object.sprite = function(name, location, width, height, count, timer)
 {
     if (!count) // Make it okay to have an image that doesn't animate
     {
@@ -44,7 +44,7 @@ l.object.sprite = function(name, sprite, width, height, count, timer)
 
     l.preloader.queue()
     l.entities[name].sprite = new Image()
-        l.entities[name].sprite.src = sprite
+        l.entities[name].sprite.src = location
         l.entities[name].animate = new Object() // Group the non-src-related properties
             l.entities[name].animate.width = width
             l.entities[name].animate.height = height
