@@ -93,7 +93,7 @@ l.keyboard.pressed = function(event)
     }
 }
 
-l.keyboard.cancel = function()
+l.keyboard.cancel = function(event)
 {
     if (event.keyCode == 13)
     {

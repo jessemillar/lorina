@@ -13,8 +13,8 @@
 				position: absolute;
 				left: 50%;
 				top: 50%;
-				margin-left: -200px;
-				margin-top: -150px;
+				margin-left: -125px;
+				margin-top: -125px;
 				z-index: 0;
 			}
 		</style>
@@ -30,7 +30,7 @@
 		<script src = "../lorina-touches.js"></script>
 	</head>
 	<body>
-		<canvas id = "canvas" width = "400px" height = "300px"></canvas>
+		<canvas id = "canvas" width = "250px" height = "250px"></canvas>
 	</body>
 	<script>
 		var colorBlue = '#1C73E9'
@@ -38,29 +38,41 @@
 		var colorGreenDark = '#34881F'
 		var colorBrown = '#7D4F16'
 
-		var dragonSpeed = 150
+		l.debug.all = false
+
+		var health = 5
+		var score = 0
+		var dragonSpeed = 175
 		var movementPadding = 15
-		var boneY = 280
+		var boneY = 239
 		var boneSpacing = 15
+		var meteorSpeed = 100
+		var meteorSpeedIncrease = 3
+		var missileSpeed = 400
 
 		l.game.setup(colorBlue)
 		l.keyboard.enable()
 
-		l.object.make('dragon', 50, 220, 18, 20)
+		l.object.make('dragon', l.entities.camera.width / 2, 200, 18, 20)
 			l.object.sprite('dragon', 'images/dragon.png', 34, 20, 2, 300)
-			l.object.anchor('dragon', 18 / 2, 20)
+			l.object.anchor('dragon', 18 / 2, 19)
 			l.object.bounding('dragon', 0, 0, 18, 20)
-		l.object.make('meteor', 50, 50, 12, 21)
+		l.object.make('missile', l.entities.camera.width + 15, 0, 10, 10)
+			l.object.sprite('missile', 'images/missile.png', 10, 10, 2, 150)
+			l.object.anchor('missile', 2, 5)
+			l.object.bounding('missile', 0, 0, 5, 10)
+		l.object.make('meteor', l.tools.random(l.entities.camera.x + movementPadding, l.entities.camera.x + l.entities.camera.width - movementPadding), 50, 12, 21)
 			l.object.sprite('meteor', 'images/meteor.png', 24, 21, 2, 100)
-			l.object.anchor('meteor', 12 / 2, 21)
+			l.object.anchor('meteor', 12 / 2, 16)
 			l.object.bounding('meteor', 0, 0, 12, 21)
+
 		l.object.make('bone1', l.entities.camera.width / 2 - boneSpacing * 2, boneY, 11, 11)
 			l.object.sprite('bone1', 'images/bone.png', 11, 11)
 			l.object.anchor('bone1', 11 / 2, 11 / 2)
 		l.object.make('bone2', l.entities.camera.width / 2 - boneSpacing, boneY, 11, 11)
 			l.object.sprite('bone2', 'images/bone.png', 11, 11)
 			l.object.anchor('bone2', 11 / 2, 11 / 2)
-		l.object.make('bone3', l.entities.camera.width / 2, 280, 11, 11)
+		l.object.make('bone3', l.entities.camera.width / 2, boneY, 11, 11)
 			l.object.sprite('bone3', 'images/bone.png', 11, 11)
 			l.object.anchor('bone3', 11 / 2, 11 / 2)
 		l.object.make('bone4', l.entities.camera.width / 2 + boneSpacing, boneY, 11, 11)
@@ -76,11 +88,57 @@
 		{
 			if (l.game.state == 'loading')
 			{
-				l.draw.blank()
+				l.draw.blank(colorBrown)
 				l.text.write(l.preloader.percent + '% loaded', 10, l.entities.camera.height - 10, '#ffffff')
 			}
 			else if (l.game.state == 'running')
 			{
+				// Fire control
+				if (l.keyboard.a)
+				{
+					if (l.entities.missile.y == 0)
+					{
+						l.move.snap('missile', l.entities.dragon.anchor.x - 4, l.entities.dragon.anchor.y - 23)
+						currentMissile = 2
+					}
+				}
+
+				// Missile code
+				if (l.entities.missile.anchor.y > l.entities.camera.y - 10)
+				{
+					l.move.up('missile', missileSpeed)
+				}
+				else
+				{
+					l.move.snap('missile', l.entities.camera.width + 15, 0)
+				}
+
+				// Meteor code
+				if (l.entities.meteor.anchor.y < 196)
+				{
+					l.move.down('meteor', meteorSpeed)
+				}
+				else
+				{
+					if (health > 0)
+					{
+						health -= 1
+						if (health == 0)
+						{
+							l.game.state = 'gameover'
+						}
+					}
+					l.move.snap('meteor', l.tools.random(l.entities.camera.x + movementPadding, l.entities.camera.x + l.entities.camera.width - movementPadding), l.entities.camera.y - 15)
+				}
+
+				if (l.collision.overlap('missile', 'meteor'))
+				{
+					score++
+					meteorSpeed += meteorSpeedIncrease
+					l.move.snap('missile', l.entities.camera.width + 15, 0)
+					l.move.snap('meteor', l.tools.random(l.entities.camera.x + movementPadding, l.entities.camera.x + l.entities.camera.width - movementPadding), l.entities.camera.y - 15)
+				}
+
 			    if (l.keyboard.left)
 			    {
 			    	if (l.entities.dragon.anchor.x > movementPadding)
@@ -97,16 +155,58 @@
 			    }
 
 				l.draw.blank()
-				l.draw.rectangle(0, 185, l.entities.camera.width, 70, colorGreen) // Grass
-				l.draw.rectangle(0, 255, l.entities.camera.width, 5, colorGreenDark) // Darker grass
-				l.draw.rectangle(0, 260, l.entities.camera.width, 40, colorBrown) // Dirt
+				l.draw.rectangle(0, 175, l.entities.camera.width, 50, colorGreen) // Grass
+				l.draw.rectangle(0, 225, l.entities.camera.width, 5, colorGreenDark) // Darker grass
+				l.draw.rectangle(0, 230, l.entities.camera.width, 20, colorBrown) // Dirt
 				l.draw.object('meteor')
+				l.draw.object('missile')
 				l.draw.object('dragon')
-				l.draw.object('bone1')
-				l.draw.object('bone2')
-				l.draw.object('bone3')
-				l.draw.object('bone4')
-				l.draw.object('bone5')
+
+				l.text.write('Score: ' + score, 10, 18, '#ffffff')
+
+				if (health == 1)
+				{
+					l.draw.object('bone1')
+				}
+				else if (health == 2)
+				{
+					l.draw.object('bone1')
+					l.draw.object('bone2')
+				}
+				else if (health == 3)
+				{
+					l.draw.object('bone1')
+					l.draw.object('bone2')
+					l.draw.object('bone3')
+				}
+				else if (health == 4)
+				{
+					l.draw.object('bone1')
+					l.draw.object('bone2')
+					l.draw.object('bone3')
+					l.draw.object('bone4')
+				}
+				else if (health == 5)
+				{
+					l.draw.object('bone1')
+					l.draw.object('bone2')
+					l.draw.object('bone3')
+					l.draw.object('bone4')
+					l.draw.object('bone5')
+				}
+			}
+			else if (l.game.state == 'gameover')
+			{
+				if (l.keyboard.s)
+				{
+					score = 0
+					health = 5
+					l.game.state = 'running'
+				}
+
+				l.draw.blank(colorBrown)
+				l.text.write('Score: ' + score, 10, 18, '#ffffff')
+				l.text.write('GAMEOVER - Press "S" to retry', 10, l.entities.camera.height - 10, '#ffffff')
 			}
 		}
 	</script>

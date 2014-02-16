@@ -1,8 +1,15 @@
 l.draw = new Object() // Organize all the draw functions into one object
 
-l.draw.blank = function()
+l.draw.blank = function(color)
 {
-    l.ctx.fillStyle = l.entities.camera.color
+    if (color)
+    {
+        l.ctx.fillStyle = color
+    }
+    else
+    {
+        l.ctx.fillStyle = l.entities.camera.color
+    }
     l.ctx.fillRect(0, 0, l.entities.camera.width, l.entities.camera.height)
 }
 

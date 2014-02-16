@@ -45,3 +45,10 @@ l.camera.follow = function(name, sandboxWidth, sandboxHeight)
         l.entities.camera.y = l.entities[name].anchor.y - l.entities.camera.height / 2 - sandboxHeight / 2
     }
 }
+
+l.tools = new Object() // Group the tool functions
+
+l.tools.random = function(min, max)
+{
+    return Math.random() * (max - min) + min
+}
