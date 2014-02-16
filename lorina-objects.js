@@ -39,7 +39,7 @@ l.object.sprite = function(name, sprite, width, height, count, timer)
 {
     if (!count) // Make it okay to have an image that doesn't animate
     {
-        count = 0
+        count = 1
     }
 
     l.preloader.queue()

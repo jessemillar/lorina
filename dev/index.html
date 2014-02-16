@@ -14,7 +14,7 @@
 				left: 50%;
 				top: 50%;
 				margin-left: -200px;
-				margin-top: -200px;
+				margin-top: -150px;
 				z-index: 0;
 			}
 		</style>
@@ -30,45 +30,47 @@
 		<script src = "../lorina-touches.js"></script>
 	</head>
 	<body>
-		<canvas id = "canvas" width = "400px" height = "400px"></canvas>
+		<canvas id = "canvas" width = "400px" height = "300px"></canvas>
 	</body>
 	<script>
-		var corgiSpeed = 75
+		var colorBlue = '#1C73E9'
+		var colorGreen = '#5CBE43'
+		var colorGreenDark = '#34881F'
+		var colorBrown = '#7D4F16'
 
-		l.game.setup('#111111')
-		// l.touches.enable()
-		l.mouse.enable()
+		var dragonSpeed = 150
+		var movementPadding = 15
+		var boneY = 280
+		var boneSpacing = 15
+
+		l.game.setup(colorBlue)
 		l.keyboard.enable()
-		l.debug.all = false
-			l.debug.keyboard = false
-			l.debug.mouse = false
-			l.debug.camera = true
-			l.debug.anchor = false
-			l.debug.bounding = false
-			l.debug.names = false
-			l.debug.position = false
 
-		l.audio.make('music', 'sounds/music.wav')
-
-		// l.object.make('marker', 300, 150)
-		l.object.make('meteor', 50, 50, 35, 35)
+		l.object.make('dragon', 50, 220, 18, 20)
+			l.object.sprite('dragon', 'images/dragon.png', 34, 20, 2, 300)
+			l.object.anchor('dragon', 18 / 2, 20)
+			l.object.bounding('dragon', 0, 0, 18, 20)
+		l.object.make('meteor', 50, 50, 12, 21)
 			l.object.sprite('meteor', 'images/meteor.png', 24, 21, 2, 100)
 			l.object.anchor('meteor', 12 / 2, 21)
 			l.object.bounding('meteor', 0, 0, 12, 21)
-		/*
-		l.object.make('corgi1', 100, 100, 35, 35)
-			l.object.sprite('corgi1', 'images/corgi.png', 35, 35, 1)
-			l.object.anchor('corgi1', 35 / 2, 35)
-			l.object.bounding('corgi1', 8, 8, 5, 5)
-		l.object.make('corgi2', 120, 120, 35, 35)
-			l.object.sprite('corgi2', 'images/corgi.png', 35, 35, 1)
-			l.object.anchor('corgi2', 35 / 2, 35)
-			l.object.bounding('corgi2', 8, 8, 5, 5)
-		*/
+		l.object.make('bone1', l.entities.camera.width / 2 - boneSpacing * 2, boneY, 11, 11)
+			l.object.sprite('bone1', 'images/bone.png', 11, 11)
+			l.object.anchor('bone1', 11 / 2, 11 / 2)
+		l.object.make('bone2', l.entities.camera.width / 2 - boneSpacing, boneY, 11, 11)
+			l.object.sprite('bone2', 'images/bone.png', 11, 11)
+			l.object.anchor('bone2', 11 / 2, 11 / 2)
+		l.object.make('bone3', l.entities.camera.width / 2, 280, 11, 11)
+			l.object.sprite('bone3', 'images/bone.png', 11, 11)
+			l.object.anchor('bone3', 11 / 2, 11 / 2)
+		l.object.make('bone4', l.entities.camera.width / 2 + boneSpacing, boneY, 11, 11)
+			l.object.sprite('bone4', 'images/bone.png', 11, 11)
+			l.object.anchor('bone4', 11 / 2, 11 / 2)
+		l.object.make('bone5', l.entities.camera.width / 2 + boneSpacing * 2, boneY, 11, 11)
+			l.object.sprite('bone5', 'images/bone.png', 11, 11)
+			l.object.anchor('bone5', 11 / 2, 11 / 2)
 
 		l.game.start() // Start the game which fires the preloader which then "starts" the game via a variable change after all images are loaded
-
-		l.game.state = 'running'
 
 		function game()
 		{
@@ -79,53 +81,32 @@
 			}
 			else if (l.game.state == 'running')
 			{
-				// l.camera.follow('corgi1', 100, 100)
-
-				// l.audio.play('music')
-
-			    if (l.keyboard.up)
-			    {
-			        l.move.up('corgi1', corgiSpeed)
-			    }
-			    else if (l.keyboard.down)
-			    {
-			        l.move.down('corgi1', corgiSpeed)
-			    }
-
 			    if (l.keyboard.left)
 			    {
-			        l.move.left('corgi1', corgiSpeed)
+			    	if (l.entities.dragon.anchor.x > movementPadding)
+			    	{
+			  			l.move.left('dragon', dragonSpeed)
+			    	}
 			    }
 			    else if (l.keyboard.right)
 			    {
-			        l.move.right('corgi1', corgiSpeed)
+			    	if (l.entities.dragon.anchor.x < l.entities.camera.width - movementPadding)
+			    	{
+				        l.move.right('dragon', dragonSpeed)
+				    }
 			    }
 
-			    /*
-				if (l.mouse.x && l.mouse.y)
-				{
-					l.move.snap('marker', l.mouse.x, l.mouse.y)
-				}
-				*/
-
-				// l.move.toward('corgi1', 'marker', corgiSpeed) // Track the marker
-				// l.move.toward('corgi2', 'corgi1', corgiSpeed / 2) // Chase the other corgi
-
-				/*
-				if (l.collision.overlap('corgi1', 'corgi2'))
-				{
-					l.entities.camera.color = '#ff0000'
-				}
-				else
-				{
-					l.entities.camera.color = '#111111'
-				}
-				*/
-
 				l.draw.blank()
-				// l.draw.object('corgi1')
-				// l.draw.object('corgi2')
+				l.draw.rectangle(0, 185, l.entities.camera.width, 70, colorGreen) // Grass
+				l.draw.rectangle(0, 255, l.entities.camera.width, 5, colorGreenDark) // Darker grass
+				l.draw.rectangle(0, 260, l.entities.camera.width, 40, colorBrown) // Dirt
 				l.draw.object('meteor')
+				l.draw.object('dragon')
+				l.draw.object('bone1')
+				l.draw.object('bone2')
+				l.draw.object('bone3')
+				l.draw.object('bone4')
+				l.draw.object('bone5')
 			}
 		}
 	</script>

@@ -9,7 +9,7 @@ l.game.setup = function(gameColor)
     l.ctx = document.getElementById('canvas').getContext('2d')
 
     l.object.make('camera', 0, 0, parseInt(document.getElementById('canvas').width), parseInt(document.getElementById('canvas').height))
-    l.object.anchor('camera', parseInt(document.getElementById('canvas').width) / 2, parseInt(document.getElementById('canvas').height) / 2)
+    // l.object.anchor('camera', parseInt(document.getElementById('canvas').width) / 2, parseInt(document.getElementById('canvas').height) / 2)
     l.entities.camera.color = gameColor
 }
 
