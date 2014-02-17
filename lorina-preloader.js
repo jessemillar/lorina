@@ -27,6 +27,6 @@ l.preloader.update = function()
     l.preloader.calculate()
         if (l.preloader.count == 0)
         {
-            l.game.state = 'running'
+            l.game.state = 'menu'
         }
 }
