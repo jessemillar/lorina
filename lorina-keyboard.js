@@ -8,6 +8,16 @@ l.keyboard.enable = function()
 
 l.keyboard.pressed = function(event)
 {
+    if (event.keyCode == 27)
+    {
+        l.keyboard.escape = true
+    }
+
+    if (event.keyCode == 32)
+    {
+        l.keyboard.space = true
+    }
+
     if (event.keyCode == 13)
     {
         l.keyboard.enter = true
@@ -51,6 +61,17 @@ l.keyboard.pressed = function(event)
     if (l.debug.keyboard || l.debug.all)
     {
         // console.log(event.keyCode)
+        
+        if (l.keyboard.escape)
+        {
+            console.log('Escape')
+        }
+
+        if (l.keyboard.space)
+        {
+            console.log('Space')
+        }
+
         if (l.keyboard.enter)
         {
             console.log('Enter')
@@ -95,6 +116,16 @@ l.keyboard.pressed = function(event)
 
 l.keyboard.cancel = function(event)
 {
+    if (event.keyCode == 27)
+    {
+        l.keyboard.escape = false
+    }
+
+    if (event.keyCode == 32)
+    {
+        l.keyboard.space = false
+    }
+
     if (event.keyCode == 13)
     {
         l.keyboard.enter = false

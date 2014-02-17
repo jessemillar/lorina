@@ -10,8 +10,8 @@ l.game.setup(gameColor)
 l.game.start()
 	Fires the preloader which then "starts" the game via a variable change after all images are loaded.
 
-l.game.pause()
-	Pauses the game.  Only has an effect if the game is already running.
+l.game.stops()
+	Stops the game loop from executing.  Only has an effect if the game is already running.
 
 l.camera.follow(name, sandboxWidth, sandboxHeight)
 	Make the camera follow a specified object.  The sandbox dimensions refer to how far the object can travel from the center of the screen before the camera begins tracking.  Call inside the main game loop.
@@ -50,6 +50,8 @@ l.keyboard.enable()
 	Tell Lorina to start watching for keyboard input.
 
 	Each of these variables will be set to false if the key is not pressed and true if it is.
+		l.keyboard.escape
+		l.keyboard.space
 		l.keyboard.enter
 		l.keyboard.shift
 		l.keyboard.a

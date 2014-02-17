@@ -18,7 +18,7 @@ l.game.start = function()
     l.game.loop = setInterval(game, 1000 / 60)
 }
 
-l.game.pause = function() // Only works once the game is running; no effect during loading or setup
+l.game.stop = function() // Only works once the game is running; no effect during loading or setup
 {
     clearInterval(l.game.loop)
 }
