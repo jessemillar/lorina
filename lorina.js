@@ -8,6 +8,19 @@ l.game.setup = function(gameColor)
     l.dom = document.getElementById('canvas')
     l.ctx = document.getElementById('canvas').getContext('2d')
 
+    l.canvas = new Object() // Used to reference the height and width of the canvas later on without breaking other functions
+        l.canvas.width = parseInt(document.getElementById('canvas').width)
+        l.canvas.height = parseInt(document.getElementById('canvas').height)
+
+    if (!window.navigator.vendor)
+    {
+        l.canvas.agent = 'ejecta'
+    }
+    else if (window.navigator.vendor == 'Google Inc.')
+    {
+        l.canvas.agent = 'chrome'
+    }
+
     l.object.make('camera', 0, 0, parseInt(document.getElementById('canvas').width), parseInt(document.getElementById('canvas').height))
     // l.object.anchor('camera', parseInt(document.getElementById('canvas').width) / 2, parseInt(document.getElementById('canvas').height) / 2)
     l.entities.camera.color = gameColor

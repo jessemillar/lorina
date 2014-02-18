@@ -118,6 +118,12 @@ l.touches.enable()
 l.touches.database
 	This is a variable array that represents each of the touches that are currently happening.  If there are three fingers touching the screen in different spots, l.touches.database[2].x would represent the x coordinate of the third finger (I need to verify this).
 
+l.tilt.enable()
+	Starts tracking tilt orientation on mobile devices
+	l.tilt.x
+	l.tilt.y
+	l.tilt.z
+
 There are a number of debug variables which, if set to true, will draw or console.log relating information.
 	l.debug.all
 		Tells Lorina to draw and console.log all possible debug information.

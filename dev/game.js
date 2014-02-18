@@ -9,9 +9,8 @@ var health = 5
 var canShoot = true
 var coolTime = 500
 var score = 0
-var dragonSpeed = 175
+var dragonSpeed = 180
 var movementPadding = 20
-var boneY = 239
 var boneSpacing = 15
 var meteorSpeed = 100
 var meteorSpeedIncrease = 3
@@ -20,12 +19,19 @@ var missileSpeed = 400
 l.game.setup(colorBlue)
 l.keyboard.enable()
 
+// Can't use l.canvas.height until after the game is setup
+var yGrass = l.canvas.height - 44
+var yDragon = l.canvas.height - 38
+var yDarkerGrass = l.canvas.height - 30
+var yDirt = l.canvas.height - 22
+var yBones = l.canvas.height - 12
+
 l.audio.make('shoot', 'sounds/shoot.wav')
 l.audio.make('explosion', 'sounds/explosion.wav')
 l.audio.make('impact', 'sounds/impact.wav')
 l.audio.make('gameover', 'sounds/gameover.wav')
 
-l.object.make('dragon', l.entities.camera.width / 2, 200, 18, 20)
+l.object.make('dragon', l.entities.camera.width / 2, yDragon, 18, 20)
 	l.object.sprite('dragon', 'images/dragon.png', 34, 20, 2, 300)
 	l.object.anchor('dragon', 18 / 2, 19)
 	l.object.bounding('dragon', 0, 0, 18, 20)
@@ -38,19 +44,19 @@ l.object.make('meteor', l.tools.random(l.entities.camera.x + movementPadding, l.
 	l.object.anchor('meteor', 15 / 2, 25)
 	l.object.bounding('meteor', 0, 0, 15, 26)
 
-l.object.make('bone1', l.entities.camera.width / 2 - boneSpacing * 2, boneY, 11, 11)
+l.object.make('bone1', l.entities.camera.width / 2 - boneSpacing * 2, yBones, 11, 11)
 	l.object.sprite('bone1', 'images/bone.png', 11, 11)
 	l.object.anchor('bone1', 11 / 2, 11 / 2)
-l.object.make('bone2', l.entities.camera.width / 2 - boneSpacing, boneY, 11, 11)
+l.object.make('bone2', l.entities.camera.width / 2 - boneSpacing, yBones, 11, 11)
 	l.object.sprite('bone2', 'images/bone.png', 11, 11)
 	l.object.anchor('bone2', 11 / 2, 11 / 2)
-l.object.make('bone3', l.entities.camera.width / 2, boneY, 11, 11)
+l.object.make('bone3', l.entities.camera.width / 2, yBones, 11, 11)
 	l.object.sprite('bone3', 'images/bone.png', 11, 11)
 	l.object.anchor('bone3', 11 / 2, 11 / 2)
-l.object.make('bone4', l.entities.camera.width / 2 + boneSpacing, boneY, 11, 11)
+l.object.make('bone4', l.entities.camera.width / 2 + boneSpacing, yBones, 11, 11)
 	l.object.sprite('bone4', 'images/bone.png', 11, 11)
 	l.object.anchor('bone4', 11 / 2, 11 / 2)
-l.object.make('bone5', l.entities.camera.width / 2 + boneSpacing * 2, boneY, 11, 11)
+l.object.make('bone5', l.entities.camera.width / 2 + boneSpacing * 2, yBones, 11, 11)
 	l.object.sprite('bone5', 'images/bone.png', 11, 11)
 	l.object.anchor('bone5', 11 / 2, 11 / 2)
 
@@ -119,7 +125,7 @@ function game()
 		}
 
 		// Meteor code
-		if (l.entities.meteor.anchor.y < 196)
+		if (l.entities.meteor.anchor.y < yDragon)
 		{
 			l.move.down('meteor', meteorSpeed)
 		}
@@ -166,9 +172,9 @@ function game()
 	    }
 
 		l.draw.blank()
-		l.draw.rectangle(0, 175, l.entities.camera.width, 50, colorGreen) // Grass
-		l.draw.rectangle(0, 225, l.entities.camera.width, 5, colorGreenDark) // Darker grass
-		l.draw.rectangle(0, 230, l.entities.camera.width, 20, colorBrown) // Dirt
+		l.draw.rectangle(0, yGrass, l.canvas.width, yDarkerGrass - yGrass, colorGreen) // Grass
+		l.draw.rectangle(0, yDarkerGrass, l.canvas.width, yDirt - yDarkerGrass, colorGreenDark) // Darker grass
+		l.draw.rectangle(0, yDirt, l.canvas.width, l.canvas.height - yDirt, colorBrown) // Dirt
 		l.draw.object('meteor')
 		l.draw.object('missile')
 		l.draw.object('dragon')

@@ -5,12 +5,26 @@ l.audio.make = function(name, location)
 {
     l.preloader.queue()
     l.audio.files[name] = document.createElement('audio')
-        l.audio.files[name].setAttribute('preload', 'auto')
         l.audio.files[name].src = location
+    
+    if (l.canvas.agent == 'ejecta')
+    {
+        l.audio.files[name].preload = true
+        l.audio.files[name].load()
+        document.body.appendChild(l.audio.files[name])
+        l.audio.files[name].addEventListener('canplaythrough', function()
+        {
+            l.preloader.update()
+        })
+    }
+    else
+    {
+        l.audio.files[name].setAttribute('preload', 'auto')
         l.audio.files[name].onloadeddata = function()
         {
             l.preloader.update()
         }
+    }
 }
 
 l.audio.pause = function(name)
@@ -29,7 +43,10 @@ l.audio.play = function(name)
 l.audio.rewind = function(name)
 {
     l.audio.files[name].currentTime = 0
-    l.audio.files[name].load() // Let's see if we can fix a Chrome bug
+    if (l.canvas.agent == 'chrome') // Let's see if we can fix a Chrome bug
+    {
+        l.audio.files[name].load()       
+    }
 }
 
 l.audio.loop = function(name)

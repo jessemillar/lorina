@@ -4,10 +4,10 @@ l.touches.database = new Array() // Keep track of where we're touching on the sc
 
 l.touches.enable = function()
 {
-    l.dom.addEventListener('touchstart', l.touches.touched(event), false)
-    l.dom.addEventListener('touchmove', l.touches.touched(event), false)
-    l.dom.addEventListener('touchend', l.touches.cancel(), false)
-    l.dom.addEventListener('touchcancel', l.touches.cancel(), false)
+    document.addEventListener('touchstart', function(event) { l.touches.touched(event) })
+    document.addEventListener('touchmove', function(event) { l.touches.touched(event) })
+    document.addEventListener('touchend', function() { l.touches.cancel() })
+    document.addEventListener('touchcancel', function() { l.touches.cancel() })
 }
 
 l.touches.touched = function(event)
@@ -27,11 +27,11 @@ l.touches.cancel = function(event)
 
 l.touches.debug = function()
 {
-    if (l.game.debug && l.touches.database.length > 0)
+    if (l.debug.touches && l.touches.database.length > 0)
     {
         for (var i = 0; i < l.touches.database.length; i++)
         {
-            console.log('X' + i = ': ' + l.touches.database[i].clientX + ' Y' + i + ': ' + l.touches.database[i].clientY)
+            console.log('X' + i + ': ' + l.touches.database[i].pageX + ' Y' + i + ': ' + l.touches.database[i].pageY)
         }
     }
 }
