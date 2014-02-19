@@ -6,6 +6,7 @@ l.audio.make = function(name, location)
     l.preloader.queue()
     l.audio.files[name] = document.createElement('audio')
         l.audio.files[name].src = location
+        l.audio.files[name].canPlay = true
     
     if (l.canvas.agent == 'ejecta')
     {
@@ -32,27 +33,34 @@ l.audio.pause = function(name)
     l.audio.files[name].pause()
 }
 
-l.audio.play = function(name)
-{
-    if (l.audio.files[name].paused && l.audio.files[name].currentTime == 0)
-    {
-        l.audio.files[name].play()
-    }
-}
 
 l.audio.rewind = function(name)
 {
-    l.audio.files[name].currentTime = 0
-    if (l.canvas.agent == 'chrome') // Let's see if we can fix a Chrome bug
+    l.audio.files[name].canPlay = true
+}
+
+l.audio.play = function(name)
+{
+    if (l.audio.files[name].canPlay)
     {
-        l.audio.files[name].load()       
+        if (l.canvas.agent == 'chrome')
+        {
+            l.audio.files[name].load()
+        }
+        l.audio.files[name].play()
+        l.audio.files[name].canPlay = false
     }
 }
 
 l.audio.loop = function(name)
 {
-    if (l.audio.files[name].paused)
+    if (l.audio.files[name].canPlay)
     {
+        if (l.canvas.agent == 'chrome')
+        {
+            l.audio.files[name].load()
+        }
         l.audio.files[name].play()
+        l.audio.files[name].canPlay = false
     }
 }

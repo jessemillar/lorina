@@ -12,4 +12,4 @@ This would translate to:
 
 None of this is particularly groundbreaking or overwhelmingly awesome, but I'm certainly having fun.
 
-Changes will come fast and break things because that's how I roll.
+Lorina is named after Lorina Charlotte Liddell, sister of Alice Pleasance Liddell whom "Alice's Adventures in Wonderland" was written for/about.

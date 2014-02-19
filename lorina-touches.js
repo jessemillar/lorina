@@ -4,13 +4,13 @@ l.touches.database = new Array() // Keep track of where we're touching on the sc
 
 l.touches.enable = function()
 {
-    document.addEventListener('touchstart', function(event) { l.touches.touched(event) })
-    document.addEventListener('touchmove', function(event) { l.touches.touched(event) })
+    document.addEventListener('touchstart', function(event) { l.touches.touches(event) })
+    document.addEventListener('touchmove', function(event) { l.touches.touches(event) })
     document.addEventListener('touchend', function() { l.touches.cancel() })
     document.addEventListener('touchcancel', function() { l.touches.cancel() })
 }
 
-l.touches.touched = function(event)
+l.touches.touches = function(event)
 {
     if (event)
     {
@@ -25,9 +25,33 @@ l.touches.cancel = function(event)
     l.touches.debug()
 }
 
+l.touches.touched = function(name)
+{
+    if (l.touches.database.length > 0)
+    {
+        for (var i = 0; i < l.touches.database.length; i++)
+        {
+            if (l.touches.database[i].pageX < l.entities[name].bounding.x + l.entities[name].bounding.width && l.touches.database[i].pageX > l.entities[name].bounding.x &&
+            l.touches.database[i].pageY < l.entities[name].bounding.y + l.entities[name].bounding.height && l.touches.database[i].pageY > l.entities[name].bounding.y)
+            {
+                if (l.debug.all || l.debug.touches)
+                {
+                    console.log(name + ' was touched')
+                }
+                return true
+                break
+            }
+            else
+            {
+                return false
+            }
+        }
+    }
+}
+
 l.touches.debug = function()
 {
-    if (l.debug.touches && l.touches.database.length > 0)
+    if (l.debug.all || l.debug.touches && l.touches.database.length > 0)
     {
         for (var i = 0; i < l.touches.database.length; i++)
         {

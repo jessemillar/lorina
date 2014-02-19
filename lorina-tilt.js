@@ -11,5 +11,14 @@ l.tilt.enable = function()
         l.tilt.x = orientation.beta
         l.tilt.y = orientation.alpha
         l.tilt.z = orientation.gamma
+        l.tilt.debug()
     }, true)
+}
+
+l.tilt.debug = function()
+{
+	if (l.debug.tilt)
+	{
+		console.log(l.tilt.x, l.tilt.y, l.tilt.z)
+	}
 }
