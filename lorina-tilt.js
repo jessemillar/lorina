@@ -19,6 +19,6 @@ l.tilt.debug = function()
 {
 	if (l.debug.tilt)
 	{
-		console.log(l.tilt.x, l.tilt.y, l.tilt.z)
+		console.log('x: ' + l.tilt.x + ' y: ' + l.tilt.y + ' z: ' + l.tilt.z)
 	}
 }
