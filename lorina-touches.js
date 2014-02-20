@@ -6,8 +6,8 @@ l.touches.enable = function()
 {
     document.addEventListener('touchstart', function(event) { l.touches.touches(event) })
     document.addEventListener('touchmove', function(event) { l.touches.touches(event) })
-    document.addEventListener('touchend', function() { l.touches.cancel() })
-    document.addEventListener('touchcancel', function() { l.touches.cancel() })
+    document.addEventListener('touchend', function(event) { l.touches.touches(event) })
+    document.addEventListener('touchcancel', function(event) { l.touches.touches(event) })
 }
 
 l.touches.touches = function(event)
@@ -17,12 +17,10 @@ l.touches.touches = function(event)
         l.touches.database = event.touches
         l.touches.debug()
     }
-}
-
-l.touches.cancel = function(event)
-{
-    l.touches.database.length = 0
-    l.touches.debug()
+    else
+    {
+        l.touches.database.length = 0
+    }
 }
 
 l.touches.touched = function(name)
@@ -43,7 +41,10 @@ l.touches.touched = function(name)
             }
             else
             {
-                return false
+                if (i == l.touches.database.length - 1)
+                {
+                    return false
+                }
             }
         }
     }
