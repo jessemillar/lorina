@@ -36,7 +36,7 @@ var yGrass = l.canvas.height - 44
 var yDragon = l.canvas.height - 38
 var yDarkerGrass = l.canvas.height - 30
 var yDirt = l.canvas.height - 22
-var yBones = l.canvas.height - 12
+var yBones = l.entities.camera.height - 12
 
 l.audio.make('shoot', 'sounds/shoot.wav')
 l.audio.make('explosion', 'sounds/explosion.wav')
@@ -79,7 +79,7 @@ function game()
 	if (l.game.state == 'loading')
 	{
 		l.draw.blank(colorBrown)
-		l.text.write(l.preloader.percent + '% loaded', 10, l.canvas.height - 10, '#ffffff')
+		l.text.write(l.preloader.percent + '% loaded', 10, l.entities.camera.height - 10, '#ffffff')
 	}
 	else if (l.game.state == 'menu')
 	{
@@ -89,7 +89,7 @@ function game()
 		}
 
 		l.draw.blank(colorGreenDark)
-		l.text.write('Press "S" to start', 10, l.canvas.height - 10, '#ffffff')
+		l.text.write('Press "S" to start', 10, l.entities.camera.height - 10, '#ffffff')
 	}
 	else if (l.game.state == 'paused')
 	{
@@ -102,7 +102,7 @@ function game()
 
 		l.draw.blank(colorGreenDark)
 		l.text.write('Score: ' + score, 10, 18, '#ffffff')
-		l.text.write('PAUSED - Press "S" to resume', 10, l.canvas.height - 10, '#ffffff')
+		l.text.write('PAUSED - Press "S" to resume', 10, l.entities.camera.height - 10, '#ffffff')
 	}
 	else if (l.game.state == 'running')
 	{
@@ -219,7 +219,7 @@ function game()
 			}
 		}
 
-		l.camera.follow('dragon', 10, 1)
+		l.camera.follow('dragon', 10, 10)
 
 		l.draw.blank()
 		l.draw.rectangle(0, yGrass, l.canvas.width, yDarkerGrass - yGrass, colorGreen) // Grass
@@ -268,6 +268,6 @@ function game()
 
 		l.draw.blank(colorBrown)
 		l.text.write('Score: ' + score, 10, 18, '#ffffff')
-		l.text.write('GAMEOVER - Press "S" to retry', 10, l.canvas.height - 10, '#ffffff')
+		l.text.write('GAMEOVER - Press "S" to retry', 10, l.entities.camera.height - 10, '#ffffff')
 	}
 }

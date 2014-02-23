@@ -46,25 +46,6 @@ l.camera.follow = function(name, sandboxWidth, sandboxHeight)
     {
         l.entities.camera.following = true // Tell the world that we're following something with the camera
 
-        // Ghetto fix that I should probably replace later on
-        if (l.entities.camera.x < 0)
-        {
-            l.entities.camera.x = 0
-        }
-        else if (l.entities.camera.x > l.canvas.width - l.entities.camera.width)
-        {
-            l.entities.camera.x = l.canvas.width - l.entities.camera.width
-        }
-
-        if (l.entities.camera.y < 0)
-        {
-            l.entities.camera.y = 0
-        }
-        else if (l.entities.camera.y > l.canvas.height - l.entities.camera.height)
-        {
-            l.entities.camera.y = l.canvas.height - l.entities.camera.height
-        }
-
         if (sandboxWidth)
         {
             if (l.entities[name].anchor.x < l.entities.camera.x + l.entities.camera.width / 2 - sandboxWidth / 2)
@@ -99,6 +80,25 @@ l.camera.follow = function(name, sandboxWidth, sandboxHeight)
                     l.entities.camera.y = Math.round(l.entities[name].anchor.y - l.entities.camera.height / 2 - sandboxHeight / 2)
                 }
             }
+        }
+
+        // Ghetto fix that I should probably replace later on
+        if (l.entities.camera.x < 0)
+        {
+            l.entities.camera.x = 0
+        }
+        else if (l.entities.camera.x > l.canvas.width - l.entities.camera.width)
+        {
+            l.entities.camera.x = l.canvas.width - l.entities.camera.width
+        }
+
+        if (l.entities.camera.y < 0)
+        {
+            l.entities.camera.y = 0
+        }
+        else if (l.entities.camera.y > l.canvas.height - l.entities.camera.height)
+        {
+            l.entities.camera.y = l.canvas.height - l.entities.camera.height
         }
     }
 }
