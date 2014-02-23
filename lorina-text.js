@@ -1,6 +1,6 @@
 l.text = new Object() // Group the text-related function
 
-l.text.write = function(string, x, y, color)
+l.text.write = function(string, x, y, color, type)
 {
 	if (color)
 	{
@@ -10,5 +10,13 @@ l.text.write = function(string, x, y, color)
 	{
 		l.ctx.fillStyle = '#000000'
 	}
-    l.ctx.fillText(string, x - l.entities.camera.x, y - l.entities.camera.y)
+
+	if (type == 'hud')
+	{
+		l.ctx.fillText(string, x, y)
+	}
+	else
+	{
+		l.ctx.fillText(string, x - l.entities.camera.x, y - l.entities.camera.y)
+	}
 }

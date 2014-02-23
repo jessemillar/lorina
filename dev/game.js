@@ -2,22 +2,34 @@ var colorBlue = '#1C73E9'
 var colorGreen = '#5CBE43'
 var colorGreenDark = '#34881F'
 var colorBrown = '#7D4F16'
+var colorBlack = '#111111'
 
 l.debug.all = false
+l.debug.touches = false
+l.debug.tilt = false
 
 var health = 5
 var canShoot = true
 var coolTime = 500
 var score = 0
-var dragonSpeed = 180
+var dragonVerticalMotion = 0
 var movementPadding = 20
-var boneSpacing = 15
+var boneSpacing = 18
 var meteorSpeed = 100
 var meteorSpeedIncrease = 3
 var missileSpeed = 400
+var fallSpeed = 0 // In pixels per second
+var fallSpeedIncrease = 3
+var fallSpeedMax = 200 // In pixels per second
+var flightSpeedMax = 200
+var tiltStartAngle = 15
+var dragonSpeed = 140
 
 l.game.setup(colorBlue)
 l.keyboard.enable()
+
+l.canvas.width = l.canvas.width * 1.5
+l.canvas.height = l.canvas.height * 1.25
 
 // Can't use l.canvas.height until after the game is setup
 var yGrass = l.canvas.height - 44
@@ -31,15 +43,15 @@ l.audio.make('explosion', 'sounds/explosion.wav')
 l.audio.make('impact', 'sounds/impact.wav')
 l.audio.make('gameover', 'sounds/gameover.wav')
 
-l.object.make('dragon', l.entities.camera.width / 2, yDragon, 18, 20)
+l.object.make('dragon', l.canvas.width / 2, yDragon, 18, 20)
 	l.object.sprite('dragon', 'images/dragon.png', 34, 20, 2, 300)
 	l.object.anchor('dragon', 18 / 2, 19)
 	l.object.bounding('dragon', 0, 0, 18, 20)
-l.object.make('missile', l.entities.camera.width + 15, 0, 10, 10)
+l.object.make('missile', l.canvas.width + 15, 0, 10, 10)
 	l.object.sprite('missile', 'images/missile.png', 10, 10, 2, 150)
 	l.object.anchor('missile', 2, 5)
 	l.object.bounding('missile', 0, 0, 5, 10)
-l.object.make('meteor', l.tools.random(l.entities.camera.x + movementPadding, l.entities.camera.x + l.entities.camera.width - movementPadding), l.entities.camera.y - 15, 15, 26)
+l.object.make('meteor', l.tools.random(movementPadding, l.canvas.width - movementPadding), 0 - 15, 15, 26)
 	l.object.sprite('meteor', 'images/meteor.png', 30, 26, 2, 100)
 	l.object.anchor('meteor', 15 / 2, 25)
 	l.object.bounding('meteor', 0, 0, 15, 26)
@@ -67,7 +79,7 @@ function game()
 	if (l.game.state == 'loading')
 	{
 		l.draw.blank(colorBrown)
-		l.text.write(l.preloader.percent + '% loaded', 10, l.entities.camera.height - 10, '#ffffff')
+		l.text.write(l.preloader.percent + '% loaded', 10, l.canvas.height - 10, '#ffffff')
 	}
 	else if (l.game.state == 'menu')
 	{
@@ -77,7 +89,7 @@ function game()
 		}
 
 		l.draw.blank(colorGreenDark)
-		l.text.write('Press "S" to start', 10, l.entities.camera.height - 10, '#ffffff')
+		l.text.write('Press "S" to start', 10, l.canvas.height - 10, '#ffffff')
 	}
 	else if (l.game.state == 'paused')
 	{
@@ -86,13 +98,14 @@ function game()
 			l.game.state = 'running'
 		}
 
+		l.camera.reset()
+
 		l.draw.blank(colorGreenDark)
 		l.text.write('Score: ' + score, 10, 18, '#ffffff')
-		l.text.write('PAUSED - Press "S" to resume', 10, l.entities.camera.height - 10, '#ffffff')
+		l.text.write('PAUSED - Press "S" to resume', 10, l.canvas.height - 10, '#ffffff')
 	}
 	else if (l.game.state == 'running')
 	{
-		// Pause control
 		if (l.keyboard.escape)
 		{
 			l.game.state = 'paused'
@@ -101,7 +114,7 @@ function game()
 		// Fire control
 		if (l.keyboard.a || l.keyboard.space)
 		{
-			if (canShoot)
+			if (canShoot && l.entities.missile.y == 0)
 			{
 				canShoot = false
 				l.audio.rewind('shoot')
@@ -121,7 +134,7 @@ function game()
 		}
 		else
 		{
-			l.move.snap('missile', l.entities.camera.width + 15, 0)
+			l.move.snap('missile', l.canvas.width + 15, 0)
 		}
 
 		// Meteor code
@@ -131,6 +144,7 @@ function game()
 		}
 		else
 		{
+			l.camera.shake(5, 300, 26)
 			if (health > 0)
 			{
 				health -= 1
@@ -143,7 +157,7 @@ function game()
 				l.audio.rewind('impact')
 				l.audio.play('impact')
 			}
-			l.move.snap('meteor', l.tools.random(l.entities.camera.x + movementPadding, l.entities.camera.x + l.entities.camera.width - movementPadding), l.entities.camera.y - 15)
+			l.move.snap('meteor', l.tools.random(movementPadding, l.canvas.width - movementPadding), 0 - 15)
 		}
 
 		if (l.collision.overlap('missile', 'meteor'))
@@ -152,24 +166,60 @@ function game()
 			l.audio.play('explosion')
 			score++
 			meteorSpeed += meteorSpeedIncrease
-			l.move.snap('missile', l.entities.camera.width + 15, 0)
-			l.move.snap('meteor', l.tools.random(l.entities.camera.x + movementPadding, l.entities.camera.x + l.entities.camera.width - movementPadding), l.entities.camera.y - 15)
+			l.move.snap('missile', l.canvas.width + 15, 0)
+			l.move.snap('meteor', l.tools.random(movementPadding, l.canvas.width - movementPadding), 0 - 15)
 		}
 
-	    if (l.keyboard.left)
-	    {
-	    	if (l.entities.dragon.anchor.x > movementPadding)
+		// Tilt controls
+		if (l.keyboard.right) // Movement control
+		{
+			if (l.entities.dragon.anchor.x < l.canvas.width - movementPadding)
 	    	{
-	  			l.move.left('dragon', dragonSpeed)
-	    	}
-	    }
-	    else if (l.keyboard.right)
-	    {
-	    	if (l.entities.dragon.anchor.x < l.entities.camera.width - movementPadding)
+				l.move.right('dragon', dragonSpeed)
+			}
+		}
+		else if (l.keyboard.left)
+		{
+			if (l.entities.dragon.anchor.x > movementPadding)
 	    	{
-		        l.move.right('dragon', dragonSpeed)
-		    }
-	    }
+				l.move.left('dragon', dragonSpeed)
+			}
+		}
+
+		if (l.keyboard.up) // Jetpack control
+		{
+			if (fallSpeed > -flightSpeedMax)
+			{
+				fallSpeed -= dragonSpeed / 3
+			}
+		}
+
+		if (fallSpeed < fallSpeedMax) // Gravity
+		{
+			fallSpeed += fallSpeedIncrease
+		}
+
+		// Dragon's vertical movement code
+		if (fallSpeed < 0)
+		{
+			if (l.entities.dragon.anchor.y > movementPadding)
+			{
+				l.move.up('dragon', Math.abs(fallSpeed))
+			}
+		}
+		else
+		{
+			if (l.entities.dragon.anchor.y < yDragon)
+			{
+				l.move.down('dragon', Math.abs(fallSpeed))
+			}
+			else
+			{
+				fallSpeed = 0
+			}
+		}
+
+		l.camera.follow('dragon', 10, 1)
 
 		l.draw.blank()
 		l.draw.rectangle(0, yGrass, l.canvas.width, yDarkerGrass - yGrass, colorGreen) // Grass
@@ -179,27 +229,27 @@ function game()
 		l.draw.object('missile')
 		l.draw.object('dragon')
 
-		l.text.write('Score: ' + score, 10, 18, '#ffffff')
+		l.text.write('Score: ' + score, 10, 18, '#ffffff', 'hud')
 
 		if (health >= 1)
 		{
-			l.draw.object('bone1')
+			l.draw.object('bone1', 'hud')
 		}
 		if (health >= 2)
 		{
-			l.draw.object('bone2')
+			l.draw.object('bone2', 'hud')
 		}
 		if (health >= 3)
 		{
-			l.draw.object('bone3')
+			l.draw.object('bone3', 'hud')
 		}
 		if (health >= 4)
 		{
-			l.draw.object('bone4')
+			l.draw.object('bone4', 'hud')
 		}
 		if (health == 5)
 		{
-			l.draw.object('bone5')
+			l.draw.object('bone5', 'hud')
 		}
 	}
 	else if (l.game.state == 'gameover')
@@ -209,11 +259,15 @@ function game()
 			score = 0
 			health = 5
 			meteorSpeed = 100
+			l.entities.dragon.x = l.canvas.width / 2
+			l.entities.dragon.y = yDragon
 			l.game.state = 'running'
 		}
 
+		l.camera.reset()
+
 		l.draw.blank(colorBrown)
 		l.text.write('Score: ' + score, 10, 18, '#ffffff')
-		l.text.write('GAMEOVER - Press "S" to retry', 10, l.entities.camera.height - 10, '#ffffff')
+		l.text.write('GAMEOVER - Press "S" to retry', 10, l.canvas.height - 10, '#ffffff')
 	}
 }
