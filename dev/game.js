@@ -4,6 +4,9 @@ var colorGreenDark = '#34881F'
 var colorBrown = '#7D4F16'
 var colorBlack = '#111111'
 
+l.game.setup(colorBlue)
+l.keyboard.enable()
+
 l.debug.all = false
 
 var health = 5
@@ -23,13 +26,9 @@ var flightSpeedMax = 200
 var tiltStartAngle = 15
 var dragonSpeed = 140
 
-l.game.setup(colorBlue)
-l.keyboard.enable()
-
 l.canvas.width = l.canvas.width + movementPadding
 l.canvas.height = l.canvas.height + movementPadding
 
-// Can't use l.canvas.height until after the game is setup
 var yGrass = l.canvas.height - 44
 var yDragon = l.canvas.height - 38
 var yDarkerGrass = l.canvas.height - 30
@@ -233,15 +232,10 @@ function game()
 		l.draw.rectangle(0, yGrass, l.canvas.width, yDarkerGrass - yGrass, colorGreen) // Grass
 		l.draw.rectangle(0, yDarkerGrass, l.canvas.width, yDirt - yDarkerGrass, colorGreenDark) // Darker grass
 		l.draw.rectangle(0, yDirt, l.canvas.width, l.canvas.height - yDirt, colorBrown) // Dirt
-		// l.draw.object('meteor')
 		l.draw.object('missile')
 		l.draw.object('dragon')
 
-		l.draw.object('meteor0')
-		l.draw.object('meteor1')
-		l.draw.object('meteor2')
-		l.draw.object('meteor3')
-		l.draw.object('meteor4')
+		l.draw.object('enemies')
 
 		l.text.write('Score: ' + score, 10, 18, '#ffffff', 'hud')
 
