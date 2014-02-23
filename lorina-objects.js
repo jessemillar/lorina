@@ -107,8 +107,24 @@ l.move = new Object() // Create an object to organize the move functions into
 
 l.move.snap = function(name, x, y)
 {
-    l.entities[name].x = x
-    l.entities[name].y = y
+    if (l.entities[name].anchor.offset.x)
+    {
+        l.entities[name].x = x - l.entities[name].anchor.offset.x   
+    }
+    else
+    {
+        l.entities[name].x = x
+    }
+
+    if (l.entities[name].anchor.offset.y)
+    {
+        l.entities[name].y = y - l.entities[name].anchor.offset.y   
+    }
+    else
+    {
+        l.entities[name].y = y
+    }
+    
     l.object.update(name)
 }
 

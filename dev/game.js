@@ -5,15 +5,13 @@ var colorBrown = '#7D4F16'
 var colorBlack = '#111111'
 
 l.debug.all = false
-l.debug.touches = false
-l.debug.tilt = false
 
 var health = 5
 var canShoot = true
 var coolTime = 500
 var score = 0
 var dragonVerticalMotion = 0
-var movementPadding = 20
+var movementPadding = 26
 var boneSpacing = 18
 var meteorSpeed = 100
 var meteorSpeedIncrease = 3
@@ -28,8 +26,8 @@ var dragonSpeed = 140
 l.game.setup(colorBlue)
 l.keyboard.enable()
 
-l.canvas.width = l.canvas.width * 1.5
-l.canvas.height = l.canvas.height * 1.25
+l.canvas.width = l.canvas.width + movementPadding
+l.canvas.height = l.canvas.height + movementPadding
 
 // Can't use l.canvas.height until after the game is setup
 var yGrass = l.canvas.height - 44
@@ -114,12 +112,12 @@ function game()
 		// Fire control
 		if (l.keyboard.a || l.keyboard.space)
 		{
-			if (canShoot && l.entities.missile.y == 0)
+			if (canShoot && l.entities.missile.y < 0)
 			{
 				canShoot = false
 				l.audio.rewind('shoot')
 				l.audio.play('shoot')
-				l.move.snap('missile', l.entities.dragon.anchor.x - 4, l.entities.dragon.anchor.y - 23)
+				l.move.snap('missile', l.entities.dragon.anchor.x - 2, l.entities.dragon.anchor.y - 18)
 				setTimeout(function()
 				{
 					canShoot = true
@@ -144,7 +142,7 @@ function game()
 		}
 		else
 		{
-			l.camera.shake(5, 300, 26)
+			l.camera.shake(5, 250, movementPadding)
 			if (health > 0)
 			{
 				health -= 1
@@ -170,7 +168,6 @@ function game()
 			l.move.snap('meteor', l.tools.random(movementPadding, l.canvas.width - movementPadding), 0 - 15)
 		}
 
-		// Tilt controls
 		if (l.keyboard.right) // Movement control
 		{
 			if (l.entities.dragon.anchor.x < l.canvas.width - movementPadding)
@@ -190,7 +187,7 @@ function game()
 		{
 			if (fallSpeed > -flightSpeedMax)
 			{
-				fallSpeed -= dragonSpeed / 3
+				fallSpeed -= dragonSpeed / 6
 			}
 		}
 
@@ -259,8 +256,8 @@ function game()
 			score = 0
 			health = 5
 			meteorSpeed = 100
-			l.entities.dragon.x = l.canvas.width / 2
-			l.entities.dragon.y = yDragon
+			fallSpeed = 0
+			l.move.snap('dragon', l.canvas.width / 2, yDragon)
 			l.game.state = 'running'
 		}
 
