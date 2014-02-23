@@ -35,6 +35,11 @@ l.object.make = function(name, x, y, width, height)
             l.entities[name].anchor.y = y + height / 2
 }
 
+l.object.category = function(name, category)
+{
+    l.entities[name].category = category
+}
+
 l.object.sprite = function(name, location, width, height, count, timer)
 {
     if (!count) // Make it okay to have an image that doesn't animate
@@ -107,77 +112,167 @@ l.move = new Object() // Create an object to organize the move functions into
 
 l.move.snap = function(name, x, y)
 {
-    if (l.entities[name].anchor.offset.x)
+    if (l.entities[name])
     {
-        l.entities[name].x = x - l.entities[name].anchor.offset.x   
-    }
-    else
-    {
-        l.entities[name].x = x
-    }
+        if (l.entities[name].anchor.offset.x)
+        {
+            l.entities[name].x = x - l.entities[name].anchor.offset.x   
+        }
+        else
+        {
+            l.entities[name].x = x
+        }
 
-    if (l.entities[name].anchor.offset.y)
-    {
-        l.entities[name].y = y - l.entities[name].anchor.offset.y   
+        if (l.entities[name].anchor.offset.y)
+        {
+            l.entities[name].y = y - l.entities[name].anchor.offset.y   
+        }
+        else
+        {
+            l.entities[name].y = y
+        }
+        
+        l.object.update(name)
     }
     else
     {
-        l.entities[name].y = y
+        var thingy = Object.keys(l.entities)
+        
+        for (var i = 0; i < thingy.length; i++)
+        {
+            if (l.entities[thingy[i]].category == name)
+            {
+                l.move.snap(thingy[i], x, y)
+            }
+        }
     }
-    
-    l.object.update(name)
 }
 
 l.move.up = function(name, speed)
 {
-    l.entities[name].y -= speed / 60
-    l.object.update(name)
+    if (l.entities[name])
+    {
+        l.entities[name].y -= speed / 60
+        l.object.update(name)
+    }
+    else
+    {
+        var thingy = Object.keys(l.entities)
+        
+        for (var i = 0; i < thingy.length; i++)
+        {
+            if (l.entities[thingy[i]].category == name)
+            {
+                l.move.up(thingy[i], speed)
+            }
+        }
+    }
 }
 
 l.move.down = function(name, speed)
 {
-    l.entities[name].y += speed / 60
-    l.object.update(name)
+    if (l.entities[name])
+    {
+        l.entities[name].y += speed / 60
+        l.object.update(name)
+    }
+    else
+    {
+        var thingy = Object.keys(l.entities)
+        
+        for (var i = 0; i < thingy.length; i++)
+        {
+            if (l.entities[thingy[i]].category == name)
+            {
+                l.move.down(thingy[i], speed)
+            }
+        }
+    }
 }
 
 l.move.left = function(name, speed)
 {
-    l.entities[name].x -= speed / 60
-    l.object.update(name)
+    if (l.entities[name])
+    {
+        l.entities[name].x -= speed / 60
+        l.object.update(name)
+    }
+    else
+    {
+        var thingy = Object.keys(l.entities)
+        
+        for (var i = 0; i < thingy.length; i++)
+        {
+            if (l.entities[thingy[i]].category == name)
+            {
+                l.move.left(thingy[i], speed)
+            }
+        }
+    }
 }
 
 l.move.right = function(name, speed)
 {
-    l.entities[name].x += speed / 60
-    l.object.update(name)
+    if (l.entities[name])
+    {
+        l.entities[name].x += speed / 60
+        l.object.update(name)
+    }
+    else
+    {
+        var thingy = Object.keys(l.entities)
+        
+        for (var i = 0; i < thingy.length; i++)
+        {
+            if (l.entities[thingy[i]].category == name)
+            {
+                l.move.right(thingy[i], speed)
+            }
+        }
+    }
 }
 
 l.move.toward = function(objectA, objectB, speed)
 {
-    var speedX = l.measure.x(objectA, objectB) / l.measure.total(objectA, objectB) * speed
-    var speedY = l.measure.y(objectA, objectB) / l.measure.total(objectA, objectB) * speed
-
-    if (l.measure.total(objectA, objectB) > 0)
+    if (l.entities[objectA])
     {
-        if (l.entities[objectA].anchor.x < l.entities[objectB].anchor.x && l.entities[objectA].anchor.y < l.entities[objectB].anchor.y)
+        var speedX = l.measure.x(objectA, objectB) / l.measure.total(objectA, objectB) * speed
+        var speedY = l.measure.y(objectA, objectB) / l.measure.total(objectA, objectB) * speed
+
+        if (l.measure.total(objectA, objectB) > 0)
         {
-            l.move.right(objectA, speedX)
-            l.move.down(objectA, speedY)
+            if (l.entities[objectA].anchor.x < l.entities[objectB].anchor.x && l.entities[objectA].anchor.y < l.entities[objectB].anchor.y)
+            {
+                l.move.right(objectA, speedX)
+                l.move.down(objectA, speedY)
+            }
+            else if (l.entities[objectA].anchor.x > l.entities[objectB].anchor.x && l.entities[objectA].anchor.y < l.entities[objectB].anchor.y)
+            {
+                l.move.left(objectA, speedX)
+                l.move.down(objectA, speedY)
+            }
+            else if (l.entities[objectA].anchor.x < l.entities[objectB].anchor.x && l.entities[objectA].anchor.y > l.entities[objectB].anchor.y)
+            {
+                l.move.right(objectA, speedX)
+                l.move.up(objectA, speedY)
+            }
+            else if (l.entities[objectA].anchor.x > l.entities[objectB].anchor.x && l.entities[objectA].anchor.y > l.entities[objectB].anchor.y)
+            {
+                l.move.left(objectA, speedX)
+                l.move.up(objectA, speedY)
+            }
         }
-        else if (l.entities[objectA].anchor.x > l.entities[objectB].anchor.x && l.entities[objectA].anchor.y < l.entities[objectB].anchor.y)
+    }
+    else
+    {
+        var thingy = Object.keys(l.entities)
+        
+        for (var i = 0; i < thingy.length; i++)
         {
-            l.move.left(objectA, speedX)
-            l.move.down(objectA, speedY)
-        }
-        else if (l.entities[objectA].anchor.x < l.entities[objectB].anchor.x && l.entities[objectA].anchor.y > l.entities[objectB].anchor.y)
-        {
-            l.move.right(objectA, speedX)
-            l.move.up(objectA, speedY)
-        }
-        else if (l.entities[objectA].anchor.x > l.entities[objectB].anchor.x && l.entities[objectA].anchor.y > l.entities[objectB].anchor.y)
-        {
-            l.move.left(objectA, speedX)
-            l.move.up(objectA, speedY)
+            if (l.entities[thingy[i]].category == name)
+            {
+                l.move.snap(thingy[i], objectB, speed)
+            }
         }
     }
 }

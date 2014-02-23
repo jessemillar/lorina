@@ -43,16 +43,21 @@ l.audio.make('gameover', 'sounds/gameover.wav')
 
 l.object.make('dragon', l.canvas.width / 2, yDragon, 18, 20)
 	l.object.sprite('dragon', 'images/dragon.png', 34, 20, 2, 300)
-	l.object.anchor('dragon', 18 / 2, 19)
 	l.object.bounding('dragon', 0, 0, 18, 20)
+	l.object.anchor('dragon', 18 / 2, 19)
 l.object.make('missile', l.canvas.width + 15, 0, 10, 10)
 	l.object.sprite('missile', 'images/missile.png', 10, 10, 2, 150)
-	l.object.anchor('missile', 2, 5)
 	l.object.bounding('missile', 0, 0, 5, 10)
-l.object.make('meteor', l.tools.random(movementPadding, l.canvas.width - movementPadding), 0 - 15, 15, 26)
-	l.object.sprite('meteor', 'images/meteor.png', 30, 26, 2, 100)
-	l.object.anchor('meteor', 15 / 2, 25)
-	l.object.bounding('meteor', 0, 0, 15, 26)
+	l.object.anchor('missile', 2, 5)
+
+for (var i = 0; i < 5; i++) // Make a bunch of meteors
+{
+	l.object.make('meteor' + i, l.tools.random(movementPadding, l.canvas.width - movementPadding), 0 - 15, 15, 26)
+		l.object.sprite('meteor' + i, 'images/meteor.png', 30, 26, 2, 100)
+		l.object.bounding('meteor' + i, 0, 0, 15, 26)
+		l.object.anchor('meteor' + i, 15 / 2, 25)
+		l.object.category('meteor' + i, 'enemies')
+}
 
 l.object.make('bone1', l.entities.camera.width / 2 - boneSpacing * 2, yBones, 11, 11)
 	l.object.sprite('bone1', 'images/bone.png', 11, 11)
@@ -135,7 +140,10 @@ function game()
 			l.move.snap('missile', l.canvas.width + 15, 0)
 		}
 
+		l.move.down('enemies', meteorSpeed)
+
 		// Meteor code
+		/*
 		if (l.entities.meteor.anchor.y < yDragon)
 		{
 			l.move.down('meteor', meteorSpeed)
@@ -157,7 +165,9 @@ function game()
 			}
 			l.move.snap('meteor', l.tools.random(movementPadding, l.canvas.width - movementPadding), 0 - 15)
 		}
+		*/
 
+		/*
 		if (l.collision.overlap('missile', 'meteor'))
 		{
 			l.audio.rewind('explosion')
@@ -167,6 +177,7 @@ function game()
 			l.move.snap('missile', l.canvas.width + 15, 0)
 			l.move.snap('meteor', l.tools.random(movementPadding, l.canvas.width - movementPadding), 0 - 15)
 		}
+		*/
 
 		if (l.keyboard.right) // Movement control
 		{
@@ -222,9 +233,15 @@ function game()
 		l.draw.rectangle(0, yGrass, l.canvas.width, yDarkerGrass - yGrass, colorGreen) // Grass
 		l.draw.rectangle(0, yDarkerGrass, l.canvas.width, yDirt - yDarkerGrass, colorGreenDark) // Darker grass
 		l.draw.rectangle(0, yDirt, l.canvas.width, l.canvas.height - yDirt, colorBrown) // Dirt
-		l.draw.object('meteor')
+		// l.draw.object('meteor')
 		l.draw.object('missile')
 		l.draw.object('dragon')
+
+		l.draw.object('meteor0')
+		l.draw.object('meteor1')
+		l.draw.object('meteor2')
+		l.draw.object('meteor3')
+		l.draw.object('meteor4')
 
 		l.text.write('Score: ' + score, 10, 18, '#ffffff', 'hud')
 
