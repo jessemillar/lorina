@@ -36,13 +36,27 @@ l.draw.object = function(name, type)
     {
         if (type == 'hud')
         {
-            l.ctx.drawImage(l.entities[name].sprite, l.entities[name].animate.frame * (l.entities[name].animate.width / l.entities[name].animate.count), 0, l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height, Math.round(l.entities[name].x), Math.round(l.entities[name].y), l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height)
+            if (l.entities[name].animate.count)
+            {
+                l.ctx.drawImage(l.entities[name].sprite, l.entities[name].animate.frame * (l.entities[name].animate.width / l.entities[name].animate.count), 0, l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height, Math.round(l.entities[name].x), Math.round(l.entities[name].y), l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height)
+            }
+            else
+            {
+                l.ctx.drawImage(l.entities[name].sprite, Math.round(l.entities[name].x), Math.round(l.entities[name].y))
+            }
         }
         else
         {
             if (Math.round(l.entities[name].x + l.entities[name].width) > Math.round(l.entities.camera.x) && Math.round(l.entities[name].x) < Math.round(l.entities.camera.x + l.entities.camera.width) && Math.round(l.entities[name].y + l.entities[name].height) > Math.round(l.entities.camera.y) && Math.round(l.entities[name].y) < Math.round(l.entities.camera.y + l.entities.camera.height))  // Only draw if visible on the screen
             {
-                l.ctx.drawImage(l.entities[name].sprite, l.entities[name].animate.frame * (l.entities[name].animate.width / l.entities[name].animate.count), 0, l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height, Math.round(l.entities[name].x - l.entities.camera.x), Math.round(l.entities[name].y - l.entities.camera.y), l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height)
+                if (l.entities[name].animate.count)
+                {
+                    l.ctx.drawImage(l.entities[name].sprite, l.entities[name].animate.frame * (l.entities[name].animate.width / l.entities[name].animate.count), 0, l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height, Math.round(l.entities[name].x - l.entities.camera.x), Math.round(l.entities[name].y - l.entities.camera.y), l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height)
+                }
+                else
+                {
+                    l.ctx.drawImage(l.entities[name].sprite, Math.round(l.entities[name].x - l.entities.camera.x), Math.round(l.entities[name].y - l.entities.camera.y))
+                }
 
                 if (l.debug.anchor || l.debug.all)
                 {

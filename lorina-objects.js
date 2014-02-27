@@ -33,6 +33,10 @@ l.object.make = function(name, x, y, width, height)
                 l.entities[name].anchor.offset.y = height / 2
             l.entities[name].anchor.x = x + width / 2
             l.entities[name].anchor.y = y + height / 2
+        l.entities[name].physics = new Object()
+            l.entities[name].physics.momentum = new Object()
+                l.entities[name].physics.momentum.x = 0
+                l.entities[name].physics.momentum.y = 0
 }
 
 l.object.category = function(name, category)
@@ -42,21 +46,36 @@ l.object.category = function(name, category)
 
 l.object.sprite = function(name, location, width, height, count, timer)
 {
-    if (!count) // Make it okay to have an image that doesn't animate
-    {
-        count = 1
-    }
-
     l.preloader.queue()
     l.entities[name].sprite = new Image()
         l.entities[name].sprite.src = location
         l.entities[name].animate = new Object() // Group the non-src-related properties
-            l.entities[name].animate.width = width
-            l.entities[name].animate.height = height
-            l.entities[name].animate.count = count
-            l.entities[name].animate.frame = 0
+            if (width)
+            {
+                l.entities[name].animate.width = width
+            }
+            else
+            {
+                l.entities[name].animate.width = l.entities[name].width
+            }
+
+            if (height)
+            {
+                l.entities[name].animate.height = height
+            }
+            else
+            {
+                l.entities[name].animate.height = l.entities[name].height
+            }
+
+            if (count)
+            {
+                l.entities[name].animate.count = count
+            }
+
             if (timer)
             {
+                l.entities[name].animate.frame = 0
                 l.entities[name].animate.interval = l.object.animate(name, timer)
             }
     l.entities[name].sprite.onload = function()
@@ -271,7 +290,7 @@ l.move.toward = function(objectA, objectB, speed)
         {
             if (l.entities[thingy[i]].category == name)
             {
-                l.move.snap(thingy[i], objectB, speed)
+                l.move.toward(thingy[i], objectB, speed)
             }
         }
     }

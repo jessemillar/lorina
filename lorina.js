@@ -5,17 +5,14 @@ l.debug = new Object() // Keep track of the various debug options
 
 l.game.setup = function(gameColor, fullscreen)
 {
+    document.body.style.background = gameColor
     l.dom = document.getElementById('canvas')
     l.ctx = document.getElementById('canvas').getContext('2d')
 
-
     if (fullscreen)
     {
-        l.dom.style.position = 'absolute'
-        l.dom.style.left = '0px'
-        l.dom.style.top = '0px'
-        l.dom.width = window.innerWidth
-        l.dom.height = window.innerHeight
+        l.game.fullscreen()
+        document.body.setAttribute('onresize', 'l.game.fullscreen()') // Add a listener that will always keep the canvas fullscreen
     }
 
     l.canvas = new Object() // Used to reference the height and width of the canvas later on without breaking other functions
@@ -36,6 +33,25 @@ l.game.setup = function(gameColor, fullscreen)
     l.entities.camera.previous = new Object() // Keep track of the camera's previous position for use with the shaking function
         l.entities.camera.previous.x = l.entities.camera.x
         l.entities.camera.previous.y = l.entities.camera.y
+}
+
+l.game.fullscreen = function()
+{
+    l.dom.style.position = 'absolute'
+    l.dom.style.left = '0px'
+    l.dom.style.top = '0px'
+    l.dom.width = window.innerWidth
+    l.dom.height = window.innerHeight
+    if (l.canvas)
+    {
+        l.canvas.width = l.dom.width
+        l.canvas.height = l.dom.height
+    }
+    if (l.entities.camera)
+    {
+        l.entities.camera.width = l.dom.width
+        l.entities.camera.height = l.dom.height
+    }
 }
 
 l.game.start = function()
