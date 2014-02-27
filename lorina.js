@@ -3,14 +3,24 @@ var l = new Object() // The Lorina object that keeps the engine functions out of
 l.game = new Object() // Group the game functions
 l.debug = new Object() // Keep track of the various debug options
 
-l.game.setup = function(gameColor)
+l.game.setup = function(gameColor, fullscreen)
 {
     l.dom = document.getElementById('canvas')
     l.ctx = document.getElementById('canvas').getContext('2d')
 
+
+    if (fullscreen)
+    {
+        l.dom.style.position = 'absolute'
+        l.dom.style.left = '0px'
+        l.dom.style.top = '0px'
+        l.dom.width = window.innerWidth
+        l.dom.height = window.innerHeight
+    }
+
     l.canvas = new Object() // Used to reference the height and width of the canvas later on without breaking other functions
-        l.canvas.width = parseInt(document.getElementById('canvas').width)
-        l.canvas.height = parseInt(document.getElementById('canvas').height)
+        l.canvas.width = l.dom.width
+        l.canvas.height = l.dom.height
 
     if (!window.navigator.vendor)
     {
@@ -21,7 +31,7 @@ l.game.setup = function(gameColor)
         l.canvas.agent = 'chrome'
     }
 
-    l.object.make('camera', 0, 0, parseInt(document.getElementById('canvas').width), parseInt(document.getElementById('canvas').height))
+    l.object.make('camera', 0, 0, l.canvas.width, l.canvas.height)
     l.entities.camera.color = gameColor
     l.entities.camera.previous = new Object() // Keep track of the camera's previous position for use with the shaking function
         l.entities.camera.previous.x = l.entities.camera.x
@@ -173,4 +183,20 @@ l.tools = new Object() // Group the tool functions
 l.tools.random = function(min, max)
 {
     return Math.random() * (max - min) + min
+}
+
+l.count = function(category)
+{
+    var count = 0
+    var thingy = Object.keys(l.entities)
+        
+    for (var i = 0; i < thingy.length; i++)
+    {
+        if (l.entities[thingy[i]].category == category)
+        {
+            count++
+        }
+    }
+
+    return count
 }

@@ -4,7 +4,7 @@ var colorGreenDark = '#34881F'
 var colorBrown = '#7D4F16'
 var colorBlack = '#111111'
 
-l.game.setup(colorBlue)
+l.game.setup(colorBlue, true)
 l.keyboard.enable()
 
 l.debug.all = false
@@ -14,11 +14,11 @@ var canShoot = true
 var coolTime = 500
 var score = 0
 var dragonVerticalMotion = 0
-var movementPadding = 26
+var movementPadding = 22
 var boneSpacing = 18
 var meteorSpeed = 100
 var meteorSpeedIncrease = 3
-var missileSpeed = 400
+var missileSpeed = 550
 var fallSpeed = 0 // In pixels per second
 var fallSpeedIncrease = 3
 var fallSpeedMax = 200 // In pixels per second
@@ -30,7 +30,7 @@ l.canvas.width = l.canvas.width + movementPadding
 l.canvas.height = l.canvas.height + movementPadding
 
 var yGrass = l.canvas.height - 44
-var yDragon = l.canvas.height - 38
+var yDragon = l.canvas.height - 39
 var yDarkerGrass = l.canvas.height - 30
 var yDirt = l.canvas.height - 22
 var yBones = l.entities.camera.height - 12
@@ -213,6 +213,10 @@ function game()
 			{
 				l.move.up('dragon', Math.abs(fallSpeed))
 			}
+			else
+			{
+				fallSpeed = 0
+			}
 		}
 		else
 		{
@@ -226,7 +230,7 @@ function game()
 			}
 		}
 
-		l.camera.follow('dragon', 10, 10)
+		l.camera.follow('dragon', movementPadding / 2, movementPadding / 2)
 
 		l.draw.blank()
 		l.draw.rectangle(0, yGrass, l.canvas.width, yDarkerGrass - yGrass, colorGreen) // Grass
