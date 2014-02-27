@@ -37,9 +37,10 @@ l.object.make = function(name, x, y, width, height)
             l.entities[name].physics.momentum = new Object()
                 l.entities[name].physics.momentum.x = 0
                 l.entities[name].physics.momentum.y = 0
+                l.entities[name].physics.momentum.total = 0
 }
 
-l.object.category = function(name, category)
+l.object.categorize = function(name, category)
 {
     l.entities[name].category = category
 }
