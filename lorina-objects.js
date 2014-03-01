@@ -2,6 +2,11 @@ l.entities = new Object() // The object that keeps track of our game objects
 
 l.object = new Object() // Group the object functions
 
+l.object.delete = function(name)
+{
+    delete l.entities[name]
+}
+
 l.object.make = function(name, x, y, width, height)
 {
     // Make it okay to make an object that's just a point
