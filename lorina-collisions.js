@@ -1,9 +1,9 @@
-l.collision = function(objectA, objectB, code)
+l.collision = function(a, b, code)
 {
-	if (l.entities[objectB])
+	if (l.entities[b])
     {
-	    if (l.entities[objectA].bounding.x < l.entities[objectB].bounding.x + l.entities[objectB].bounding.width && l.entities[objectA].bounding.x + l.entities[objectA].bounding.width > l.entities[objectB].bounding.x &&
-	        l.entities[objectA].bounding.y < l.entities[objectB].bounding.y + l.entities[objectB].bounding.height && l.entities[objectA].bounding.y + l.entities[objectA].bounding.height > l.entities[objectB].bounding.y)
+	    if (l.entities[a].bounding.x < l.entities[b].bounding.x + l.entities[b].bounding.width && l.entities[a].bounding.x + l.entities[a].bounding.width > l.entities[b].bounding.x &&
+	        l.entities[a].bounding.y < l.entities[b].bounding.y + l.entities[b].bounding.height && l.entities[a].bounding.y + l.entities[a].bounding.height > l.entities[b].bounding.y)
 	    {
 	    	if (code)
 	    	{
@@ -25,9 +25,9 @@ l.collision = function(objectA, objectB, code)
         
         for (var i = 0; i < thingy.length; i++)
         {
-            if (l.entities[thingy[i]].category == objectB)
+            if (l.entities[thingy[i]].category == b)
             {
-                l.collision(objectA, thingy[i], code)
+                l.collision(a, thingy[i], code)
             }
         }
     }

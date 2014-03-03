@@ -5,7 +5,10 @@ l.debug = new Object() // Keep track of the various debug options
 
 l.game.setup = function(gameColor, fullscreen)
 {
-    document.body.style.background = gameColor
+    if (fullscreen)
+    {
+        document.body.style.background = gameColor
+    }
     l.dom = document.getElementById('canvas')
     l.ctx = document.getElementById('canvas').getContext('2d')
 

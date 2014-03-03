@@ -4,7 +4,7 @@ var colorGreenDark = '#34881F'
 var colorBrown = '#7D4F16'
 var colorBlack = '#111111'
 
-l.game.setup(colorBlue, true)
+l.game.setup(colorBlue)
 l.keyboard.enable()
 
 l.debug.all = false
@@ -25,6 +25,7 @@ var fallSpeedMax = 200 // In pixels per second
 var flightSpeedMax = 200
 var tiltStartAngle = 15
 var dragonSpeed = 140
+var dragonDirection = 'right'
 
 l.canvas.width = l.canvas.width + movementPadding
 l.canvas.height = l.canvas.height + movementPadding
@@ -55,7 +56,7 @@ for (var i = 0; i < 5; i++) // Make a bunch of meteors
 		l.object.sprite('meteor' + i, 'images/meteor.png', 30, 26, 2, 100)
 		l.object.bounding('meteor' + i, 0, 0, 15, 26)
 		l.object.anchor('meteor' + i, 15 / 2, 25)
-		l.object.category('meteor' + i, 'enemies')
+		l.object.categorize('meteor' + i, 'enemies')
 }
 
 l.object.make('bone1', l.entities.camera.width / 2 - boneSpacing * 2, yBones, 11, 11)
@@ -121,7 +122,14 @@ function game()
 				canShoot = false
 				l.audio.rewind('shoot')
 				l.audio.play('shoot')
-				l.move.snap('missile', l.entities.dragon.anchor.x - 2, l.entities.dragon.anchor.y - 18)
+				if (dragonDirection == 'right')
+				{
+					l.move.snap('missile', l.entities.dragon.anchor.x - 2, l.entities.dragon.anchor.y - 18)
+				}
+				else
+				{
+					l.move.snap('missile', l.entities.dragon.anchor.x + 1, l.entities.dragon.anchor.y - 18)
+				}
 				setTimeout(function()
 				{
 					canShoot = true
@@ -180,6 +188,7 @@ function game()
 
 		if (l.keyboard.right) // Movement control
 		{
+			dragonDirection = 'right'
 			if (l.entities.dragon.anchor.x < l.canvas.width - movementPadding)
 	    	{
 				l.move.right('dragon', dragonSpeed)
@@ -187,6 +196,7 @@ function game()
 		}
 		else if (l.keyboard.left)
 		{
+			dragonDirection = 'left'
 			if (l.entities.dragon.anchor.x > movementPadding)
 	    	{
 				l.move.left('dragon', dragonSpeed)
@@ -237,7 +247,14 @@ function game()
 		l.draw.rectangle(0, yDarkerGrass, l.canvas.width, yDirt - yDarkerGrass, colorGreenDark) // Darker grass
 		l.draw.rectangle(0, yDirt, l.canvas.width, l.canvas.height - yDirt, colorBrown) // Dirt
 		l.draw.object('missile')
-		l.draw.object('dragon')
+		if (dragonDirection == 'right')
+		{
+			l.draw.object('dragon')
+		}
+		else
+		{
+			l.draw.object('dragon', 'horizontal')
+		}
 
 		l.draw.object('enemies')
 
@@ -245,23 +262,23 @@ function game()
 
 		if (health >= 1)
 		{
-			l.draw.object('bone1', 'hud')
+			l.draw.hud('bone1')
 		}
 		if (health >= 2)
 		{
-			l.draw.object('bone2', 'hud')
+			l.draw.hud('bone2')
 		}
 		if (health >= 3)
 		{
-			l.draw.object('bone3', 'hud')
+			l.draw.hud('bone3')
 		}
 		if (health >= 4)
 		{
-			l.draw.object('bone4', 'hud')
+			l.draw.hud('bone4')
 		}
 		if (health == 5)
 		{
-			l.draw.object('bone5', 'hud')
+			l.draw.hud('bone5')
 		}
 	}
 	else if (l.game.state == 'gameover')

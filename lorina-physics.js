@@ -79,10 +79,10 @@ l.physics.momentum.stop = function(name)
     l.entities[name].physics.momentum.y = 0
 }
 
-l.physics.momentum.transfer = function(objectA, objectB)
+l.physics.momentum.transfer = function(a, b)
 {
-    l.entities[objectB].physics.momentum.x = l.entities[objectA].physics.momentum.x
-    l.entities[objectB].physics.momentum.y = l.entities[objectA].physics.momentum.y
+    l.entities[b].physics.momentum.x = l.entities[a].physics.momentum.x
+    l.entities[b].physics.momentum.y = l.entities[a].physics.momentum.y
 }
 
 l.physics.push = new Object() // Group the function that apply a push to an object
@@ -109,34 +109,34 @@ l.physics.push.right = function(name, force)
 
 l.physics.pull = new Object() // Since the .toward() function act more like a gravity pull, put it in this "folder"
 
-l.physics.pull.toward = function(objectA, objectB, force)
+l.physics.pull.toward = function(a, b, force)
 {
-    if (l.entities[objectA])
+    if (l.entities[a])
     {
-        var speedX = l.measure.x(objectA, objectB) / l.measure.total(objectA, objectB) * force
-        var speedY = l.measure.y(objectA, objectB) / l.measure.total(objectA, objectB) * force
+        var speedX = l.measure.x(a, b) / l.measure.total(a, b) * force
+        var speedY = l.measure.y(a, b) / l.measure.total(a, b) * force
 
-        if (l.measure.total(objectA, objectB) > 0)
+        if (l.measure.total(a, b) > 0)
         {
-            if (l.entities[objectA].anchor.x < l.entities[objectB].anchor.x && l.entities[objectA].anchor.y < l.entities[objectB].anchor.y)
+            if (l.entities[a].anchor.x < l.entities[b].anchor.x && l.entities[a].anchor.y < l.entities[b].anchor.y)
             {
-                l.physics.push.right(objectA, speedX)
-                l.physics.push.down(objectA, speedY)
+                l.physics.push.right(a, speedX)
+                l.physics.push.down(a, speedY)
             }
-            else if (l.entities[objectA].anchor.x > l.entities[objectB].anchor.x && l.entities[objectA].anchor.y < l.entities[objectB].anchor.y)
+            else if (l.entities[a].anchor.x > l.entities[b].anchor.x && l.entities[a].anchor.y < l.entities[b].anchor.y)
             {
-                l.physics.push.left(objectA, speedX)
-                l.physics.push.down(objectA, speedY)
+                l.physics.push.left(a, speedX)
+                l.physics.push.down(a, speedY)
             }
-            else if (l.entities[objectA].anchor.x < l.entities[objectB].anchor.x && l.entities[objectA].anchor.y > l.entities[objectB].anchor.y)
+            else if (l.entities[a].anchor.x < l.entities[b].anchor.x && l.entities[a].anchor.y > l.entities[b].anchor.y)
             {
-                l.physics.push.right(objectA, speedX)
-                l.physics.push.up(objectA, speedY)
+                l.physics.push.right(a, speedX)
+                l.physics.push.up(a, speedY)
             }
-            else if (l.entities[objectA].anchor.x > l.entities[objectB].anchor.x && l.entities[objectA].anchor.y > l.entities[objectB].anchor.y)
+            else if (l.entities[a].anchor.x > l.entities[b].anchor.x && l.entities[a].anchor.y > l.entities[b].anchor.y)
             {
-                l.physics.push.left(objectA, speedX)
-                l.physics.push.up(objectA, speedY)
+                l.physics.push.left(a, speedX)
+                l.physics.push.up(a, speedY)
             }
         }
     }
@@ -148,7 +148,7 @@ l.physics.pull.toward = function(objectA, objectB, force)
         {
             if (l.entities[thingy[i]].category == name)
             {
-                l.physics.push.toward(thingy[i], objectB, force)
+                l.physics.push.toward(thingy[i], b, force)
             }
         }
     }

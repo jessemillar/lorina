@@ -257,34 +257,34 @@ l.move.right = function(name, speed)
     }
 }
 
-l.move.toward = function(objectA, objectB, speed)
+l.move.toward = function(a, b, speed)
 {
-    if (l.entities[objectA])
+    if (l.entities[a])
     {
-        var speedX = l.measure.x(objectA, objectB) / l.measure.total(objectA, objectB) * speed
-        var speedY = l.measure.y(objectA, objectB) / l.measure.total(objectA, objectB) * speed
+        var speedX = l.measure.x(a, b) / l.measure.total(a, b) * speed
+        var speedY = l.measure.y(a, b) / l.measure.total(a, b) * speed
 
-        if (l.measure.total(objectA, objectB) > 0)
+        if (l.measure.total(a, b) > 0)
         {
-            if (l.entities[objectA].anchor.x < l.entities[objectB].anchor.x && l.entities[objectA].anchor.y < l.entities[objectB].anchor.y)
+            if (l.entities[a].anchor.x < l.entities[b].anchor.x && l.entities[a].anchor.y < l.entities[b].anchor.y)
             {
-                l.move.right(objectA, speedX)
-                l.move.down(objectA, speedY)
+                l.move.right(a, speedX)
+                l.move.down(a, speedY)
             }
-            else if (l.entities[objectA].anchor.x > l.entities[objectB].anchor.x && l.entities[objectA].anchor.y < l.entities[objectB].anchor.y)
+            else if (l.entities[a].anchor.x > l.entities[b].anchor.x && l.entities[a].anchor.y < l.entities[b].anchor.y)
             {
-                l.move.left(objectA, speedX)
-                l.move.down(objectA, speedY)
+                l.move.left(a, speedX)
+                l.move.down(a, speedY)
             }
-            else if (l.entities[objectA].anchor.x < l.entities[objectB].anchor.x && l.entities[objectA].anchor.y > l.entities[objectB].anchor.y)
+            else if (l.entities[a].anchor.x < l.entities[b].anchor.x && l.entities[a].anchor.y > l.entities[b].anchor.y)
             {
-                l.move.right(objectA, speedX)
-                l.move.up(objectA, speedY)
+                l.move.right(a, speedX)
+                l.move.up(a, speedY)
             }
-            else if (l.entities[objectA].anchor.x > l.entities[objectB].anchor.x && l.entities[objectA].anchor.y > l.entities[objectB].anchor.y)
+            else if (l.entities[a].anchor.x > l.entities[b].anchor.x && l.entities[a].anchor.y > l.entities[b].anchor.y)
             {
-                l.move.left(objectA, speedX)
-                l.move.up(objectA, speedY)
+                l.move.left(a, speedX)
+                l.move.up(a, speedY)
             }
         }
     }
@@ -296,7 +296,7 @@ l.move.toward = function(objectA, objectB, speed)
         {
             if (l.entities[thingy[i]].category == name)
             {
-                l.move.toward(thingy[i], objectB, speed)
+                l.move.toward(thingy[i], b, speed)
             }
         }
     }
@@ -304,19 +304,19 @@ l.move.toward = function(objectA, objectB, speed)
 
 l.measure = new Object() // Put the measurement functions into one object
 
-l.measure.x = function(objectA, objectB)
+l.measure.x = function(a, b)
 {
-    return Math.floor(Math.abs(l.entities[objectA].anchor.x - l.entities[objectB].anchor.x))
+    return Math.floor(Math.abs(l.entities[a].anchor.x - l.entities[b].anchor.x))
 }
 
-l.measure.y = function(objectA, objectB)
+l.measure.y = function(a, b)
 {
-    return Math.floor(Math.abs(l.entities[objectA].anchor.y - l.entities[objectB].anchor.y))
+    return Math.floor(Math.abs(l.entities[a].anchor.y - l.entities[b].anchor.y))
 }
 
-l.measure.total = function(objectA, objectB)
+l.measure.total = function(a, b)
 {
-    var x = l.measure.x(objectA, objectB)
-    var y = l.measure.y(objectA, objectB)
+    var x = l.measure.x(a, b)
+    var y = l.measure.y(a, b)
     return Math.floor(Math.sqrt(x * x + y * y))
 }
