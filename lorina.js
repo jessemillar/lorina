@@ -204,18 +204,44 @@ l.tools.random = function(min, max)
     return Math.random() * (max - min) + min
 }
 
-l.count = function(category)
-{
-    var count = 0
-    var thingy = Object.keys(l.entities)
-        
-    for (var i = 0; i < thingy.length; i++)
-    {
-        if (l.entities[thingy[i]].category == category)
-        {
-            count++
-        }
-    }
+l.measure = new Object() // Put the measurement functions into one object
 
-    return count
+l.measure.x = function(a, b)
+{
+    if (l.entities[a] && l.entities[b])
+    {
+        return Math.floor(Math.abs(l.entities[a].anchor.x - l.entities[b].anchor.x))        
+    }
+    else
+    {
+        return Math.floor(Math.abs(l.entities[a].anchor.x - b))
+    }
+}
+
+l.measure.y = function(a, b)
+{
+    if (l.entities[a] && l.entities[b])
+    {
+        return Math.floor(Math.abs(l.entities[a].anchor.y - l.entities[b].anchor.y))
+    }
+    else
+    {
+        return Math.floor(Math.abs(l.entities[a].anchor.y - b))
+    }
+}
+
+l.measure.total = function(a, b, q) // b and q double as x and y
+{
+    if (l.entities[a] && l.entities[b])
+    {
+        var horizontal = l.measure.x(a, b)
+        var vertical = l.measure.y(a, b)
+        return Math.floor(Math.sqrt(horizontal * horizontal + vertical * vertical))
+    }
+    else
+    {
+        var horizontal = l.measure.x(a, b)
+        var vertical = l.measure.y(a, q)
+        return Math.floor(Math.sqrt(horizontal * horizontal + vertical * vertical))
+    }
 }
