@@ -109,6 +109,51 @@ l.physics.push.right = function(name, force)
 
 l.physics.pull = new Object() // Since the .toward() function act more like a gravity pull, put it in this "folder"
 
+l.physics.pull.to = function(name, x, y, force)
+{
+    if (l.entities[name])
+    {
+        var speedX = l.measure.x(name, x) / l.measure.total(name, x, y) * force
+        var speedY = l.measure.y(name, y) / l.measure.total(name, x, y) * force
+
+        if (l.measure.total(name, x, y) > 0)
+        {
+            if (l.entities[name].anchor.x < x && l.entities[name].anchor.y < y)
+            {
+                l.physics.push.right(name, speedX)
+                l.physics.push.down(name, speedY)
+            }
+            else if (l.entities[name].anchor.x > x && l.entities[name].anchor.y < y)
+            {
+                l.physics.push.left(name, speedX)
+                l.physics.push.down(name, speedY)
+            }
+            else if (l.entities[name].anchor.x < x && l.entities[name].anchor.y > y)
+            {
+                l.physics.push.right(name, speedX)
+                l.physics.push.up(name, speedY)
+            }
+            else if (l.entities[name].anchor.x > x && l.entities[name].anchor.y > y)
+            {
+                l.physics.push.left(name, speedX)
+                l.physics.push.up(name, speedY)
+            }
+        }
+    }
+    else
+    {
+        var thingy = Object.keys(l.entities)
+        
+        for (var i = 0; i < thingy.length; i++)
+        {
+            if (l.entities[thingy[i]].category == name)
+            {
+                l.physics.pull.to(thingy[i], x, y, force)
+            }
+        }
+    }
+}
+
 l.physics.pull.toward = function(a, b, force)
 {
     if (l.entities[a])
@@ -146,9 +191,9 @@ l.physics.pull.toward = function(a, b, force)
         
         for (var i = 0; i < thingy.length; i++)
         {
-            if (l.entities[thingy[i]].category == name)
+            if (l.entities[thingy[i]].category == a)
             {
-                l.physics.push.toward(thingy[i], b, force)
+                l.physics.pull.toward(thingy[i], b, force)
             }
         }
     }
@@ -156,6 +201,14 @@ l.physics.pull.toward = function(a, b, force)
 
 l.physics.bounce = function(name, xMin, xMax, yMin, yMax)
 {
+    if (!xMin && !xMax && !yMin && !yMax)
+    {
+        xMin = 0
+        xMax = l.canvas.width
+        yMin = 0
+        yMax = l.canvas.height
+    }
+
     if (l.entities[name])
     {
         if (l.entities[name].x < xMin || l.entities[name].x + l.entities[name].width > xMax)
