@@ -89,22 +89,82 @@ l.physics.push = new Object() // Group the function that apply a push to an obje
 
 l.physics.push.up = function(name, force)
 {
-    l.entities[name].physics.momentum.y -= force
+    if (l.entities[name])
+    {
+        l.entities[name].physics.momentum.y -= force
+    }
+    else
+    {
+        var thingy = Object.keys(l.entities)
+        
+        for (var i = 0; i < thingy.length; i++)
+        {
+            if (l.entities[thingy[i]].category == name)
+            {
+                l.physics.push.up(thingy[i], force)
+            }
+        }
+    }
 }
 
 l.physics.push.down = function(name, force)
 {
-    l.entities[name].physics.momentum.y += force
+    if (l.entities[name])
+    {
+        l.entities[name].physics.momentum.y += force
+    }
+    else
+    {
+        var thingy = Object.keys(l.entities)
+        
+        for (var i = 0; i < thingy.length; i++)
+        {
+            if (l.entities[thingy[i]].category == name)
+            {
+                l.physics.push.down(thingy[i], force)
+            }
+        }
+    }
 }
 
 l.physics.push.left = function(name, force)
 {
-    l.entities[name].physics.momentum.x -= force
+    if (l.entities[name])
+    {
+        l.entities[name].physics.momentum.x -= force
+    }
+    else
+    {
+        var thingy = Object.keys(l.entities)
+        
+        for (var i = 0; i < thingy.length; i++)
+        {
+            if (l.entities[thingy[i]].category == name)
+            {
+                l.physics.push.left(thingy[i], force)
+            }
+        }
+    }
 }
 
 l.physics.push.right = function(name, force)
 {
-    l.entities[name].physics.momentum.x += force
+    if (l.entities[name])
+    {
+        l.entities[name].physics.momentum.x += force
+    }
+    else
+    {
+        var thingy = Object.keys(l.entities)
+        
+        for (var i = 0; i < thingy.length; i++)
+        {
+            if (l.entities[thingy[i]].category == name)
+            {
+                l.physics.push.right(thingy[i], force)
+            }
+        }
+    }
 }
 
 l.physics.pull = new Object() // Since the .toward() function act more like a gravity pull, put it in this "folder"

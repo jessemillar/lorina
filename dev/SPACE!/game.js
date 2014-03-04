@@ -15,7 +15,6 @@ l.object.make('earth', l.canvas.width / 2, l.canvas.height / 2, 125, 125)
 l.object.make('earth2', 150, 150, 125, 125)
 	l.object.sprite('earth2', 'images/earth.png')
 	l.object.anchor('earth2', 125 / 2, 125 / 2)
-	l.object.categorize('earth2', 'planets')
 
 l.object.make('moon', l.canvas.width, l.canvas.height, 85, 85)
 	l.object.sprite('moon', 'images/moon.png')
@@ -54,33 +53,14 @@ function game()
 			l.physics.push.right('earth', 10)
 		}
 
-		l.physics.update('planets')
+		l.physics.update('earth')
 		l.physics.update('moon')
-		l.physics.bounce('earth', 0, l.canvas.width, 0, l.canvas.height)
+		l.physics.bounce('earth')
 		l.physics.pull.toward('moon', 'earth', 25)
 
-		l.entities.camera.color = colorSpace
-		l.collision('moon', 'planets', 'l.entities.camera.color = "#ff0000"')
-		l.collision('moon', 'earth2', 'l.object.delete(b)')
-
-		/*
-		if (l.collision.overlap('earth', 'moon'))
-		{
-			if (l.entities.moon.physics.momentum.total > l.entities.earth.physics.momentum.total)
-			{
-				l.physics.momentum.transfer('moon', 'earth')
-				l.physics.momentum.stop('moon')
-			}
-			else
-			{
-				l.physics.momentum.transfer('earth', 'moon')
-				l.physics.momentum.stop('earth')
-			}
-		}
-		*/
-
 		l.draw.blank()
-		l.draw.object('planets')
-		l.draw.object('moon')
+		l.buffer.object('earth')
+		l.buffer.object('moon')
+		l.draw.objects()
 	}
 }

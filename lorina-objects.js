@@ -2,6 +2,71 @@ l.entities = new Object() // The object that keeps track of our game objects
 
 l.object = new Object() // Group the object functions
 
+l.object.from = function(name, x, y)
+{
+    var count = l.prototype.count(name)
+
+    if (l.prototype.entities[name])
+    {
+        l.entities[name + count] = new Object()
+            l.entities[name + count].prototype = name
+            l.entities[name + count].x = x - l.prototype.entities[name].anchor.offset.x
+            l.entities[name + count].y = y - l.prototype.entities[name].anchor.offset.y
+            l.entities[name + count].width = l.prototype.entities[name].width
+            l.entities[name + count].height = l.prototype.entities[name].height
+            l.entities[name + count].bounding = new Object()
+                l.entities[name + count].bounding.x = x
+                l.entities[name + count].bounding.y = y
+                l.entities[name + count].bounding.offset = new Object()
+                    l.entities[name + count].bounding.offset.x = l.prototype.entities[name].bounding.offset.x
+                    l.entities[name + count].bounding.offset.y = l.prototype.entities[name].bounding.offset.y
+                l.entities[name + count].bounding.width = l.prototype.entities[name].width
+                l.entities[name + count].bounding.height = l.prototype.entities[name].height
+            l.entities[name + count].anchor = new Object()
+                l.entities[name + count].anchor.offset = new Object()
+                    l.entities[name + count].anchor.offset.x = l.prototype.entities[name].anchor.offset.x
+                    l.entities[name + count].anchor.offset.y = l.prototype.entities[name].anchor.offset.y
+                l.entities[name + count].anchor.x = x
+                l.entities[name + count].anchor.y = y
+            l.entities[name + count].physics = new Object()
+                l.entities[name + count].physics.momentum = new Object()
+                    l.entities[name + count].physics.momentum.x = l.prototype.entities[name].physics.momentum.x
+                    l.entities[name + count].physics.momentum.y = l.prototype.entities[name].physics.momentum.y
+                    l.entities[name + count].physics.momentum.total = l.prototype.entities[name].physics.momentum.total
+        
+        if (l.prototype.entities[name].category)
+        {
+            l.entities[name + count].category = l.prototype.entities[name].category
+        }
+
+        if (l.prototype.entities[name].sprite)
+        {
+            l.entities[name + count].sprite = l.prototype.entities[name].sprite
+        }
+
+        if (l.prototype.entities[name].animate)
+        {
+            l.entities[name + count].animate = l.prototype.entities[name].animate
+        }
+    }
+}
+
+l.object.count = function(name)
+{
+    var thingy = Object.keys(l.entities)
+    var count = 0
+        
+    for (var i = 0; i < thingy.length; i++)
+    {
+        if (l.entities[thingy[i]].category == name)
+        {
+            count++
+        }
+    }
+
+    return count
+}
+
 l.object.delete = function(name)
 {
     delete l.entities[name]
@@ -9,16 +74,6 @@ l.object.delete = function(name)
 
 l.object.make = function(name, x, y, width, height)
 {
-    // Make it okay to make an object that's just a point
-    if (!width)
-    {
-        width = 0
-    }
-    if (!height)
-    {
-        height = 0
-    }
-
     l.entities[name] = new Object()
         l.entities[name].x = x
         l.entities[name].y = y
