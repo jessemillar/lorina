@@ -77,11 +77,11 @@ l.object.sprite = function(name, location, width, height, count, timer)
             if (count)
             {
                 l.entities[name].animate.count = count
+                l.entities[name].animate.frame = 0
             }
 
             if (timer)
             {
-                l.entities[name].animate.frame = 0
                 l.entities[name].animate.interval = l.object.animate(name, timer)
             }
     l.entities[name].sprite.onload = function()
