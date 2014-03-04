@@ -81,27 +81,12 @@ l.prototype.sprite = function(name, location, width, height, count, timer)
 
             if (timer)
             {
-                l.prototype.entities[name].animate.interval = l.prototype.entities.animate(name, timer)
+                l.prototype.entities[name].animate.timer = timer
             }
     l.prototype.entities[name].sprite.onload = function()
     {
         l.preloader.update()
     }
-}
-
-l.prototype.animate = function(name, timer)
-{
-    setInterval(function()
-    {
-        if (l.prototype.entities[name].animate.frame < l.prototype.entities[name].animate.count - 1)
-        {
-            l.prototype.entities[name].animate.frame += 1
-        }
-        else
-        {
-            l.prototype.entities[name].animate.frame = 0
-        }
-    }, timer)
 }
 
 l.prototype.anchor = function(name, x, y)

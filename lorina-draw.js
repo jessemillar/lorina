@@ -61,7 +61,7 @@ l.draw.rectangle = function(x, y, width, height, color, opacity) // ONLY for deb
 
 l.draw.objects = function()
 {
-    l.buffer.database.sort(function(a, b) // Order the zombies that are in our sights according to distance
+    l.buffer.database.sort(function(a, b) // Sort the database for z-indexing
     {
         return a.y - b.y
     })
@@ -89,7 +89,7 @@ l.draw.objects = function()
                     l.ctx.translate(Math.round(l.entities[l.buffer.database[i].name].x + l.entities[l.buffer.database[i].name].width - l.entities.camera.x), Math.round(l.entities[l.buffer.database[i].name].y + l.entities[l.buffer.database[i].name].height - l.entities.camera.y))
                     l.ctx.scale(-1, -1)
                 }
-                    
+
                 if (l.entities[l.buffer.database[i].name].animate.count)
                 {
                     l.ctx.drawImage(l.entities[l.buffer.database[i].name].sprite, l.entities[l.buffer.database[i].name].animate.frame * (l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count), 0, l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count, l.entities[l.buffer.database[i].name].animate.height, 0, 0, l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count, l.entities[l.buffer.database[i].name].animate.height)

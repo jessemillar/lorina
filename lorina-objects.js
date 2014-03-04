@@ -41,12 +41,21 @@ l.object.from = function(name, x, y)
 
         if (l.prototype.entities[name].sprite)
         {
+            console.log('Adding image', l.prototype.entities[name].sprite)
             l.entities[name + count].sprite = l.prototype.entities[name].sprite
         }
 
         if (l.prototype.entities[name].animate)
         {
-            l.entities[name + count].animate = l.prototype.entities[name].animate
+            l.entities[name + count].animate = new Object()
+                l.entities[name + count].animate.width = l.prototype.entities[name].animate.width
+                l.entities[name + count].animate.height = l.prototype.entities[name].animate.height
+                l.entities[name + count].animate.count = l.prototype.entities[name].animate.count
+                l.entities[name + count].animate.frame = l.prototype.entities[name].animate.frame
+                if (l.prototype.entities[name].animate.timer)
+                {
+                    l.prototype.entities[name].animate.interval = l.object.animate(name, timer)
+                }
         }
     }
 }
