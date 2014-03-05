@@ -2,22 +2,6 @@ l.prototype = new Object() // Group the object functions
 
 l.prototype.entities = new Object() // The object that keeps track of our game objects
 
-l.prototype.count = function(name) // Looks for existing objects made from a prototype
-{
-    var thingy = Object.keys(l.entities)
-    var count = 0
-        
-    for (var i = 0; i < thingy.length; i++)
-    {
-        if (l.entities[thingy[i]].prototype == name)
-        {
-            count++
-        }
-    }
-
-    return count
-}
-
 l.prototype.make = function(name, width, height)
 {
     l.prototype.entities[name] = new Object()

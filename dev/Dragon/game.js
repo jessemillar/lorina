@@ -246,17 +246,18 @@ function game()
 		l.draw.rectangle(0, yGrass, l.canvas.width, yDarkerGrass - yGrass, colorGreen) // Grass
 		l.draw.rectangle(0, yDarkerGrass, l.canvas.width, yDirt - yDarkerGrass, colorGreenDark) // Darker grass
 		l.draw.rectangle(0, yDirt, l.canvas.width, l.canvas.height - yDirt, colorBrown) // Dirt
-		l.draw.object('missile')
+		
 		if (dragonDirection == 'right')
 		{
-			l.draw.object('dragon')
+			l.buffer.object('dragon')
 		}
 		else
 		{
-			l.draw.object('dragon', 'horizontal')
+			l.buffer.object('dragon', 'horizontal')
 		}
+		l.buffer.object('missile')
 
-		l.draw.object('enemies')
+		l.draw.objects()
 
 		l.text.write('Score: ' + score, 10, 18, '#ffffff', 'hud')
 

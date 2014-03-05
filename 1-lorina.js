@@ -197,16 +197,50 @@ l.camera.shake = function(shakes, duration, severity)
     }, duration)
 }
 
-l.tools = new Object() // Group the tool functions
+l.tool = new Object() // Group the tool functions
 
-l.tools.random = function(min, max)
+l.tool.random = function(min, max)
 {
     return Math.random() * (max - min) + min
 }
 
-l.measure = new Object() // Put the measurement functions into one object
+l.tool.count = new Object() // Group the counting functions
 
-l.measure.x = function(a, b)
+l.tool.count.prototype = function(name) // We give objects created from prototypes a special "category" that allows us to use this function to search for them even if they're not categorized (used for the engine)
+{
+    var thingy = Object.keys(l.entities)
+    var count = 0
+        
+    for (var i = 0; i < thingy.length; i++)
+    {
+        if (l.entities[thingy[i]].prototype == name)
+        {
+            count++
+        }
+    }
+
+    return count
+}
+
+l.tool.count.category = function(name)
+{
+    var thingy = Object.keys(l.entities)
+    var count = 0
+        
+    for (var i = 0; i < thingy.length; i++)
+    {
+        if (l.entities[thingy[i]].category == name)
+        {
+            count++
+        }
+    }
+
+    return count
+}
+
+l.tool.measure = new Object() // Put the measurement functions into one object
+
+l.tool.measure.x = function(a, b)
 {
     if (l.entities[a] && l.entities[b])
     {
@@ -218,7 +252,7 @@ l.measure.x = function(a, b)
     }
 }
 
-l.measure.y = function(a, b)
+l.tool.measure.y = function(a, b)
 {
     if (l.entities[a] && l.entities[b])
     {
@@ -230,18 +264,18 @@ l.measure.y = function(a, b)
     }
 }
 
-l.measure.total = function(a, b, q) // b and q double as x and y
+l.tool.measure.total = function(a, b, q) // b and q double as x and y
 {
     if (l.entities[a] && l.entities[b])
     {
-        var horizontal = l.measure.x(a, b)
-        var vertical = l.measure.y(a, b)
+        var horizontal = l.tool.measure.x(a, b)
+        var vertical = l.tool.measure.y(a, b)
         return Math.floor(Math.sqrt(horizontal * horizontal + vertical * vertical))
     }
     else
     {
-        var horizontal = l.measure.x(a, b)
-        var vertical = l.measure.y(a, q)
+        var horizontal = l.tool.measure.x(a, b)
+        var vertical = l.tool.measure.y(a, q)
         return Math.floor(Math.sqrt(horizontal * horizontal + vertical * vertical))
     }
 }

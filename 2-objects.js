@@ -2,10 +2,17 @@ l.entities = new Object() // The object that keeps track of our game objects
 
 l.object = new Object() // Group the object functions
 
+l.object.latest = new Object() // Keep track of the "index" for each prototype we use to bring an object into the world
+
 l.object.from = function(name, x, y)
 {
-    var count = l.prototype.count(name)
-    console.log(name + count)
+    if (!l.object.latest[name])
+    {
+        l.object.latest[name] = 0
+    }
+
+    var count = l.object.latest[name] + 1
+    l.object.latest[name] = count // Save the "index" of the latest prototype to the engine
 
     if (l.prototype.entities[name])
     {
@@ -58,22 +65,6 @@ l.object.from = function(name, x, y)
                 }
         }
     }
-}
-
-l.object.count = function(name)
-{
-    var thingy = Object.keys(l.entities)
-    var count = 0
-        
-    for (var i = 0; i < thingy.length; i++)
-    {
-        if (l.entities[thingy[i]].category == name)
-        {
-            count++
-        }
-    }
-
-    return count
 }
 
 l.object.delete = function(name)

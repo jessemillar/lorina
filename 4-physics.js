@@ -75,8 +75,23 @@ l.physics.momentum = new Object() // Group the momentum functions
 
 l.physics.momentum.stop = function(name)
 {
-    l.entities[name].physics.momentum.x = 0
-    l.entities[name].physics.momentum.y = 0
+    if (l.entities[name])
+    {
+        l.entities[name].physics.momentum.x = 0
+        l.entities[name].physics.momentum.y = 0
+    }
+    else
+    {
+        var thingy = Object.keys(l.entities)
+        
+        for (var i = 0; i < thingy.length; i++)
+        {
+            if (l.entities[thingy[i]].category == name)
+            {
+                l.physics.momentum.stop(thingy[i])
+            }
+        }
+    }
 }
 
 l.physics.momentum.transfer = function(a, b)
@@ -173,10 +188,10 @@ l.physics.pull.to = function(name, x, y, force)
 {
     if (l.entities[name])
     {
-        var speedX = l.measure.x(name, x) / l.measure.total(name, x, y) * force
-        var speedY = l.measure.y(name, y) / l.measure.total(name, x, y) * force
+        var speedX = l.tool.measure.x(name, x) / l.tool.measure.total(name, x, y) * force
+        var speedY = l.tool.measure.y(name, y) / l.tool.measure.total(name, x, y) * force
 
-        if (l.measure.total(name, x, y) > 0)
+        if (l.tool.measure.total(name, x, y) > 0)
         {
             if (l.entities[name].anchor.x < x && l.entities[name].anchor.y < y)
             {
@@ -218,10 +233,10 @@ l.physics.pull.toward = function(a, b, force)
 {
     if (l.entities[a])
     {
-        var speedX = l.measure.x(a, b) / l.measure.total(a, b) * force
-        var speedY = l.measure.y(a, b) / l.measure.total(a, b) * force
+        var speedX = l.tool.measure.x(a, b) / l.tool.measure.total(a, b) * force
+        var speedY = l.tool.measure.y(a, b) / l.tool.measure.total(a, b) * force
 
-        if (l.measure.total(a, b) > 0)
+        if (l.tool.measure.total(a, b) > 0)
         {
             if (l.entities[a].anchor.x < l.entities[b].anchor.x && l.entities[a].anchor.y < l.entities[b].anchor.y)
             {

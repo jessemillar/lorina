@@ -126,10 +126,10 @@ l.move.to = function(name, x, y, speed)
 {
     if (l.entities[name])
     {
-        var speedX = l.measure.x(name, x) / l.measure.total(name, x, y) * speed
-        var speedY = l.measure.y(name, y) / l.measure.total(name, x, y) * speed
+        var speedX = l.tool.measure.x(name, x) / l.tool.measure.total(name, x, y) * speed
+        var speedY = l.tool.measure.y(name, y) / l.tool.measure.total(name, x, y) * speed
 
-        if (l.measure.total(name, x, y) > 0)
+        if (l.tool.measure.total(name, x, y) > 0)
         {
             if (l.entities[name].anchor.x < x && l.entities[name].anchor.y < y)
             {
@@ -171,10 +171,10 @@ l.move.toward = function(a, b, speed)
 {
     if (l.entities[a])
     {
-        var speedX = l.measure.x(a, b) / l.measure.total(a, b) * speed
-        var speedY = l.measure.y(a, b) / l.measure.total(a, b) * speed
+        var speedX = l.tool.measure.x(a, b) / l.tool.measure.total(a, b) * speed
+        var speedY = l.tool.measure.y(a, b) / l.tool.measure.total(a, b) * speed
 
-        if (l.measure.total(a, b) > 0)
+        if (l.tool.measure.total(a, b) > 0)
         {
             if (l.entities[a].anchor.x < l.entities[b].anchor.x && l.entities[a].anchor.y < l.entities[b].anchor.y)
             {
