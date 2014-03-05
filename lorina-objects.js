@@ -5,6 +5,7 @@ l.object = new Object() // Group the object functions
 l.object.from = function(name, x, y)
 {
     var count = l.prototype.count(name)
+    console.log(name + count)
 
     if (l.prototype.entities[name])
     {

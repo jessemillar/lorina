@@ -2,7 +2,7 @@ l.prototype = new Object() // Group the object functions
 
 l.prototype.entities = new Object() // The object that keeps track of our game objects
 
-l.prototype.count = function(name)
+l.prototype.count = function(name) // Looks for existing objects made from a prototype
 {
     var thingy = Object.keys(l.entities)
     var count = 0
