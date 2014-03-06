@@ -166,3 +166,17 @@ l.keyboard.cancel = function(event)
         l.keyboard.right = false
     }
 }
+
+l.keyboard.clear = function()
+{
+    l.keyboard.escape = false
+    l.keyboard.space = false
+    l.keyboard.enter = false
+    l.keyboard.shift = false
+    l.keyboard.a = false
+    l.keyboard.s = false
+    l.keyboard.up = false
+    l.keyboard.down = false
+    l.keyboard.left = false
+    l.keyboard.right = false
+}

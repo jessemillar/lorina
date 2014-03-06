@@ -15,14 +15,15 @@ var playerSpeed = 7
 var playerDirection = 'right'
 var bulletForce = 1000
 var gibletForce = 100
+var gibletLife = 7500
 var canShoot = true
 var timeShoot = 250
 var canEmpty = true
 var timeEmpty = 150
-var respawnForce = 250
+var respawnForce = 300
 var zombieCount = l.canvas.width / 25
 var zombieSpeed = playerSpeed / 2
-var zombieVisionDistance = l.canvas.width / 4
+var zombieVisionDistance = l.canvas.width / 5
 var allowedBullets = 3
 var spawned = false
 
@@ -71,6 +72,7 @@ var scoreInterval = setInterval(function()
 						if (l.game.state == 'running')
 						{
 							seconds++
+							spawnZombie()
 						}
 					}, 1000)
 
@@ -215,7 +217,7 @@ function game()
 
 		l.collision('bullets', 'zombies', 'killZombie(a, b)')
 
-		l.collision('player', 'zombies', 'gameover()')
+		// l.collision('player', 'zombies', 'gameover()')
 
 		l.physics.update('player')
 		l.physics.update('bullets')
@@ -236,7 +238,7 @@ function game()
 		l.buffer.object('bullets')
 		l.draw.objects()
 
-		l.text.write(score, 10, l.entities.camera.height - 10, '#ffffff', 'hud')
+		l.text.write(seconds, 10, l.entities.camera.height - 10, '#ffffff', 'hud')
 	}
 	else if (l.game.state == 'gameover')
 	{
@@ -250,6 +252,7 @@ function game()
 			seconds = 0
 			killed = 0
 			score = 0
+			l.keyboard.clear()
 			l.game.state = 'running'
 		}
 
@@ -279,6 +282,36 @@ function game()
 	}
 }
 
+function spawnZombie()
+{
+	var direction = Math.round(l.tool.random(0, 3))
+
+	if (direction == 0)
+	{
+		l.object.from('zombie', l.tool.random(20, l.canvas.width - 20), 20)
+		l.physics.push.down('zombie' + l.object.latest.zombie, respawnForce)
+		l.physics.push.right('zombie' + l.object.latest.zombie, l.tool.random(-respawnForce, respawnForce))	
+	}
+	else if (direction == 1)
+	{
+		l.object.from('zombie', l.tool.random(20, l.canvas.width - 20), l.canvas.height)
+		l.physics.push.up('zombie' + l.object.latest.zombie, respawnForce)
+		l.physics.push.right('zombie' + l.object.latest.zombie, l.tool.random(-respawnForce, respawnForce))
+	}
+	else if (direction == 2)
+	{
+		l.object.from('zombie', 10, l.tool.random(20, l.canvas.height - 20))
+		l.physics.push.right('zombie' + l.object.latest.zombie, respawnForce)
+		l.physics.push.up('zombie' + l.object.latest.zombie, l.tool.random(-respawnForce, respawnForce))
+	}
+	else if (direction == 3)
+	{
+		l.object.from('zombie', l.canvas.width - 10, l.tool.random(20, l.canvas.height - 20))
+		l.physics.push.left('zombie' + l.object.latest.zombie, respawnForce)
+		l.physics.push.up('zombie' + l.object.latest.zombie, l.tool.random(-respawnForce, respawnForce))
+	}
+}
+
 function killZombie(bullet, zombie)
 {
 	l.audio.rewind('kill')
@@ -292,36 +325,20 @@ function killZombie(bullet, zombie)
 		l.object.from('giblet', l.entities[zombie].anchor.x, l.entities[zombie].anchor.y)
 
 		l.physics.scatter('giblet' + l.object.latest.giblet, gibletForce)
+		killGiblet('giblet' + l.object.latest.giblet, l.tool.random(gibletLife / 2, gibletLife))
 	}
 
-	var direction = Math.round(l.tool.random(0, 3))
-
-	if (direction == 0)
-	{
-		l.object.from('zombie', l.canvas.width / 2, 20)
-		l.physics.push.down('zombie' + l.object.latest.zombie, respawnForce)
-		l.physics.push.right('zombie' + l.object.latest.zombie, l.tool.random(-respawnForce, respawnForce))	
-	}
-	else if (direction == 1)
-	{
-		l.object.from('zombie', l.canvas.width / 2, l.canvas.height)
-		l.physics.push.up('zombie' + l.object.latest.zombie, respawnForce)
-		l.physics.push.right('zombie' + l.object.latest.zombie, l.tool.random(-respawnForce, respawnForce))
-	}
-	else if (direction == 2)
-	{
-		l.object.from('zombie', 10, l.canvas.height / 2)
-		l.physics.push.right('zombie' + l.object.latest.zombie, respawnForce)
-		l.physics.push.up('zombie' + l.object.latest.zombie, l.tool.random(-respawnForce, respawnForce))
-	}
-	else if (direction == 3)
-	{
-		l.object.from('zombie', l.canvas.width - 10, l.canvas.height / 2)
-		l.physics.push.left('zombie' + l.object.latest.zombie, respawnForce)
-		l.physics.push.up('zombie' + l.object.latest.zombie, l.tool.random(-respawnForce, respawnForce))
-	}
+	spawnZombie()
 	
 	l.object.delete(zombie)
+}
+
+function killGiblet(giblet, time)
+{
+	setTimeout(function()
+	{
+		l.object.delete(giblet)
+	}, time)
 }
 
 function gameover()
@@ -344,7 +361,7 @@ function gameover()
 		{
 			newHighscore = true
 			highscore = score
-			localStorage.setItem('name', prompt('New high score!', 'Name'))
+			localStorage.setItem('name', prompt('New high score!', ''))
 			localStorage.setItem('highscore', highscore)
 		}
 		else
