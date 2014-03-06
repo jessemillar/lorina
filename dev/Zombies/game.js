@@ -10,31 +10,36 @@ l.canvas.height = l.canvas.height * 2
 
 l.physics.friction(2)
 
+var safeZone = 100
 var playerSpeed = 7
 var playerDirection = 'right'
 var bulletSpeed = 1000
+var gibletSpeed = 100
 var canShoot = true
 var timeShoot = 250
-var zombieCount = 150
+var zombieCount = l.canvas.width / 20
 var zombieSpeed = playerSpeed / 2
-var zombieVisionDistance = 500
+var zombieVisionDistance = l.entities.camera.height
 var score = 0
-var scoreTime = 100
+var allowedBullets = 3
+var spawned = false
 
 l.object.make('player', l.canvas.width / 2, l.canvas.height / 2, 20, 20)
 	l.object.sprite('player', 'images/player.png')
+	l.object.anchor('player', 10, 20)
 
 l.prototype.make('zombie', 20, 20)
 	l.prototype.sprite('zombie', 'images/zombie.png')
 	l.prototype.categorize('zombie', 'zombies')
+	l.prototype.anchor('zombie', 10, 20)
 
 l.prototype.make('bullet', 5, 5)
 	l.prototype.sprite('bullet', 'images/bullet.png')
 	l.prototype.categorize('bullet', 'bullets')
 
-l.prototype.make('blood', 5, 5)
-	l.prototype.sprite('blood', 'images/blood.png')
-	l.prototype.categorize('blood', 'bloods')
+l.prototype.make('giblet', 5, 5)
+	l.prototype.sprite('giblet', 'images/giblet.png')
+	l.prototype.categorize('giblet', 'giblets')
 
 l.game.start()
 
@@ -44,7 +49,7 @@ var scoreInterval = setInterval(function()
 						{
 							score++
 						}
-					}, scoreTime)
+					}, 1000)
 
 function game()
 {
@@ -55,12 +60,13 @@ function game()
 	}
 	else if (l.game.state == 'menu')
 	{
-		for (var i = 0; i < zombieCount; i++)
+		if (l.keyboard.enter)
 		{
-			l.object.from('zombie', l.tool.random(0, l.canvas.width), l.tool.random(0, l.canvas.height))
+			l.game.state = 'running'
 		}
 
-		l.game.state = 'running'
+		l.draw.blank()
+		l.text.write('Press "Enter" to start', 10, l.entities.camera.height - 10, '#ffffff')
 	}
 	else if (l.game.state == 'paused')
 	{
@@ -76,6 +82,24 @@ function game()
 	}
 	else if (l.game.state == 'running')
 	{
+		if (l.tool.count.category('zombies') == 0)
+		{
+			for (var i = 0; i < zombieCount; i++)
+			{
+				l.object.from('zombie', l.tool.random(0, l.canvas.width), l.tool.random(0, l.canvas.height))
+			}
+
+			for (var i = 0; i < zombieCount; i++)
+			{
+				if (l.tool.measure.total('player', 'zombie' + i) < safeZone)
+				{
+					l.move.snap('zombie' + i, 20, 20)
+				}
+			}
+
+			spawned = true
+		}
+
 		if (l.keyboard.escape)
 		{
 			l.game.state = 'paused'
@@ -105,9 +129,9 @@ function game()
 
 		if (l.keyboard.space)
 		{
-			if (canShoot)
+			if (canShoot && l.tool.count.category('bullets') < allowedBullets)
 			{
-				l.object.from('bullet', l.entities.player.anchor.x, l.entities.player.anchor.y)
+				l.object.from('bullet', l.entities.player.anchor.x, l.entities.player.anchor.y - 10)
 				if (playerDirection == 'up')
 				{
 					l.physics.push.up('bullet' + l.object.latest.bullet, bulletSpeed)
@@ -134,43 +158,52 @@ function game()
 			}
 		}
 
-		for (var i = 0; i < l.tool.count.category('zombies'); i++)
+		var thingy = Object.keys(l.entities)
+
+		for (var i = 0; i < thingy.length; i++)
 		{
-			if (l.tool.measure.total('player', 'zombie' + i) < zombieVisionDistance)
+			if (l.entities[thingy[i]].category == 'zombies')
 			{
-				l.physics.pull.toward('zombie' + i, 'player', zombieSpeed)
+				if (l.tool.measure.total('player', thingy[i]) < zombieVisionDistance)
+				{
+					l.physics.pull.toward(thingy[i], 'player', zombieSpeed)
+				}
 			}
 		}
 
-		l.collision('bullets', 'zombies', 'l.object.delete(a); l.object.delete(b)')
+		l.collision('bullets', 'zombies', 'killZombie(a, b)')
 
-		// l.collision('player', 'zombies', 'l.game.state = "gameover"')
+		l.collision('player', 'zombies', 'l.game.state = "gameover"')
 
 		l.physics.update('player')
 		l.physics.update('bullets')
 		l.physics.update('zombies')
+		l.physics.update('giblets')
 
 		l.physics.bounce('player')
 		l.physics.bounce('bullets')
 		l.physics.bounce('zombies')
+		l.physics.bounce('giblets')
 
 		l.camera.follow('player', 50, 50)
 
 		l.draw.blank()
 		l.buffer.object('player')
 		l.buffer.object('zombies')
+		l.buffer.object('giblets')
 		l.buffer.object('bullets')
 		l.draw.objects()
 
-		l.text.write('SCORE: ' + score, 10, l.entities.camera.height - 10, '#ffffff', 'hud')
+		l.text.write(score, 10, l.entities.camera.height - 10, '#ffffff', 'hud')
 	}
 	else if (l.game.state == 'gameover')
 	{
 		if (l.keyboard.enter)
 		{
 			l.physics.momentum.stop('player')
-			l.physics.momentum.stop('zombies')
-			l.physics.momentum.stop('bullets')
+			l.object.delete('bullets')
+			l.object.delete('zombies')
+			l.object.delete('giblets')
 			l.move.snap('player', l.canvas.width / 2, l.canvas.height / 2)
 			score = 0
 			l.game.state = 'running'
@@ -179,7 +212,20 @@ function game()
 		l.camera.reset()
 
 		l.draw.blank(colorGround)
-		l.text.write('SCORE: ' + score, 10, 20, '#ffffff')
+		l.text.write('You survived for ' + score + ' seconds', 10, 20, '#ffffff')
 		l.text.write('GAMEOVER - Press "Enter" to retry', 10, l.entities.camera.height - 10, '#ffffff')
 	}
+}
+
+function killZombie(bullet, zombie)
+{
+	l.object.delete(bullet)
+	for (var i = 0; i < 8; i++)
+	{
+		l.object.from('giblet', l.entities[zombie].anchor.x, l.entities[zombie].anchor.y)
+
+		l.physics.push.up('giblet' + l.object.latest.giblet, l.tool.random(-gibletSpeed, gibletSpeed))
+		l.physics.push.right('giblet' + l.object.latest.giblet, l.tool.random(-gibletSpeed, gibletSpeed))
+	}
+	l.object.delete(zombie)
 }

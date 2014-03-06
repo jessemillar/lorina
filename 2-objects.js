@@ -69,7 +69,22 @@ l.object.from = function(name, x, y)
 
 l.object.delete = function(name)
 {
-    delete l.entities[name]
+    if (l.entities[name])
+    {
+        delete l.entities[name]
+    }
+    else
+    {
+        var thingy = Object.keys(l.entities)
+        
+        for (var i = 0; i < thingy.length; i++)
+        {
+            if (l.entities[thingy[i]].category == name)
+            {
+                l.object.delete(thingy[i])
+            }
+        }
+    }
 }
 
 l.object.make = function(name, x, y, width, height)
