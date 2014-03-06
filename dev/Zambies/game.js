@@ -256,11 +256,11 @@ function game()
 		l.draw.blank(colorGround)
 		if (seconds < 60)
 		{
-			l.text.write('You survived for ' + seconds + ' seconds and killed ' + killed + ' zombies for a score of ' + score, 10, 20, '#ffffff')
+			l.text.write('You survived for ' + seconds + ' seconds and killed ' + killed + ' zombies for a score of ' + score + ' points', 10, 20, '#ffffff')
 		}
 		else
 		{
-			l.text.write('You survived for ' + seconds / 60 + ' minutes and killed ' + killed + ' zombies for a score of ' + score, 10, 20, '#ffffff')
+			l.text.write('You survived for ' + seconds / 60 + ' minutes and killed ' + killed + ' zombies for a score of ' + score + ' points', 10, 20, '#ffffff')
 		}
 		if (newHighscore)
 		{
@@ -268,7 +268,7 @@ function game()
 		}
 		else
 		{
-			l.text.write('Highscore: ' + highscore, 10, 35, '#ffffff')
+			l.text.write(localStorage.getItem('name') + ' holds the local highscore with ' + highscore + ' points', 10, 35, '#ffffff')
 		}
 		l.text.write('GAMEOVER - Press "Enter" to retry', 10, l.entities.camera.height - 10, '#ffffff')
 	}
@@ -339,6 +339,7 @@ function gameover()
 		{
 			newHighscore = true
 			highscore = score
+			localStorage.setItem('name', prompt('New high score!', 'Name'))
 			localStorage.setItem('highscore', highscore)
 		}
 		else
