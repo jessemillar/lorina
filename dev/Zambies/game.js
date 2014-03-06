@@ -247,6 +247,8 @@ function game()
 			l.object.delete('zombies')
 			l.object.delete('giblets')
 			l.move.snap('player', l.canvas.width / 2, l.canvas.height / 2)
+			seconds = 0
+			killed = 0
 			score = 0
 			l.game.state = 'running'
 		}
@@ -262,13 +264,16 @@ function game()
 		{
 			l.text.write('You survived for ' + seconds / 60 + ' minutes and killed ' + killed + ' zombies for a score of ' + score + ' points', 10, 20, '#ffffff')
 		}
-		if (newHighscore)
+		if (localStorage.getItem('name'))
 		{
-			l.text.write('! ! ! NEW HIGH SCORE ! ! !', 10, 35, '#ffffff')
-		}
-		else
-		{
-			l.text.write(localStorage.getItem('name') + ' holds the local highscore with ' + highscore + ' points', 10, 35, '#ffffff')
+			if (newHighscore)
+			{
+				l.text.write('! ! ! NEW HIGH SCORE ! ! !', 10, 35, '#ffffff')
+			}
+			else
+			{
+				l.text.write(localStorage.getItem('name') + ' holds the local highscore with ' + localStorage.getItem('highscore') + ' points', 10, 35, '#ffffff')
+			}
 		}
 		l.text.write('GAMEOVER - Press "Enter" to retry', 10, l.entities.camera.height - 10, '#ffffff')
 	}
