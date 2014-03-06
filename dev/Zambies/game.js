@@ -10,23 +10,39 @@ l.canvas.height = l.canvas.height * 2
 
 l.physics.friction(2)
 
-var safeZone = 100
+var safeZone = 150
 var playerSpeed = 7
 var playerDirection = 'right'
-var bulletSpeed = 1000
-var gibletSpeed = 100
+var bulletForce = 1000
+var gibletForce = 100
 var canShoot = true
 var timeShoot = 250
+var canEmpty = true
+var timeEmpty = 150
+var respawnForce = 250
 var zombieCount = l.canvas.width / 25
 var zombieSpeed = playerSpeed / 2
-var zombieVisionDistance = l.entities.camera.height
-var score = 0
+var zombieVisionDistance = l.canvas.width / 4
 var allowedBullets = 3
 var spawned = false
 
+var seconds = 0
+var killed = 0
+var score = 0
+var newHighscore = false
+
+if (localStorage.getItem('highscore'))
+{
+	var highscore = localStorage.getItem('highscore')
+}
+else
+{
+	var highscore = 0
+}
 
 l.audio.make('song', 'sounds/song.wav')
 l.audio.make('bounce', 'sounds/bounce.wav')
+l.audio.make('empty', 'sounds/empty.wav')
 l.audio.make('gameover', 'sounds/gameover.wav')
 l.audio.make('kill', 'sounds/kill.wav')
 l.audio.make('shoot', 'sounds/shoot.wav')
@@ -54,7 +70,7 @@ var scoreInterval = setInterval(function()
 					{
 						if (l.game.state == 'running')
 						{
-							score++
+							seconds++
 						}
 					}, 1000)
 
@@ -99,9 +115,9 @@ function game()
 
 			for (var i = 0; i < zombieCount; i++)
 			{
-				if (l.tool.measure.total('player', 'zombie' + i) < safeZone)
+				if (l.tool.measure.total('player', 'zombie' + (Math.round(l.object.latest.zombie - zombieCount) + i)) < safeZone)
 				{
-					l.move.snap('zombie' + i, 20, 20)
+					l.move.snap('zombie' + (Math.round(l.object.latest.zombie - zombieCount) + i), 20, 20)
 				}
 			}
 
@@ -137,35 +153,50 @@ function game()
 
 		if (l.keyboard.space)
 		{
-			if (canShoot && l.tool.count.category('bullets') < allowedBullets)
+			if (canShoot)
 			{
-				l.audio.rewind('shoot')
-				l.audio.play('shoot')
+				if (l.tool.count.category('bullets') < allowedBullets)
+				{
+					l.audio.rewind('shoot')
+					l.audio.play('shoot')
 
-				l.object.from('bullet', l.entities.player.anchor.x, l.entities.player.anchor.y - 10)
-				if (playerDirection == 'up')
-				{
-					l.physics.push.up('bullet' + l.object.latest.bullet, bulletSpeed)
-				}
-				else if (playerDirection == 'down')
-				{
-					l.physics.push.down('bullet' + l.object.latest.bullet, bulletSpeed)
-				}
-				else if (playerDirection == 'left')
-				{
-					l.physics.push.left('bullet' + l.object.latest.bullet, bulletSpeed)
-				}
-				else if (playerDirection == 'right')
-				{
-					l.physics.push.right('bullet' + l.object.latest.bullet, bulletSpeed)
-				}
+					l.object.from('bullet', l.entities.player.anchor.x, l.entities.player.anchor.y - 10)
+					if (playerDirection == 'up')
+					{
+						l.physics.push.up('bullet' + l.object.latest.bullet, bulletForce)
+					}
+					else if (playerDirection == 'down')
+					{
+						l.physics.push.down('bullet' + l.object.latest.bullet, bulletForce)
+					}
+					else if (playerDirection == 'left')
+					{
+						l.physics.push.left('bullet' + l.object.latest.bullet, bulletForce)
+					}
+					else if (playerDirection == 'right')
+					{
+						l.physics.push.right('bullet' + l.object.latest.bullet, bulletForce)
+					}
 
-				canShoot = false
+					canShoot = false
 
-				setTimeout(function()
+					setTimeout(function()
+					{
+						canShoot = true
+					}, timeShoot)
+				}
+				else if (canEmpty)
 				{
-					canShoot = true
-				}, timeShoot)
+					l.audio.rewind('empty')
+					l.audio.play('empty')
+
+					canEmpty = false
+
+					setTimeout(function()
+					{
+						canEmpty = true
+					}, timeEmpty)
+				}
 			}
 		}
 
@@ -184,7 +215,7 @@ function game()
 
 		l.collision('bullets', 'zombies', 'killZombie(a, b)')
 
-		l.collision('player', 'zombies', 'l.game.state = "gameover"; l.audio.rewind("gameover"); l.audio.play("gameover")')
+		l.collision('player', 'zombies', 'gameover()')
 
 		l.physics.update('player')
 		l.physics.update('bullets')
@@ -223,7 +254,22 @@ function game()
 		l.camera.reset()
 
 		l.draw.blank(colorGround)
-		l.text.write('You survived for ' + score + ' seconds', 10, 20, '#ffffff')
+		if (seconds < 60)
+		{
+			l.text.write('You survived for ' + seconds + ' seconds and killed ' + killed + ' zombies for a score of ' + score, 10, 20, '#ffffff')
+		}
+		else
+		{
+			l.text.write('You survived for ' + seconds / 60 + ' minutes and killed ' + killed + ' zombies for a score of ' + score, 10, 20, '#ffffff')
+		}
+		if (newHighscore)
+		{
+			l.text.write('! ! ! NEW HIGH SCORE ! ! !', 10, 35, '#ffffff')
+		}
+		else
+		{
+			l.text.write('Highscore: ' + highscore, 10, 35, '#ffffff')
+		}
 		l.text.write('GAMEOVER - Press "Enter" to retry', 10, l.entities.camera.height - 10, '#ffffff')
 	}
 }
@@ -233,13 +279,77 @@ function killZombie(bullet, zombie)
 	l.audio.rewind('kill')
 	l.audio.play('kill')
 
+	killed++ // Log the kill
+
 	l.object.delete(bullet)
 	for (var i = 0; i < 8; i++)
 	{
 		l.object.from('giblet', l.entities[zombie].anchor.x, l.entities[zombie].anchor.y)
 
-		l.physics.push.up('giblet' + l.object.latest.giblet, l.tool.random(-gibletSpeed, gibletSpeed))
-		l.physics.push.right('giblet' + l.object.latest.giblet, l.tool.random(-gibletSpeed, gibletSpeed))
+		l.physics.scatter('giblet' + l.object.latest.giblet, gibletForce)
 	}
+
+	var direction = Math.round(l.tool.random(0, 3))
+
+	if (direction == 0)
+	{
+		l.object.from('zombie', l.canvas.width / 2, 20)
+		l.physics.push.down('zombie' + l.object.latest.zombie, respawnForce)
+		l.physics.push.right('zombie' + l.object.latest.zombie, l.tool.random(-respawnForce, respawnForce))	
+	}
+	else if (direction == 1)
+	{
+		l.object.from('zombie', l.canvas.width / 2, l.canvas.height)
+		l.physics.push.up('zombie' + l.object.latest.zombie, respawnForce)
+		l.physics.push.right('zombie' + l.object.latest.zombie, l.tool.random(-respawnForce, respawnForce))
+	}
+	else if (direction == 2)
+	{
+		l.object.from('zombie', 10, l.canvas.height / 2)
+		l.physics.push.right('zombie' + l.object.latest.zombie, respawnForce)
+		l.physics.push.up('zombie' + l.object.latest.zombie, l.tool.random(-respawnForce, respawnForce))
+	}
+	else if (direction == 3)
+	{
+		l.object.from('zombie', l.canvas.width - 10, l.canvas.height / 2)
+		l.physics.push.left('zombie' + l.object.latest.zombie, respawnForce)
+		l.physics.push.up('zombie' + l.object.latest.zombie, l.tool.random(-respawnForce, respawnForce))
+	}
+	
 	l.object.delete(zombie)
+}
+
+function gameover()
+{
+	l.audio.rewind('gameover')
+	l.audio.play('gameover')
+
+	if (killed)
+	{
+		score = seconds * killed
+	}
+	else
+	{
+		score = seconds
+	}
+
+	if (highscore !== 0)
+	{
+		if (score > highscore)
+		{
+			newHighscore = true
+			highscore = score
+			localStorage.setItem('highscore', highscore)
+		}
+		else
+		{
+			newHighscore = false
+		}
+	}
+	else
+	{
+		highscore = score
+	}
+
+	l.game.state = 'gameover'
 }

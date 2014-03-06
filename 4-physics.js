@@ -274,6 +274,12 @@ l.physics.pull.toward = function(a, b, force)
     }
 }
 
+l.physics.scatter = function(name, force)
+{
+    l.physics.push.up(name, l.tool.random(-force, force))
+    l.physics.push.right(name, l.tool.random(-force, force))
+}
+
 l.physics.bounce = function(name, xMin, xMax, yMin, yMax)
 {
     if (!xMin && !xMax && !yMin && !yMax)
