@@ -217,7 +217,7 @@ function game()
 
 		l.collision('bullets', 'zombies', 'killZombie(a, b)')
 
-		// l.collision('player', 'zombies', 'gameover()')
+		l.collision('player', 'zombies', 'gameover()')
 
 		l.physics.update('player')
 		l.physics.update('bullets')
