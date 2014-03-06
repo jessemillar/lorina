@@ -60,6 +60,11 @@ l.audio.loop = function(name)
         {
             l.audio.files[name].load()
         }
+        l.audio.files[name].addEventListener('ended', function()
+        {
+            l.audio.files[name].currentTime = 0
+            l.audio.files[name].play()
+        }, false)
         l.audio.files[name].play()
         l.audio.files[name].canPlay = false
     }

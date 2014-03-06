@@ -17,12 +17,19 @@ var bulletSpeed = 1000
 var gibletSpeed = 100
 var canShoot = true
 var timeShoot = 250
-var zombieCount = l.canvas.width / 20
+var zombieCount = l.canvas.width / 25
 var zombieSpeed = playerSpeed / 2
 var zombieVisionDistance = l.entities.camera.height
 var score = 0
 var allowedBullets = 3
 var spawned = false
+
+
+l.audio.make('song', 'sounds/song.wav')
+l.audio.make('bounce', 'sounds/bounce.wav')
+l.audio.make('gameover', 'sounds/gameover.wav')
+l.audio.make('kill', 'sounds/kill.wav')
+l.audio.make('shoot', 'sounds/shoot.wav')
 
 l.object.make('player', l.canvas.width / 2, l.canvas.height / 2, 20, 20)
 	l.object.sprite('player', 'images/player.png')
@@ -62,6 +69,7 @@ function game()
 	{
 		if (l.keyboard.enter)
 		{
+			l.audio.loop('song')
 			l.game.state = 'running'
 		}
 
@@ -131,6 +139,9 @@ function game()
 		{
 			if (canShoot && l.tool.count.category('bullets') < allowedBullets)
 			{
+				l.audio.rewind('shoot')
+				l.audio.play('shoot')
+
 				l.object.from('bullet', l.entities.player.anchor.x, l.entities.player.anchor.y - 10)
 				if (playerDirection == 'up')
 				{
@@ -173,7 +184,7 @@ function game()
 
 		l.collision('bullets', 'zombies', 'killZombie(a, b)')
 
-		l.collision('player', 'zombies', 'l.game.state = "gameover"')
+		l.collision('player', 'zombies', 'l.game.state = "gameover"; l.audio.rewind("gameover"); l.audio.play("gameover")')
 
 		l.physics.update('player')
 		l.physics.update('bullets')
@@ -219,6 +230,9 @@ function game()
 
 function killZombie(bullet, zombie)
 {
+	l.audio.rewind('kill')
+	l.audio.play('kill')
+
 	l.object.delete(bullet)
 	for (var i = 0; i < 8; i++)
 	{
