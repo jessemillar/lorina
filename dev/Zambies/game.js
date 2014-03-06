@@ -13,11 +13,11 @@ l.physics.friction(2)
 var safeZone = 150
 var playerSpeed = 7
 var playerDirection = 'right'
-var bulletForce = 1000
+var bulletForce = 1500
 var gibletForce = 100
 var gibletLife = 7500
 var canShoot = true
-var timeShoot = 250
+var timeShoot = 555
 var canEmpty = true
 var timeEmpty = 150
 var respawnForce = 300
@@ -202,9 +202,9 @@ function game()
 			}
 		}
 
-		var thingy = Object.keys(l.entities)
+		var thingy = Object.keys(l.entities) // Make this a part of the engine!
 
-		for (var i = 0; i < thingy.length; i++)
+		for (var i = 0; i < thingy.length; i++) // Move the zombies
 		{
 			if (l.entities[thingy[i]].category == 'zombies')
 			{
@@ -327,10 +327,10 @@ function killZombie(bullet, zombie)
 		l.physics.scatter('giblet' + l.object.latest.giblet, gibletForce)
 		killGiblet('giblet' + l.object.latest.giblet, l.tool.random(gibletLife / 2, gibletLife))
 	}
-
-	spawnZombie()
 	
 	l.object.delete(zombie)
+
+	spawnZombie() // Let's make the whole survival thing hopeless, shall we?
 }
 
 function killGiblet(giblet, time)
