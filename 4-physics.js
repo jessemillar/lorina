@@ -292,15 +292,27 @@ l.physics.bounce = function(name, xMin, xMax, yMin, yMax)
 
     if (l.entities[name])
     {
-        if (l.entities[name].x < xMin || l.entities[name].x + l.entities[name].width > xMax)
+        if (l.entities[name].x <= xMin)
         {
+			l.entities[name].x = xMin
             l.entities[name].physics.momentum.x = -l.entities[name].physics.momentum.x
         }
+		else if (l.entities[name].x + l.entities[name].width >= xMax)
+		{
+			l.entities[name].x = xMax - l.entities[name].width
+			l.entities[name].physics.momentum.x = -l.entities[name].physics.momentum.x
+		}
 
-        if (l.entities[name].y < yMin || l.entities[name].y + l.entities[name].height > yMax)
+        if (l.entities[name].y <= yMin)
         {
+			l.entities[name].y = yMin
             l.entities[name].physics.momentum.y = -l.entities[name].physics.momentum.y
         }
+		else if (l.entities[name].y + l.entities[name].height >= yMax)
+		{
+			l.entities[name].y = yMax - l.entities[name].height
+			l.entities[name].physics.momentum.y = -l.entities[name].physics.momentum.y
+		}
     }
     else
     {
