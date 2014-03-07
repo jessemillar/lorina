@@ -28,7 +28,7 @@ var playerDirection = 'right'
 var bulletForce = 1500
 var bulletSideForce = bulletForce / 5
 var gibletForce = 100
-var gibletLife = 7500
+var gibletLife = 5000
 var canShoot = true
 var timeShoot = 555
 var respawnForce = 300
@@ -43,8 +43,8 @@ var killed = 0
 var score = 0
 var newHighscore = false
 
-var achievementValues = [500, 1000, 1500, 3000]
-var achievementTitles = ['n00b', 'space cadet', 'killionaire', 'bazookasaur']
+var achievementValues = [200, 500, 1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000]
+var achievementTitles = ['a n00b', 'a bazookasaur', 'a space cadet', 'one krazy d00d', 'THE d00d', 'a glorious hunter', 'the one', 'Steve Jobs', 'better than everyone', 'a killionaire', 'the special', 'the doge']
 
 if (localStorage.getItem('highscore'))
 {
@@ -350,7 +350,43 @@ function game()
 		{
 			var achievement = achievementTitles[3]
 		}
-		l.write.hud('You are a ' + achievement + '!', l.entities.camera.width / 2, l.entities.camera.height / 2 - titleSize, fontFamily, titleSize, colorPlayer, 'center')
+		else if (score < achievementValues[4])
+		{
+			var achievement = achievementTitles[4]
+		}
+		else if (score < achievementValues[5])
+		{
+			var achievement = achievementTitles[5]
+		}
+		else if (score < achievementValues[6])
+		{
+			var achievement = achievementTitles[6]
+		}
+		else if (score < achievementValues[7])
+		{
+			var achievement = achievementTitles[7]
+		}
+		else if (score < achievementValues[8])
+		{
+			var achievement = achievementTitles[8]
+		}
+		else if (score < achievementValues[9])
+		{
+			var achievement = achievementTitles[9]
+		}
+		else if (score < achievementValues[10])
+		{
+			var achievement = achievementTitles[10]
+		}
+		else if (score < achievementValues[11])
+		{
+			var achievement = achievementTitles[11]
+		}
+		else
+		{
+			var achievement = achievementTitles[11]
+		}
+		l.write.hud('You are ' + achievement + '!', l.entities.camera.width / 2, l.entities.camera.height / 2 - titleSize, fontFamily, titleSize, colorPlayer, 'center')
 		if (localStorage.getItem('name'))
 		{
 			if (newHighscore)
