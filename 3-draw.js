@@ -14,14 +14,12 @@ l.buffer.object = function(name, flipped)
         l.buffer.database.push(thingy)
     }
     else
-    {
-        var thingy = Object.keys(l.entities)
-        
-        for (var i = 0; i < thingy.length; i++)
+    {        
+        for (var i in l.entities)
         {
-            if (l.entities[thingy[i]].category == name)
+            if (l.entities[i].category == name)
             {
-                l.buffer.object(thingy[i], flipped)
+                l.buffer.object(i, flipped)
             }
         }
     }
@@ -123,7 +121,7 @@ l.draw.objects = function()
             }
             if (l.debug.names || l.debug.all)
             {
-                l.text.write(name, l.entities[l.buffer.database[i].name].x + l.entities[l.buffer.database[i].name].width, l.entities[l.buffer.database[i].name].y, '#ff0000')
+                l.write.text(l.buffer.database[i].name, l.entities[l.buffer.database[i].name].x + l.entities[l.buffer.database[i].name].width, l.entities[l.buffer.database[i].name].y, null, null, '#FF0000')
             }
             if (l.debug.position || l.debug.all)
             {
@@ -181,14 +179,12 @@ l.draw.hud = function(name, flipped)
         }
     }
     else
-    {
-        var thingy = Object.keys(l.entities)
-        
-        for (var i = 0; i < thingy.length; i++)
+    {        
+        for (var i in l.entities)
         {
-            if (l.entities[thingy[i]].category == name)
+            if (l.entities[i].category == name)
             {
-                l.draw.hud(thingy[i], flipped)
+                l.draw.hud(i, flipped)
             }
         }
     }

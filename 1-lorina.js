@@ -62,12 +62,50 @@ l.game.fullscreen = function()
 
 l.game.start = function()
 {
-    l.game.loop = setInterval(game, 1000 / 60)
+    l.game.loop = setInterval(l.game.loading, 1000 / 60)
 }
 
 l.game.stop = function() // Only works once the game is running; no effect during loading or setup
 {
     clearInterval(l.game.loop)
+}
+
+l.screen = new Object() // Group the screen functions and values
+l.screen.change = new Object() // Group the screen change functions
+
+l.screen.change.loading = function()
+{
+	clearInterval(l.game.loop)
+	l.game.state = 'loading'
+	l.game.loop = setInterval(l.screen.loading, 1000 / 60)
+}
+
+l.screen.change.menu = function()
+{
+	clearInterval(l.game.loop)
+	l.game.state = 'menu'
+	l.game.loop = setInterval(l.screen.menu, 1000 / 60)
+}
+
+l.screen.change.game = function()
+{
+	clearInterval(l.game.loop)
+	l.game.state = 'game'
+	l.game.loop = setInterval(l.screen.game, 1000 / 60)
+}
+
+l.screen.change.gameover = function()
+{
+	clearInterval(l.game.loop)
+	l.game.state = 'gameover'
+	l.game.loop = setInterval(l.screen.gameover, 1000 / 60)
+}
+
+l.screen.change.paused = function()
+{
+	clearInterval(l.game.loop)
+	l.game.state = 'paused'
+	l.game.loop = setInterval(l.screen.paused, 1000 / 60)
 }
 
 l.camera = new Object() // Group the camera functions
@@ -209,14 +247,25 @@ l.tool.random = function(min, max)
 
 l.tool.count = new Object() // Group the counting functions
 
+l.tool.count.all = function()
+{
+    var count = 0
+    
+    for (var i in l.entities)
+    {
+        count++
+    }
+    
+    return count
+}
+
 l.tool.count.prototype = function(name) // We give objects created from prototypes a special "category" that allows us to use this function to search for them even if they're not categorized (used for the engine)
 {
-    var thingy = Object.keys(l.entities)
     var count = 0
 	
-    for (var i = 0; i < thingy.length; i++)
+    for (var i in l.entities)
     {
-        if (l.entities[thingy[i]].prototype == name)
+        if (l.entities[i].prototype == name)
         {
             count++
         }
@@ -227,13 +276,12 @@ l.tool.count.prototype = function(name) // We give objects created from prototyp
 
 l.tool.count.category = function(name)
 {
-    var thingy = Object.keys(l.entities)
     var count = 0
 	
-    for (var i = 0; i < thingy.length; i++)
-    {
-        if (l.entities[thingy[i]].category == name)
-        {
+	for (var i in l.entities)
+	{
+		if (l.entities[i].category == name)
+		{
             count++
         }
     }
@@ -281,4 +329,16 @@ l.tool.measure.total = function(a, b, q) // b and q double as x and y
         var vertical = l.tool.measure.y(a, q)
         return Math.floor(Math.sqrt(horizontal * horizontal + vertical * vertical))
     }
+}
+
+l.tool.convert = new Object()
+
+l.tool.convert.radian = function(number)
+{
+	return number * 180 / Math.PI
+}
+
+l.tool.convert.degree = function(number)
+{
+	return number * Math.PI / 180
 }

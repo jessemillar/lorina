@@ -7,7 +7,6 @@ l.preloader.calculate = function()
 
 l.preloader.queue = function()
 {
-    l.game.state = 'loading'
     if (l.preloader.count) // Add an audio file to the preloader queue
     {
         l.preloader.total += 1
@@ -25,8 +24,8 @@ l.preloader.update = function()
 {
     l.preloader.count -= 1 // Remove an image from the preloader queue once it's loaded
     l.preloader.calculate()
-        if (l.preloader.count == 0)
-        {
-            l.game.state = 'menu'
-        }
+	if (l.preloader.count == 0)
+	{
+		l.screen.change.menu()
+	}
 }

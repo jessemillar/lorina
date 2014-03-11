@@ -41,7 +41,7 @@ l.audio.rewind = function(name)
 
 l.audio.play = function(name)
 {
-    if (l.audio.files[name].canPlay)
+    if (l.audio.files[name].canPlay && !l.audio.mute)
     {
         if (l.canvas.agent == 'chrome')
         {
@@ -54,7 +54,7 @@ l.audio.play = function(name)
 
 l.audio.loop = function(name)
 {
-    if (l.audio.files[name].canPlay)
+    if (l.audio.files[name].canPlay && !l.audio.mute)
     {
         if (l.canvas.agent == 'chrome')
         {
