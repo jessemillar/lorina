@@ -11,17 +11,16 @@
 			html, body
 			{
 				margin: 0px;
-				overflow: hidden;
 				padding: 0px;
+
+				overflow-x: hidden;
 			}
 
 			#canvas
 			{
 				position: absolute;
 				left: 0px;
-				top: 0px;
-
-				z-index: 0;
+				top: 50px;
 			}
 
 			#hat
@@ -40,8 +39,8 @@
 				#hat .close
 				{
 					position: absolute;
-					right: 25px;
-					top: 25px;
+					right: 15px;
+					top: 10px;
 
 					color: #FFFFFF;
 					cursor: pointer;
@@ -50,60 +49,50 @@
 					text-align: right;
 				}
 
-			#overlay
+			#toolbar
 			{
 				position: absolute;
-				right: -225px;
+				left: 0px;
 				top: 0px;
-				width: 250px;
-				height: auto;
+				width: 100%;
+				height: 50px;
 
 				background-color: #85144B;
 				color: #FFFFFF;
 				font-family: "MinercraftoryRegular";
-				padding-bottom: 25px;
-				z-index: 1;
 			}
 
-				#overlay .title
+				#toolbar input
 				{
-					color: #FFFFFF;
-					font-size: 35px;
-					padding-right: 10%;
-					padding-top: 25px;
-					text-align: right;
-				}
+					width: 95px;
+					height: 30px;
 
-				#overlay .input-title
-				{
-					font-size: 15px;
-					padding-right: 10%;
-					padding-top: 25px;
-					text-align: right;
-				}
-
-				#overlay input
-				{
-					width: 80%;
+					margin-left: 10px;
+					margin-top: 10px;
+					padding: 10px;
 
 					background-color: #FFFFFF;
 					border: none;
 					color: #85144B;
+					display: block;
+					float: left;
 					font-family: inherit;
 					font-size: 15px;
-					margin-left: 10%;
-					margin-top: 10px;
-					padding: 10px;
-					text-align: right;
+					outline: none;
+					text-align: center;
+					text-transform: lowercase;
 				}
 
-				#overlay .save
+				#toolbar .save
 				{
+					position: absolute;
+					top: 5px;
+					right: 10px;
+
 					color: #FFDC00;
 					cursor: pointer;
 					font-family: inherit;
-					font-size: 30px;
-					margin-top: 35px;
+					font-size: 24px;
 					text-align: center;
 				}
 		</style>
@@ -113,20 +102,16 @@
 			<div class = "close" onclick = "closeHat()">close</div>
 		</div>
 
-		<div id = "overlay" onmouseout = "hideOverlay()" onmouseover = "showOverlay()">
-			<div class = "title">Theo</div>
-			<div class = "input-title">tile width</div>
-				<input id = "tile-width" type = "text" onchange = "updatePreferences()" onclick = "this.select()">
-			<div class = "input-title">tile height</div>
-				<input id = "tile-height" type = "text" onchange = "updatePreferences()" onclick = "this.select()">
-			<div class = "input-title">background color</div>
-				<input id = "background-color" type = "text" onchange = "updatePreferences()" onclick = "this.select()">
-			<div class = "input-title">grid color</div>
-				<input id = "grid-color" type = "text" onchange = "updatePreferences()" onclick = "this.select()">
-			<div class = "input-title">grid opacity</div>
-				<input id = "grid-opacity" type = "text" onchange = "updatePreferences()" onclick = "this.select()">
+		<div id = "toolbar">
+			<input id = "tile-width" type = "text" title = "Tile Width" onchange = "updatePreferences()" onclick = "this.select()">
+			<input id = "tile-height" type = "text" title = "Tile Height" onchange = "updatePreferences()" onclick = "this.select()">
+			<input id = "background-color" type = "text" title = "Background Color" onchange = "updatePreferences()" onclick = "this.select()">
+			<input id = "grid-color" type = "text" title = "Grid Color" onchange = "updatePreferences()" onclick = "this.select()">
+			<input id = "grid-opacity" type = "text" title = "Grid Opacity" onchange = "updatePreferences()" onclick = "this.select()">
+
 			<div class = "save" onclick = "openHat()">save</div>
 		</div>
+
 		<canvas id = "canvas" width = "300px" height = "300px"></canvas>
 	</body>
 	<script src = "backend.js"></script>

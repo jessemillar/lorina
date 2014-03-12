@@ -1,13 +1,13 @@
 t = new Object() // Group everything here
 
-t.setup = function(color, width, height)
+t.setup = function(color, grid, opacity, width, height)
 {
 	t.color = color
 	t.grid = new Object()
 		t.grid.width = width
 		t.grid.height = height
-		t.grid.color = 'ffffff'
-		t.grid.opacity = 1
+		t.grid.color = grid
+		t.grid.opacity = opacity / 100
 
 	document.body.style.background = t.color
 
@@ -15,7 +15,7 @@ t.setup = function(color, width, height)
     t.ctx = document.getElementById('canvas').getContext('2d')
 
     t.dom.width = window.innerWidth
-    t.dom.height = window.innerHeight
+    t.dom.height = window.innerHeight - 50
 }
 
 t.start = function()
