@@ -1,0 +1,134 @@
+<html>
+	<head>
+		<title>Theo</title>
+		<style>
+			@font-face
+			{
+				font-family: 'minercraftory';
+				src: url('minercraftory.ttf');
+			}
+
+			html, body
+			{
+				margin: 0px;
+				overflow: hidden;
+				padding: 0px;
+			}
+
+			#canvas
+			{
+				position: absolute;
+				left: 0px;
+				top: 0px;
+
+				z-index: 0;
+			}
+
+			#hat
+			{
+				position: absolute;
+				left: 20%;
+				top: 20%;
+				width: 60%;
+				height: 60%;
+
+				background-color: #85144B;
+				display: none;
+				z-index: 2;
+			}
+
+				#hat .close
+				{
+					position: absolute;
+					right: 25px;
+					top: 25px;
+
+					color: #FFFFFF;
+					cursor: pointer;
+					font-family: "MinercraftoryRegular";
+					font-size: 15px;
+					text-align: right;
+				}
+
+			#overlay
+			{
+				position: absolute;
+				right: -225px;
+				top: 0px;
+				width: 250px;
+				height: auto;
+
+				background-color: #85144B;
+				color: #FFFFFF;
+				font-family: "MinercraftoryRegular";
+				padding-bottom: 25px;
+				z-index: 1;
+			}
+
+				#overlay .title
+				{
+					color: #FFFFFF;
+					font-size: 35px;
+					padding-right: 10%;
+					padding-top: 25px;
+					text-align: right;
+				}
+
+				#overlay .input-title
+				{
+					font-size: 15px;
+					padding-right: 10%;
+					padding-top: 25px;
+					text-align: right;
+				}
+
+				#overlay input
+				{
+					width: 80%;
+
+					background-color: #FFFFFF;
+					border: none;
+					color: #85144B;
+					font-family: inherit;
+					font-size: 15px;
+					margin-left: 10%;
+					margin-top: 10px;
+					padding: 10px;
+					text-align: right;
+				}
+
+				#overlay .save
+				{
+					color: #FFDC00;
+					cursor: pointer;
+					font-family: inherit;
+					font-size: 30px;
+					margin-top: 35px;
+					text-align: center;
+				}
+		</style>
+	</head>
+	<body>
+		<div id = "hat">
+			<div class = "close" onclick = "closeHat()">close</div>
+		</div>
+
+		<div id = "overlay" onmouseout = "hideOverlay()" onmouseover = "showOverlay()">
+			<div class = "title">Theo</div>
+			<div class = "input-title">tile width</div>
+				<input id = "tile-width" type = "text" onchange = "updatePreferences()" onclick = "this.select()">
+			<div class = "input-title">tile height</div>
+				<input id = "tile-height" type = "text" onchange = "updatePreferences()" onclick = "this.select()">
+			<div class = "input-title">background color</div>
+				<input id = "background-color" type = "text" onchange = "updatePreferences()" onclick = "this.select()">
+			<div class = "input-title">grid color</div>
+				<input id = "grid-color" type = "text" onchange = "updatePreferences()" onclick = "this.select()">
+			<div class = "input-title">grid opacity</div>
+				<input id = "grid-opacity" type = "text" onchange = "updatePreferences()" onclick = "this.select()">
+			<div class = "save" onclick = "openHat()">save</div>
+		</div>
+		<canvas id = "canvas" width = "300px" height = "300px"></canvas>
+	</body>
+	<script src = "backend.js"></script>
+	<script src = "main.js"></script>
+</html>
