@@ -13,6 +13,7 @@
 				margin: 0px;
 				padding: 0px;
 
+				background-color: #111111;
 				overflow-x: hidden;
 			}
 
@@ -21,6 +22,8 @@
 				position: absolute;
 				left: 0px;
 				top: 50px;
+
+				z-index: 0;
 			}
 
 			#hat
@@ -57,14 +60,31 @@
 				width: 100%;
 				height: 50px;
 
+
 				background-color: #85144B;
 				color: #FFFFFF;
 				font-family: "MinercraftoryRegular";
+
+				z-index: 1;
 			}
+
+				#toolbar .save
+				{
+					margin-top: 5px;
+					margin-left: 10px;
+					margin-right: 10px;
+
+					color: #FFDC00;
+					cursor: pointer;
+					display: block;
+					float: left;
+					font-family: inherit;
+					font-size: 24px;
+					text-align: center;
+				}
 
 				#toolbar input
 				{
-					width: 95px;
 					height: 30px;
 
 					margin-left: 10px;
@@ -83,17 +103,14 @@
 					text-transform: lowercase;
 				}
 
-				#toolbar .save
+				#toolbar .small-input
 				{
-					position: absolute;
-					top: 5px;
-					right: 10px;
+					width: 56px;
+				}
 
-					color: #FFDC00;
-					cursor: pointer;
-					font-family: inherit;
-					font-size: 24px;
-					text-align: center;
+				#toolbar .large-input
+				{
+					width: 95px;
 				}
 		</style>
 	</head>
@@ -103,13 +120,14 @@
 		</div>
 
 		<div id = "toolbar">
-			<input id = "tile-width" type = "text" title = "Tile Width" onchange = "updatePreferences()" onclick = "this.select()">
-			<input id = "tile-height" type = "text" title = "Tile Height" onchange = "updatePreferences()" onclick = "this.select()">
-			<input id = "background-color" type = "text" title = "Background Color" onchange = "updatePreferences()" onclick = "this.select()">
-			<input id = "grid-color" type = "text" title = "Grid Color" onchange = "updatePreferences()" onclick = "this.select()">
-			<input id = "grid-opacity" type = "text" title = "Grid Opacity" onchange = "updatePreferences()" onclick = "this.select()">
-
 			<div class = "save" onclick = "openHat()">save</div>
+			<input id = "tile-width" class = "small-input" type = "text" title = "Tile Width" onchange = "updatePreferences()" onclick = "this.select()">
+			<input id = "tile-height" class = "small-input" type = "text" title = "Tile Height" onchange = "updatePreferences()" onclick = "this.select()">
+			<input id = "grid-width" class = "small-input" type = "text" title = "Grid Width" onchange = "updatePreferences()" onclick = "this.select()">
+			<input id = "grid-height" class = "small-input" type = "text" title = "Grid Height" onchange = "updatePreferences()" onclick = "this.select()">
+			<input id = "background-color" class = "large-input" type = "text" title = "Background Color" onchange = "updatePreferences()" onclick = "this.select()">
+			<input id = "grid-color" class = "large-input" type = "text" title = "Grid Color" onchange = "updatePreferences()" onclick = "this.select()">
+			<input id = "grid-opacity" class = "small-input" type = "text" title = "Grid Opacity" onchange = "updatePreferences()" onclick = "this.select()">
 		</div>
 
 		<canvas id = "canvas" width = "300px" height = "300px"></canvas>
