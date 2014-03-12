@@ -44,6 +44,10 @@ t.calculate.canvas = function()
 	{
 		document.getElementById('toolbar').style.width = t.canvas.width
 	}
+	else
+	{
+		document.getElementById('toolbar').style.width = '100%'
+	}
 
 	if (t.canvas.width >= window.innerWidth && t.canvas.height >= window.innerHeight - 50)
 	{
@@ -103,36 +107,42 @@ t.draw.clear = function()
 
 t.draw.line = function(x1, y1, x2, y2, width, color, opacity)
 {
-	t.ctx.beginPath()
-	t.ctx.moveTo(Math.round(x1) + 0.5, Math.round(y1) + 0.5)
-	t.ctx.lineTo(Math.round(x2) + 0.5, Math.round(y2) + 0.5)
-	t.ctx.lineWidth = width
-	t.ctx.strokeStyle = '#' + color
-	if (opacity)
+	if (opacity > 0)
 	{
-		t.ctx.globalAlpha = opacity
+		t.ctx.beginPath()
+		t.ctx.moveTo(Math.round(x1) + 0.5, Math.round(y1) + 0.5)
+		t.ctx.lineTo(Math.round(x2) + 0.5, Math.round(y2) + 0.5)
+		t.ctx.lineWidth = width
+		t.ctx.strokeStyle = '#' + color
+		if (opacity)
+		{
+			t.ctx.globalAlpha = opacity
+		}
+		else
+		{
+			t.ctx.globalAlpha = 1
+		}
+		t.ctx.stroke()
 	}
-	else
-	{
-		t.ctx.globalAlpha = 1
-	}
-	t.ctx.stroke()
 }
 
 t.draw.rectangle = function(x, y, width, height, color, opacity)
 {
-	t.ctx.beginPath()
-	t.ctx.rect(x, y, width, height)
-	t.ctx.fillStyle = color
-	if (opacity)
+	if (opacity > 0)
 	{
-		t.ctx.globalAlpha = opacity
+		t.ctx.beginPath()
+		t.ctx.rect(x, y, width, height)
+		t.ctx.fillStyle = color
+		if (opacity)
+		{
+			t.ctx.globalAlpha = opacity
+		}
+		else
+		{
+			t.ctx.globalAlpha = 1
+		}
+		t.ctx.fill()
 	}
-	else
-	{
-		t.ctx.globalAlpha = 1
-	}
-	t.ctx.fill()
 }
 
 t.draw.grid = function()
@@ -144,6 +154,6 @@ t.draw.grid = function()
 
 	for (var i = 1; i < t.grid.height; i++)
 	{
-		t.draw.line(0, i * t.grid.tile.height, t.canvas.width, i * t.grid.tile.height, t.grid.color, t.grid.opacity)
+		t.draw.line(0, i * t.grid.tile.height, t.canvas.width, i * t.grid.tile.height, 1, t.grid.color, t.grid.opacity)
 	}
 }

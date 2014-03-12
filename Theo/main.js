@@ -29,6 +29,17 @@ function updateUI()
 	document.getElementById('background-color').value = t.color
 	document.getElementById('grid-color').value = t.grid.color
 	document.getElementById('grid-opacity').value = t.grid.opacity * 100
+
+	document.getElementById('background-color').style.backgroundColor = t.color
+	document.getElementById('grid-color').style.backgroundColor = t.grid.color
+	if (t.grid.opacity < 0.3)
+	{
+		document.getElementById('grid-opacity').style.opacity = 0.3
+	}
+	else
+	{
+		document.getElementById('grid-opacity').style.opacity = t.grid.opacity
+	}
 }
 
 function updatePreferences()
