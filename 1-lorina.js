@@ -342,3 +342,90 @@ l.tool.convert.degree = function(number)
 {
 	return number * Math.PI / 180
 }
+
+l.gamecenter = new Object()
+l.gamecenter.socket = new Ejecta.GameCenter()
+l.gamecenter.authed = false
+
+l.gamecenter.login = new Object()
+
+l.gamecenter.login.soft = function()
+{
+    l.gamecenter.socket.softAuthenticate(function(error)
+    {
+        if (error)
+        {
+            if (l.debug.gamecenter)
+            {
+                console.log('GameCenter soft login failed')
+            }
+        }
+        else
+        {
+            l.gamecenter.authed = true
+
+            if (l.debug.gamecenter)
+            {
+                console.log('GameCenter soft login succeeded')
+            }
+        }
+    })
+}
+
+l.gamecenter.login.hard = function()
+{
+    l.gamecenter.socket.authenticate(function(error)
+    {
+        if (error)
+        {
+            if (l.debug.gamecenter)
+            {
+                console.log('GameCenter hard login failed')
+            }
+        }
+        else
+        {
+            l.gamecenter.authed = true
+
+            if (l.debug.gamecenter)
+            {
+                console.log('GameCenter hard login succeeded')
+            }
+        }
+    })
+}
+
+l.gamecenter.submit = new Object()
+
+l.gamecenter.submit.score = function(board, score)
+{
+    l.gamecenter.socket.reportScore(board, score, function(error)
+    {
+        if (error)
+        {
+            if (l.debug.gamecenter)
+            {
+                console.log('Reporting of ' + score + ' to ' + board + ' failed')
+            }
+        }
+        else
+        {
+            if (l.debug.gamecenter)
+            {
+                console.log('Reporting of ' + score + ' to ' + board + ' succeeded')
+            }
+        }
+    })
+}
+
+l.gamecenter.show = new Object()
+
+l.gamecenter.show.leaderboard = function(board)
+{
+    l.gamecenter.socket.showLeaderboard(board)
+
+    if (l.debug.gamecenter)
+    {
+        console.log('Opened ' + board + ' leaderboard')
+    }
+}

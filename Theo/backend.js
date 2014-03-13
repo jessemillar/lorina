@@ -29,6 +29,15 @@ t.start = function()
 	t.loop = setInterval(main, 1000 / 60)
 }
 
+t.mouse = new Object()
+	t.mouse.click = new Object()
+
+t.mouse.click = function(event)
+{
+	t.mouse.click.x = event.x
+	l.mouse.click.y
+}
+
 t.calculate = new Object() // Group the calculation functions
 
 t.calculate.canvas = function()
@@ -87,16 +96,6 @@ t.calculate.canvas = function()
 	}
 }
 
-/*
-t.calculate.grid = function()
-{
-	var currentX = 
-	var currentY = 
-
-	t.grid['id' + currentY * gridWidth + currentX] = new Object()
-}
-*/
-
 t.draw = new Object() // Group the draw functions
 
 t.draw.clear = function()
@@ -105,7 +104,7 @@ t.draw.clear = function()
 	t.ctx.fillRect(0, 0, t.dom.width, t.dom.height)
 }
 
-t.draw.line = function(x1, y1, x2, y2, width, color, opacity)
+t.draw.line = function(x1, y1, x2, y2, width, color, opacity, dash)
 {
 	if (opacity > 0)
 	{
@@ -114,6 +113,10 @@ t.draw.line = function(x1, y1, x2, y2, width, color, opacity)
 		t.ctx.lineTo(Math.round(x2) + 0.5, Math.round(y2) + 0.5)
 		t.ctx.lineWidth = width
 		t.ctx.strokeStyle = '#' + color
+		if (dash)
+		{
+			t.ctx.setLineDash([dash])
+		}
 		if (opacity)
 		{
 			t.ctx.globalAlpha = opacity
@@ -149,11 +152,19 @@ t.draw.grid = function()
 {
 	for (var i = 1; i < t.grid.width; i++)
 	{
-		t.draw.line(i * t.grid.tile.width, 0, i * t.grid.tile.width, t.canvas.height, 1, t.grid.color, t.grid.opacity)
+		t.draw.line(i * t.grid.tile.width, 0, i * t.grid.tile.width, t.canvas.height, 1, t.grid.color, t.grid.opacity, 4)
 	}
 
 	for (var i = 1; i < t.grid.height; i++)
 	{
-		t.draw.line(0, i * t.grid.tile.height, t.canvas.width, i * t.grid.tile.height, 1, t.grid.color, t.grid.opacity)
+		t.draw.line(0, i * t.grid.tile.height, t.canvas.width, i * t.grid.tile.height, 1, t.grid.color, t.grid.opacity, 4)
+	}
+
+	for (var i = 0; i < t.grid.height; i++)
+	{
+		for (var j = 0; j < t.grid.width; j++)
+		{
+			t.draw.rectangle(j * t.grid.tile.width + t.grid.tile.width / 2, i * t.grid.tile.height + t.grid.tile.height / 2, 1, 1, t.grid.color, t.grid.opacity)
+		}
 	}
 }
