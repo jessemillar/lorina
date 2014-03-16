@@ -87,6 +87,20 @@ l.screen.change.menu = function()
 	l.game.loop = setInterval(l.screen.menu, 1000 / 60)
 }
 
+l.screen.change.settings = function()
+{
+    clearInterval(l.game.loop)
+    l.game.state = 'settings'
+    l.game.loop = setInterval(l.screen.settings, 1000 / 60)
+}
+
+l.screen.change.credits = function()
+{
+    clearInterval(l.game.loop)
+    l.game.state = 'credits'
+    l.game.loop = setInterval(l.screen.credits, 1000 / 60)
+}
+
 l.screen.change.game = function()
 {
 	clearInterval(l.game.loop)
@@ -393,6 +407,32 @@ l.gamecenter.login.hard = function()
             }
         }
     })
+}
+
+l.ad = new Object()
+
+l.ad.banner = new Object()
+l.ad.banner.socket = new Ejecta.AdBanner()
+
+l.ad.banner.show = function(position)
+{
+    l.ad.banner.socket.alwaysPortrait = false // Make the ad auto conform to width
+
+    if (position == 'top')
+    {
+        l.ad.banner.socket.isAtBottom = false
+    }
+    else
+    {
+        l.ad.banner.socket.isAtBottom = true
+    }
+
+    l.ad.banner.socket.show()
+}
+
+l.ad.banner.hide = function()
+{
+    l.ad.banner.socket.hide()
 }
 
 l.gamecenter.submit = new Object()
