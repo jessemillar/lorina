@@ -9,6 +9,10 @@ t.setup = function(tileWidth, tileHeight, width, height, backgroundColor, gridCo
 	t.dom = document.getElementById('canvas')
     t.ctx = document.getElementById('canvas').getContext('2d')
 
+    // document.onmousemove = l.mouse.moved
+	t.dom.setAttribute('onmousedown', 't.mouse.click(event)')
+	// t.dom.setAttribute('onmouseup', 'l.mouse.cancel()')
+
     document.body.setAttribute('onresize', 't.calculate.canvas()')
 
 	t.color = backgroundColor
@@ -30,12 +34,14 @@ t.start = function()
 }
 
 t.mouse = new Object()
-	t.mouse.click = new Object()
+t.mouse.click = new Object()
 
 t.mouse.click = function(event)
 {
-	t.mouse.click.x = event.x
-	l.mouse.click.y
+	t.mouse.click.x = event.x - t.dom.offsetLeft
+	t.mouse.click.y = event.y - t.dom.offsetTop
+
+	console.log(t.mouse.click.x, t.mouse.click.y)
 }
 
 t.calculate = new Object() // Group the calculation functions

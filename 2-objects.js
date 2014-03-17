@@ -1,89 +1,6 @@
 l.entities = new Object() // The object that keeps track of our game objects
 l.object = new Object() // Group the object functions
 
-l.object.last = new Object() // Keep track of the "index" for each prototype we use to bring an object into the world
-
-l.object.from = function(name, x, y)
-{
-    if (!l.object.last[name])
-    {
-        l.object.last[name] = 0
-    }
-
-    var count = l.object.last[name] + 1
-    l.object.last[name] = count // Save the "index" of the latest prototype to the engine
-
-    if (l.prototype.entities[name])
-    {
-        l.entities[name + count] = new Object()
-            l.entities[name + count].prototype = name
-            l.entities[name + count].x = x - l.prototype.entities[name].anchor.offset.x
-            l.entities[name + count].y = y - l.prototype.entities[name].anchor.offset.y
-            l.entities[name + count].width = l.prototype.entities[name].width
-            l.entities[name + count].height = l.prototype.entities[name].height
-            l.entities[name + count].bounding = new Object()
-                l.entities[name + count].bounding.x = x
-                l.entities[name + count].bounding.y = y
-                l.entities[name + count].bounding.offset = new Object()
-                    l.entities[name + count].bounding.offset.x = l.prototype.entities[name].bounding.offset.x
-                    l.entities[name + count].bounding.offset.y = l.prototype.entities[name].bounding.offset.y
-                l.entities[name + count].bounding.width = l.prototype.entities[name].width
-                l.entities[name + count].bounding.height = l.prototype.entities[name].height
-            l.entities[name + count].anchor = new Object()
-                l.entities[name + count].anchor.offset = new Object()
-                    l.entities[name + count].anchor.offset.x = l.prototype.entities[name].anchor.offset.x
-                    l.entities[name + count].anchor.offset.y = l.prototype.entities[name].anchor.offset.y
-                l.entities[name + count].anchor.x = x
-                l.entities[name + count].anchor.y = y
-            l.entities[name + count].physics = new Object()
-                l.entities[name + count].physics.momentum = new Object()
-                    l.entities[name + count].physics.momentum.x = l.prototype.entities[name].physics.momentum.x
-                    l.entities[name + count].physics.momentum.y = l.prototype.entities[name].physics.momentum.y
-                    l.entities[name + count].physics.momentum.total = l.prototype.entities[name].physics.momentum.total
-        
-        if (l.prototype.entities[name].category)
-        {
-            l.entities[name + count].category = l.prototype.entities[name].category
-        }
-
-        if (l.prototype.entities[name].sprite)
-        {
-            l.entities[name + count].sprite = l.prototype.entities[name].sprite
-        }
-
-        if (l.prototype.entities[name].animate)
-        {
-            l.entities[name + count].animate = new Object()
-                l.entities[name + count].animate.width = l.prototype.entities[name].animate.width
-                l.entities[name + count].animate.height = l.prototype.entities[name].animate.height
-                l.entities[name + count].animate.count = l.prototype.entities[name].animate.count
-                l.entities[name + count].animate.frame = l.prototype.entities[name].animate.frame
-                if (l.prototype.entities[name].animate.timer)
-                {
-                    l.prototype.entities[name].animate.interval = l.object.animate(name, timer)
-                }
-        }
-    }
-}
-
-l.object.delete = function(name)
-{
-    if (l.entities[name])
-    {
-		delete l.entities[name]
-    }
-    else
-    {
-        for (var i in l.entities)
-        {
-            if (l.entities[i].category == name)
-            {
-                l.object.delete(i)
-            }
-        }
-    }
-}
-
 l.object.make = function(name, x, y, width, height)
 {
     l.entities[name] = new Object()
@@ -157,7 +74,7 @@ l.object.sprite = function(name, location, width, height, count, timer)
     }
 }
 
-l.object.animate = function(name, timer)
+l.object.animate = function(name, timer) // l.object.sprite automatically calls this
 {
     setInterval(function()
     {
@@ -190,7 +107,8 @@ l.object.bounding = function(name, x, y, width, height)
     l.object.update(name)
 }
 
-l.object.update = function(name) // Update "hidden" values that relate to the position of the object
+// Update "hidden" values that relate to the position of the object
+l.object.update = function(name) // Called automagically
 {
     // Shift the anchor point (whether manually supplied or automatically centered) to reflect the object's new position
     l.entities[name].anchor.x = l.entities[name].x + l.entities[name].anchor.offset.x
@@ -198,4 +116,87 @@ l.object.update = function(name) // Update "hidden" values that relate to the po
     // Shift the bounding box (whether manually supplied or automatically encompassing) to reflect the object's new position
     l.entities[name].bounding.x = l.entities[name].x + l.entities[name].bounding.offset.x
     l.entities[name].bounding.y = l.entities[name].y + l.entities[name].bounding.offset.y
+}
+
+l.object.delete = function(name)
+{
+    if (l.entities[name])
+    {
+        delete l.entities[name]
+    }
+    else
+    {
+        for (var i in l.entities)
+        {
+            if (l.entities[i].category == name)
+            {
+                l.object.delete(i)
+            }
+        }
+    }
+}
+
+l.object.last = new Object() // Keep track of the "index" for each prototype we use to bring an object into the world
+
+l.object.from = function(name, x, y)
+{
+    if (!l.object.last[name])
+    {
+        l.object.last[name] = 0
+    }
+
+    var count = l.object.last[name] + 1
+    l.object.last[name] = count // Save the "index" of the latest prototype to the engine
+
+    if (l.prototype.entities[name])
+    {
+        l.entities[name + count] = new Object()
+            l.entities[name + count].prototype = name
+            l.entities[name + count].x = x - l.prototype.entities[name].anchor.offset.x
+            l.entities[name + count].y = y - l.prototype.entities[name].anchor.offset.y
+            l.entities[name + count].width = l.prototype.entities[name].width
+            l.entities[name + count].height = l.prototype.entities[name].height
+            l.entities[name + count].bounding = new Object()
+                l.entities[name + count].bounding.x = x
+                l.entities[name + count].bounding.y = y
+                l.entities[name + count].bounding.offset = new Object()
+                    l.entities[name + count].bounding.offset.x = l.prototype.entities[name].bounding.offset.x
+                    l.entities[name + count].bounding.offset.y = l.prototype.entities[name].bounding.offset.y
+                l.entities[name + count].bounding.width = l.prototype.entities[name].width
+                l.entities[name + count].bounding.height = l.prototype.entities[name].height
+            l.entities[name + count].anchor = new Object()
+                l.entities[name + count].anchor.offset = new Object()
+                    l.entities[name + count].anchor.offset.x = l.prototype.entities[name].anchor.offset.x
+                    l.entities[name + count].anchor.offset.y = l.prototype.entities[name].anchor.offset.y
+                l.entities[name + count].anchor.x = x
+                l.entities[name + count].anchor.y = y
+            l.entities[name + count].physics = new Object()
+                l.entities[name + count].physics.momentum = new Object()
+                    l.entities[name + count].physics.momentum.x = l.prototype.entities[name].physics.momentum.x
+                    l.entities[name + count].physics.momentum.y = l.prototype.entities[name].physics.momentum.y
+                    l.entities[name + count].physics.momentum.total = l.prototype.entities[name].physics.momentum.total
+        
+        if (l.prototype.entities[name].category)
+        {
+            l.entities[name + count].category = l.prototype.entities[name].category
+        }
+
+        if (l.prototype.entities[name].sprite)
+        {
+            l.entities[name + count].sprite = l.prototype.entities[name].sprite
+        }
+
+        if (l.prototype.entities[name].animate)
+        {
+            l.entities[name + count].animate = new Object()
+                l.entities[name + count].animate.width = l.prototype.entities[name].animate.width
+                l.entities[name + count].animate.height = l.prototype.entities[name].animate.height
+                l.entities[name + count].animate.count = l.prototype.entities[name].animate.count
+                l.entities[name + count].animate.frame = l.prototype.entities[name].animate.frame
+                if (l.prototype.entities[name].animate.timer)
+                {
+                    l.prototype.entities[name].animate.interval = l.object.animate(name, timer)
+                }
+        }
+    }
 }
