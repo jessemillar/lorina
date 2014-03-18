@@ -1,15 +1,17 @@
 t = new Object() // Group everything here
 
 t.grid = new Object()
-	t.grid.x = new Array() // Put x coordinates here
-	t.grid.y = new Array() // Put y coordinates here
+t.grid.x = new Array() // Put x coordinates here
+t.grid.y = new Array() // Put y coordinates here
+
+t.database = new Object()
 
 t.setup = function(tileWidth, tileHeight, width, height, backgroundColor, gridColor, gridOpacity)
 {
 	t.dom = document.getElementById('canvas')
     t.ctx = document.getElementById('canvas').getContext('2d')
 
-    // document.onmousemove = t.mouse.moved
+    document.onmousemove = t.mouse.moved
 	t.dom.setAttribute('onmousedown', 't.mouse.click(event)')
 	t.dom.setAttribute('onmouseup', 't.mouse.cancel()')
 	document.body.setAttribute('onkeydown', 't.keyboard.pressed(event)')
@@ -36,26 +38,43 @@ t.start = function()
 }
 
 t.mouse = new Object()
-	t.mouse.click = new Object()
+t.mouse.click = new Object()
 
-t.mouse.click = function(event)
+t.mouse.click = function()
 {
-	t.mouse.click.x = event.x - t.dom.offsetLeft
-	t.mouse.click.y = event.y - t.dom.offsetTop
+	t.mouse.clicked = true
 }
 
 t.mouse.cancel = function()
 {
-	t.mouse.click.x = null
-	t.mouse.click.y = null
+	t.mouse.clicked = false
+}
+
+t.mouse.moved = function(event)
+{
+    if (event)
+    {
+    	t.mouse.x = event.clientX - t.dom.offsetLeft + document.body.scrollLeft
+    	t.mouse.y = event.clientY - t.dom.offsetTop + document.body.scrollTop
+    }
+}
+
+t.mouse.inside = function()
+{
+	if (t.mouse.x > 0 && t.mouse.x < t.dom.offsetLeft + t.dom.offsetWidth && t.mouse.y > 0 && t.mouse.y < t.dom.offsetTop + t.dom.offsetHeight)
+	{
+		return true
+	}
+	else
+	{
+		return false
+	}
 }
 
 t.keyboard = new Object()
 
 t.keyboard.pressed = function(event)
 {
-	console.log(event.keyCode)
-
     if (event.keyCode == 32)
     {
         t.keyboard.space = true
@@ -108,10 +127,12 @@ t.calculate.canvas = function()
 	{
 		t.canvas = new Object()
 	}
-		t.canvas.width = t.grid.width * t.grid.tile.width
-		t.canvas.height = t.grid.height * t.grid.tile.height
 
-	if (t.canvas.width >= window.innerWidth)
+	// Userful for later calculation
+	t.canvas.width = t.grid.width * t.grid.tile.width
+	t.canvas.height = t.grid.height * t.grid.tile.height
+
+	if (t.canvas.width >= window.innerWidth) // Make the toolbar always fill the top of the screen
 	{
 		document.getElementById('toolbar').style.width = t.canvas.width
 	}
@@ -122,10 +143,9 @@ t.calculate.canvas = function()
 
 	if (t.canvas.width >= window.innerWidth && t.canvas.height >= window.innerHeight - 50)
 	{
-		console.log('Fullscreen')
-		document.body.style.background = t.color
+		document.body.style.background = t.color // A preventative measure for screen flicker on resize
 		t.dom.style.left = 0
-	    t.dom.style.top = 50
+	    t.dom.style.top = 50 // Leave room for the toolbar
 		t.dom.width = t.canvas.width
 	    t.dom.height = t.canvas.height
 	}
@@ -156,6 +176,35 @@ t.calculate.canvas = function()
 	    	t.dom.style.top = (window.innerHeight - 50) / 2 - t.dom.height / 2 + 50
 		}
 	}
+
+	t.calculate.grid()
+}
+
+t.calculate.grid = function()
+{
+    for (var y = 0; y < t.grid.height; y++)
+    {
+        for (var x = 0; x < t.grid.width; x++)
+        {
+            if (!t.database['row' + y])
+            {
+                t.database['row' + y] = new Object()
+            }
+
+            if (!t.database['row' + y]['column' + x])
+            {
+                t.database['row' + y]['column' + x] = new Object()
+            }
+
+            t.database['row' + y]['column' + x].x = 0 - t.grid.width / 2 * t.grid.tile.width + x * t.grid.tile.width
+            t.database['row' + y]['column' + x].y = 0 - t.grid.height / 2 * t.grid.tile.height + y * t.grid.tile.height
+        }
+    }
+}
+
+t.calculate.fill = function(row, column, similar)
+{
+	// Calculate the bucket tool's "domain" that it will fill
 }
 
 t.draw = new Object() // Group the draw functions
@@ -227,6 +276,20 @@ t.draw.grid = function()
 		for (var j = 0; j < t.grid.width; j++)
 		{
 			t.draw.rectangle(j * t.grid.tile.width + t.grid.tile.width / 2, i * t.grid.tile.height + t.grid.tile.height / 2, 1, 1, t.grid.color, t.grid.opacity)
+		}
+	}
+}
+
+t.draw.objects = function()
+{
+	for (var i = 0; i < t.grid.height; i++)
+	{
+		for (var j = 0; j < t.grid.width; j++)
+		{
+			if (t.database['row' + i]['column' + j] == 1)
+			{
+				t.draw.rectangle(j * t.grid.tile.width, i * t.grid.tile.height, t.grid.tile.width, t.grid.tile.height, '#ff0000', 1)
+			}
 		}
 	}
 }

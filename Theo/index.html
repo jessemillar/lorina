@@ -52,6 +52,30 @@
 					text-align: right;
 				}
 
+			#tools
+			{
+				position: fixed;
+				right: 0px;
+				bottom: 0px;
+				width: 110px;
+				height: auto;
+
+				background-color: #85144B;
+				z-index: 1;
+			}
+
+				#tools .button
+				{
+					margin-bottom: 17px;
+					margin-top: 10px;
+
+					color: #FFDC00;
+					cursor: pointer;
+					font-family: "MinercraftoryRegular";
+					font-size: 17px;
+					text-align: center;
+				}
+
 			#toolbar
 			{
 				position: absolute;
@@ -64,7 +88,6 @@
 				background-color: #85144B;
 				color: #FFFFFF;
 				font-family: "MinercraftoryRegular";
-
 				z-index: 1;
 			}
 
@@ -123,6 +146,12 @@
 	<body>
 		<div id = "hat">
 			<div class = "close" onclick = "closeHat()">close</div>
+		</div>
+
+		<div id = "tools">
+			<div class = "button" onclick = "penTool()">pen</div>
+			<div class = "button" onclick = "bucketTool()">bucket</div>
+			<div class = "button" onclick = "eraserTool()">eraser</div>
 		</div>
 
 		<div id = "toolbar">

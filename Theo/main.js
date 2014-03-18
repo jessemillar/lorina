@@ -1,38 +1,66 @@
 t.setup(35, 35, 15, 15, '7FDBFF', '39CCCC', 50)
+t.calculate.grid()
 t.start()
 
 updateUI() // Initial update of UI values
 
 t.block = 1
+var tool
+penTool()
 
 function main()
 {
-	if (t.keyboard.one)
+	if (t.mouse.clicked && t.mouse.inside())
 	{
-		t.block = 1
-	}
-	else if (t.keyboard.two)
-	{
-		t.block = 2
-	}
-	else if (t.keyboard.three)
-	{
-		t.block = 3
-	}
+		var row = Math.floor(t.mouse.y / t.grid.tile.height)
+		var column = Math.floor(t.mouse.x / t.grid.tile.width)
 
-	if (t.mouse.click.x && t.mouse.click.y)
-	{
-		var target = Math.floor(t.mouse.click.y / t.grid.tile.height) * t.grid.width + Math.floor(t.mouse.click.x / t.grid.tile.width)
-		console.log(target)
+		if (tool == 'pen')
+		{
+			t.database['row' + row]['column' + column] = 1
+		}
+		else if (tool == 'bucket')
+		{
+			for (var i = 0; i < t.grid.height; i++)
+			{
+				for (var j = 0; j < t.grid.width; j++)
+				{
+					t.database['row' + i]['column' + j] = 1
+				}
+			}
+		}
+		else if (tool == 'eraser')
+		{
+			t.database['row' + row]['column' + column] = 0
+		}
 	}
 
 	t.draw.clear()
 	t.draw.grid()
+	t.draw.objects()
+}
+
+function penTool()
+{
+	t.dom.style.cursor = 'crosshair'
+	tool = 'pen'
+}
+
+function bucketTool()
+{
+	t.dom.style.cursor = 'move'
+	tool = 'bucket'
+}
+
+function eraserTool()
+{
+	t.dom.style.cursor = 'cell'
+	tool = 'eraser'
 }
 
 function openHat()
 {
-	document.getElementById('hat').style.display = 'block'
+	document.getElementById('hat').style.display = 'pen'
 	hideOverlay()
 }
 
