@@ -9,9 +9,11 @@ t.setup = function(tileWidth, tileHeight, width, height, backgroundColor, gridCo
 	t.dom = document.getElementById('canvas')
     t.ctx = document.getElementById('canvas').getContext('2d')
 
-    // document.onmousemove = l.mouse.moved
+    // document.onmousemove = t.mouse.moved
 	t.dom.setAttribute('onmousedown', 't.mouse.click(event)')
-	// t.dom.setAttribute('onmouseup', 'l.mouse.cancel()')
+	t.dom.setAttribute('onmouseup', 't.mouse.cancel()')
+	document.body.setAttribute('onkeydown', 't.keyboard.pressed(event)')
+    document.body.setAttribute('onkeyup', 't.keyboard.cancel(event)')
 
     document.body.setAttribute('onresize', 't.calculate.canvas()')
 
@@ -34,14 +36,68 @@ t.start = function()
 }
 
 t.mouse = new Object()
-t.mouse.click = new Object()
+	t.mouse.click = new Object()
 
 t.mouse.click = function(event)
 {
 	t.mouse.click.x = event.x - t.dom.offsetLeft
 	t.mouse.click.y = event.y - t.dom.offsetTop
+}
 
-	console.log(t.mouse.click.x, t.mouse.click.y)
+t.mouse.cancel = function()
+{
+	t.mouse.click.x = null
+	t.mouse.click.y = null
+}
+
+t.keyboard = new Object()
+
+t.keyboard.pressed = function(event)
+{
+	console.log(event.keyCode)
+
+    if (event.keyCode == 32)
+    {
+        t.keyboard.space = true
+    }
+
+    if (event.keyCode == 49)
+    {
+        t.keyboard.one = true
+    }
+
+    if (event.keyCode == 50)
+    {
+        t.keyboard.two = true
+    }
+
+    if (event.keyCode == 51)
+    {
+        t.keyboard.three = true
+    }
+}
+
+t.keyboard.cancel = function(event)
+{
+    if (event.keyCode == 32)
+    {
+        t.keyboard.space = false
+    }
+
+    if (event.keyCode == 49)
+    {
+        t.keyboard.one = false
+    }
+
+    if (event.keyCode == 50)
+    {
+        t.keyboard.two = false
+    }
+
+    if (event.keyCode == 51)
+    {
+        t.keyboard.three = false
+    }
 }
 
 t.calculate = new Object() // Group the calculation functions

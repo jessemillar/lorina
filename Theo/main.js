@@ -1,10 +1,31 @@
 t.setup(35, 35, 15, 15, '7FDBFF', '39CCCC', 50)
 t.start()
 
-updateUI()
+updateUI() // Initial update of UI values
+
+t.block = 1
 
 function main()
 {
+	if (t.keyboard.one)
+	{
+		t.block = 1
+	}
+	else if (t.keyboard.two)
+	{
+		t.block = 2
+	}
+	else if (t.keyboard.three)
+	{
+		t.block = 3
+	}
+
+	if (t.mouse.click.x && t.mouse.click.y)
+	{
+		var target = Math.floor(t.mouse.click.y / t.grid.tile.height) * t.grid.width + Math.floor(t.mouse.click.x / t.grid.tile.width)
+		console.log(target)
+	}
+
 	t.draw.clear()
 	t.draw.grid()
 }
