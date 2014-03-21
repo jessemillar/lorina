@@ -87,8 +87,10 @@ l.game.start = function(startScreen)
 
     if (l.screen.loading)
     {
-        l.game.loop = setInterval(l.screen.loading, 1000 / 60)
+        l.change.screen('loading')
     }
+
+    l.preloader.update()
 }
 
 l.game.stop = function() // Only works once the game is running; no effect during loading or setup

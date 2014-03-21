@@ -1,7 +1,16 @@
 l.write = new Object() // Group the text-related function
 
-l.write.hud = function(string, x, y, font, size, color, position)
+l.write.hud = function(string, x, y, font, size, color, alignment)
 {
+	if (font)
+	{
+		l.ctx.font = (size + 'px ' + font).toString()
+	}
+	else
+	{
+		l.ctx.font = '10px sans-serif'
+	}
+
 	if (color)
 	{
 		l.ctx.fillStyle = color
@@ -11,22 +20,17 @@ l.write.hud = function(string, x, y, font, size, color, position)
 		l.ctx.fillStyle = '#000000'
 	}
 
-	if (font)
+	if (alignment)
 	{
-		l.ctx.font = (size + 'px ' + font).toString()
-	}
-
-	if (position)
-	{
-		if (position == 'left')
+		if (alignment == 'left')
 		{
 			l.ctx.textAlign = 'left'
 		}
-		else if (position == 'right')
+		else if (alignment == 'right')
 		{
 			l.ctx.textAlign = 'right'
 		}
-		else if (position == 'center')
+		else if (alignment == 'center')
 		{
 			l.ctx.textAlign = 'center'
 		}
@@ -46,8 +50,17 @@ l.write.hud = function(string, x, y, font, size, color, position)
 	}
 }
 
-l.write.text = function(string, x, y, font, size, color, position)
+l.write.text = function(string, x, y, font, size, color, alignment)
 {
+	if (font)
+	{
+		l.ctx.font = (size + 'px ' + font).toString()
+	}
+	else
+	{
+		l.ctx.font = '10px sans-serif'
+	}
+
 	if (color)
 	{
 		l.ctx.fillStyle = color
@@ -57,22 +70,17 @@ l.write.text = function(string, x, y, font, size, color, position)
 		l.ctx.fillStyle = '#000000'
 	}
 
-	if (font)
+	if (alignment)
 	{
-		l.ctx.font = (size + 'px ' + font).toString()
-	}
-
-	if (position)
-	{
-		if (position == 'left')
+		if (alignment == 'left')
 		{
 			l.ctx.textAlign = 'left'
 		}
-		else if (position == 'right')
+		else if (alignment == 'right')
 		{
 			l.ctx.textAlign = 'right'
 		}
-		else if (position == 'center')
+		else if (alignment == 'center')
 		{
 			l.ctx.textAlign = 'center'
 		}

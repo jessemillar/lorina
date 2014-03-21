@@ -1,8 +1,5 @@
 l.gamecenter = new Object()
-if (l.game.gamecenter)
-{
-    l.gamecenter.socket = new Ejecta.GameCenter()    
-}
+l.gamecenter.socket = new Ejecta.GameCenter()
 l.gamecenter.authed = false
 
 l.gamecenter.login = new Object()
@@ -91,10 +88,7 @@ l.gamecenter.show.leaderboard = function(board)
 l.ad = new Object()
 
 l.ad.banner = new Object()
-if (l.game.ads)
-{
-    l.ad.banner.socket = new Ejecta.AdBanner()
-}
+l.ad.banner.socket = new Ejecta.AdBanner()
 
 l.ad.banner.show = function(position)
 {

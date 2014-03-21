@@ -7,7 +7,7 @@ l.preloader.calculate = function()
 
 l.preloader.queue = function()
 {
-    if (l.preloader.count) // Add an audio file to the preloader queue
+    if (l.preloader.count)
     {
         l.preloader.total += 1
         l.preloader.count += 1
@@ -22,10 +22,17 @@ l.preloader.queue = function()
 
 l.preloader.update = function()
 {
-    l.preloader.count -= 1 // Remove an image from the preloader queue once it's loaded
-    l.preloader.calculate()
-	if (l.preloader.count == 0)
-	{
-		l.change.screen(l.screen.engine.start)
-	}
+    if (l.preloader.count)
+    {
+        l.preloader.count -= 1 // Remove an image from the preloader queue once it's loaded
+        l.preloader.calculate()
+    	if (l.preloader.count == 0)
+    	{
+    		l.change.screen(l.screen.engine.start)
+    	}
+    }
+    else
+    {
+        l.change.screen(l.screen.engine.start)
+    }
 }
