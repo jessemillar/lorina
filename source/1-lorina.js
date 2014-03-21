@@ -3,6 +3,9 @@ var l = new Object() // The Lorina object that keeps the engine functions out of
 l.game = new Object() // Group the game functions
 l.debug = new Object() // Keep track of the various debug options
 
+l.screen = new Object() // Group the screen functions and values
+l.screen.engine = new Object()
+
 l.game.setup = function(gameColor, gamecenter, ads, fullscreen)
 {
     if (gamecenter)
@@ -59,7 +62,7 @@ l.game.setup = function(gameColor, gamecenter, ads, fullscreen)
 	l.entities.camera.previous.y = l.entities.camera.y
 }
 
-l.game.fullscreen = function()
+l.game.fullscreen = function() // Engine-only function
 {
     l.dom.style.position = 'absolute'
     l.dom.style.left = '0px'
@@ -78,9 +81,14 @@ l.game.fullscreen = function()
     }
 }
 
-l.game.start = function()
+l.game.start = function(startScreen)
 {
-    l.game.loop = setInterval(l.screen.loading, 1000 / 60)
+    l.screen.engine.start = startScreen
+
+    if (l.screen.loading)
+    {
+        l.game.loop = setInterval(l.screen.loading, 1000 / 60)
+    }
 }
 
 l.game.stop = function() // Only works once the game is running; no effect during loading or setup
@@ -88,9 +96,9 @@ l.game.stop = function() // Only works once the game is running; no effect durin
     clearInterval(l.game.loop)
 }
 
-l.screen = new Object() // Group the screen functions and values
+l.change = new Object()
 
-l.screen.change = function(screen)
+l.change.screen = function(screen)
 {
 	clearInterval(l.game.loop)
 	l.game.state = screen

@@ -26,6 +26,6 @@ l.preloader.update = function()
     l.preloader.calculate()
 	if (l.preloader.count == 0)
 	{
-		l.screen.change('menu')
+		l.change.screen(l.screen.engine.start)
 	}
 }
