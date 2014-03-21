@@ -1,2 +1,3 @@
 .DS_Store
-dev/Zambies/sounds/song.wav
+.gitignore
+dev/
