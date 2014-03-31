@@ -8,6 +8,7 @@ l.object.make = function(name, x, y, width, height)
         l.entities[name].y = y
         l.entities[name].width = width
         l.entities[name].height = height
+        l.entities[name].rotation = 0
         l.entities[name].bounding = new Object()
             l.entities[name].bounding.x = x
             l.entities[name].bounding.y = y
@@ -198,5 +199,32 @@ l.object.from = function(name, x, y)
                     l.prototype.entities[name].animate.interval = l.object.animate(name, timer)
                 }
         }
+    }
+}
+
+l.object.rotate = new Object()
+
+l.object.rotate.to = function(name, rotation)
+{
+    l.entities[name].rotation = rotation
+}
+
+l.object.rotate.clock = function(name, speed)
+{
+    l.entities[name].rotation += speed
+
+    if (l.entities[name].rotation > 360)
+    {
+        l.entities[name].rotation -= 360
+    }
+}
+
+l.object.rotate.counter = function(name, speed)
+{
+    l.entities[name].rotation -= speed
+    
+    if (l.entities[name].rotation < 0)
+    {
+        l.entities[name].rotation += 360
     }
 }

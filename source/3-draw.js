@@ -88,26 +88,53 @@ l.draw.objects = function()
                     l.ctx.scale(-1, -1)
                 }
 
+                if (l.entities[l.buffer.database[i].name].rotation > 0)
+                {
+                    l.ctx.translate(Math.round(l.entities[l.buffer.database[i].name].anchor.x), Math.round(l.entities[l.buffer.database[i].name].anchor.y))
+                    l.ctx.rotate(l.entities[l.buffer.database[i].name].rotation)
+                }
+
                 if (l.entities[l.buffer.database[i].name].animate.count)
                 {
-                    l.ctx.drawImage(l.entities[l.buffer.database[i].name].sprite, l.entities[l.buffer.database[i].name].animate.frame * (l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count), 0, l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count, l.entities[l.buffer.database[i].name].animate.height, 0, 0, l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count, l.entities[l.buffer.database[i].name].animate.height)
+                    l.ctx.drawImage(l.entities[l.buffer.database[i].name].sprite, l.entities[l.buffer.database[i].name].animate.frame * (l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count), 0, l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count, l.entities[l.buffer.database[i].name].animate.height, Math.round(0 - l.entities[l.buffer.database[i].name].anchor.offset.x), Math.round(0 - l.entities[l.buffer.database[i].name].anchor.offset.y), l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count, l.entities[l.buffer.database[i].name].animate.height)
                 }
                 else
                 {
-                    l.ctx.drawImage(l.entities[l.buffer.database[i].name].sprite, 0, 0)
+                    l.ctx.drawImage(l.entities[l.buffer.database[i].name].sprite, Math.round(0 - l.entities[l.buffer.database[i].name].anchor.offset.x), Math.round(0 - l.entities[l.buffer.database[i].name].anchor.offset.y))
                 }
 
                 l.ctx.restore()
             }
             else
             {
-                if (l.entities[l.buffer.database[i].name].animate.count)
+                if (l.entities[l.buffer.database[i].name].rotation > 0)
                 {
-                    l.ctx.drawImage(l.entities[l.buffer.database[i].name].sprite, l.entities[l.buffer.database[i].name].animate.frame * (l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count), 0, l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count, l.entities[l.buffer.database[i].name].animate.height, Math.round(l.entities[l.buffer.database[i].name].x - l.entities.camera.x), Math.round(l.entities[l.buffer.database[i].name].y - l.entities.camera.y), l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count, l.entities[l.buffer.database[i].name].animate.height)
+                    l.ctx.save()
+
+                    l.ctx.translate(Math.round(l.entities[l.buffer.database[i].name].anchor.x - l.entities.camera.x), Math.round(l.entities[l.buffer.database[i].name].anchor.y - l.entities.camera.y))
+                    l.ctx.rotate(l.entities[l.buffer.database[i].name].rotation)
+
+                    if (l.entities[l.buffer.database[i].name].animate.count)
+                    {
+                        l.ctx.drawImage(l.entities[l.buffer.database[i].name].sprite, l.entities[l.buffer.database[i].name].animate.frame * (l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count), 0, l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count, l.entities[l.buffer.database[i].name].animate.height, Math.round(0 - l.entities[l.buffer.database[i].name].anchor.offset.x), Math.round(0 - l.entities[l.buffer.database[i].name].anchor.offset.y), l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count, l.entities[l.buffer.database[i].name].animate.height)
+                    }
+                    else
+                    {
+                        l.ctx.drawImage(l.entities[l.buffer.database[i].name].sprite, Math.round(0 - l.entities[l.buffer.database[i].name].anchor.offset.x), Math.round(0 - l.entities[l.buffer.database[i].name].anchor.offset.y))
+                    }
+
+                    l.ctx.restore()
                 }
                 else
                 {
-                    l.ctx.drawImage(l.entities[l.buffer.database[i].name].sprite, Math.round(l.entities[l.buffer.database[i].name].x - l.entities.camera.x), Math.round(l.entities[l.buffer.database[i].name].y - l.entities.camera.y))
+                    if (l.entities[l.buffer.database[i].name].animate.count)
+                    {
+                        l.ctx.drawImage(l.entities[l.buffer.database[i].name].sprite, l.entities[l.buffer.database[i].name].animate.frame * (l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count), 0, l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count, l.entities[l.buffer.database[i].name].animate.height, Math.round(l.entities[l.buffer.database[i].name].x - l.entities.camera.x), Math.round(l.entities[l.buffer.database[i].name].y - l.entities.camera.y), l.entities[l.buffer.database[i].name].animate.width / l.entities[l.buffer.database[i].name].animate.count, l.entities[l.buffer.database[i].name].animate.height)
+                    }
+                    else
+                    {
+                        l.ctx.drawImage(l.entities[l.buffer.database[i].name].sprite, Math.round(l.entities[l.buffer.database[i].name].x - l.entities.camera.x), Math.round(l.entities[l.buffer.database[i].name].y - l.entities.camera.y))
+                    }
                 }
             }
 
