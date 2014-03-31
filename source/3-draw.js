@@ -182,26 +182,62 @@ l.draw.hud = function(name, flipped)
                 l.ctx.translate(Math.round(l.entities[name].x + l.entities[name].width), Math.round(l.entities[name].y + l.entities[name].height))
                 l.ctx.scale(-1, -1)
             }
-            
-            if (l.entities[name].animate.count)
+
+            if (l.entities[name].rotation > 0)
             {
-                l.ctx.drawImage(l.entities[name].sprite, l.entities[name].animate.frame * (l.entities[name].animate.width / l.entities[name].animate.count), 0, l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height, 0, 0, l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height)
+                l.ctx.translate(Math.round(l.entities[name].anchor.x), Math.round(l.entities[name].anchor.y))
+                l.ctx.rotate(l.entities[name].rotation)
+
+                if (l.entities[name].animate.count)
+                {
+                    l.ctx.drawImage(l.entities[name].sprite, l.entities[name].animate.frame * (l.entities[name].animate.width / l.entities[name].animate.count), 0, l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height, Math.round(0 - l.entities[name].anchor.offset.x), Math.round(0 - l.entities[name].anchor.offset.y), l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height)
+                }
+                else
+                {
+                    l.ctx.drawImage(l.entities[name].sprite, Math.round(0 - l.entities[name].anchor.offset.x), Math.round(0 - l.entities[name].anchor.offset.y))
+                }
             }
             else
             {
-                l.ctx.drawImage(l.entities[name].sprite, 0, 0)
+                if (l.entities[name].animate.count)
+                {
+                    l.ctx.drawImage(l.entities[name].sprite, l.entities[name].animate.frame * (l.entities[name].animate.width / l.entities[name].animate.count), 0, l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height, 0, 0, l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height)
+                }
+                else
+                {
+                    l.ctx.drawImage(l.entities[name].sprite, 0, 0)
+                }
             }
             l.ctx.restore()
         }
         else
         {
-            if (l.entities[name].animate.count)
+            if (l.entities[name].rotation > 0)
             {
-                l.ctx.drawImage(l.entities[name].sprite, l.entities[name].animate.frame * (l.entities[name].animate.width / l.entities[name].animate.count), 0, l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height, Math.round(l.entities[name].x), Math.round(l.entities[name].y), l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height)
+                l.ctx.save()
+                l.ctx.translate(Math.round(l.entities[name].anchor.x), Math.round(l.entities[name].anchor.y))
+                l.ctx.rotate(l.entities[name].rotation)
+
+                if (l.entities[name].animate.count)
+                {
+                    l.ctx.drawImage(l.entities[name].sprite, l.entities[name].animate.frame * (l.entities[name].animate.width / l.entities[name].animate.count), 0, l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height, Math.round(0 - l.entities[name].anchor.offset.x), Math.round(0 - l.entities[name].anchor.offset.y), l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height)
+                }
+                else
+                {
+                    l.ctx.drawImage(l.entities[name].sprite, Math.round(0 - l.entities[name].anchor.offset.x), Math.round(0 - l.entities[name].anchor.offset.y))
+                }
+                l.ctx.restore()
             }
             else
             {
-                l.ctx.drawImage(l.entities[name].sprite, Math.round(l.entities[name].x), Math.round(l.entities[name].y))
+                if (l.entities[name].animate.count)
+                {
+                    l.ctx.drawImage(l.entities[name].sprite, l.entities[name].animate.frame * (l.entities[name].animate.width / l.entities[name].animate.count), 0, l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height, Math.round(l.entities[name].x), Math.round(l.entities[name].y), l.entities[name].animate.width / l.entities[name].animate.count, l.entities[name].animate.height)
+                }
+                else
+                {
+                    l.ctx.drawImage(l.entities[name].sprite, Math.round(l.entities[name].x), Math.round(l.entities[name].y))
+                }
             }
         }
     }
