@@ -276,27 +276,27 @@ l.physics.bounce = function(name, xMin, xMax, yMin, yMax)
 
     if (l.entities[name])
     {
-        if (l.entities[name].x <= xMin)
+        if (l.entities[name].x + l.entities[name].bounding.offset.x <= xMin)
         {
-			l.entities[name].x = xMin
+            l.entities[name].x = xMin - l.entities[name].bounding.offset.x
             l.entities[name].physics.momentum.x = -l.entities[name].physics.momentum.x
         }
-		else if (l.entities[name].x + l.entities[name].width >= xMax)
-		{
-			l.entities[name].x = xMax - l.entities[name].width
-			l.entities[name].physics.momentum.x = -l.entities[name].physics.momentum.x
-		}
-
-        if (l.entities[name].y <= yMin)
+        else if (l.entities[name].x + l.entities[name].bounding.offset.x + l.entities[name].bounding.width >= xMax)
         {
-			l.entities[name].y = yMin
+            l.entities[name].x = xMax - l.entities[name].bounding.width - (l.entities[name].width - l.entities[name].bounding.offset.x - l.entities[name].bounding.width)
+            l.entities[name].physics.momentum.x = -l.entities[name].physics.momentum.x
+        }
+
+        if (l.entities[name].y + l.entities[name].bounding.offset.y <= yMin)
+        {
+            l.entities[name].y = yMin - l.entities[name].bounding.offset.y
             l.entities[name].physics.momentum.y = -l.entities[name].physics.momentum.y
         }
-		else if (l.entities[name].y + l.entities[name].height >= yMax)
-		{
-			l.entities[name].y = yMax - l.entities[name].height
-			l.entities[name].physics.momentum.y = -l.entities[name].physics.momentum.y
-		}
+        else if (l.entities[name].y + l.entities[name].bounding.offset.y + l.entities[name].bounding.height >= yMax)
+        {
+            l.entities[name].y = yMax - l.entities[name].bounding.height - (l.entities[name].height - l.entities[name].bounding.offset.y - l.entities[name].bounding.height)
+            l.entities[name].physics.momentum.y = -l.entities[name].physics.momentum.y
+        }
     }
     else
     {        
