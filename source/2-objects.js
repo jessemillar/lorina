@@ -18,14 +18,12 @@ var Entity = function()
         return this
     }
 
-    /*
     this.setGroup = function(group)
     {
         this.group = group
 
         return this
     }
-    */
 
     this.setAnchor = function(x, y)
     {
@@ -61,6 +59,43 @@ var Entity = function()
         this.sprite.img.src = location
 
         return this
+    }
+
+    this.setAnimation = function(count, timer)
+    {
+        if (this.sprite)
+        {
+            this.sprite.frame = 0
+            this.sprite.count = count
+            this.sprite.timer = timer
+            this.sprite.animation = this.animate(this)
+        }
+
+        return this
+    }
+
+    this.pauseAnimation = function()
+    {
+        if (this.sprite.animation)
+        {
+            clearInterval(this.sprite.animation)
+        }
+    }
+
+    // We're using an external function to circumvent variable scope problems
+    this.animate = function(object)
+    {
+        setInterval(function()
+        {
+            if (object.sprite.frame < object.sprite.count - 1)
+            {
+                object.sprite.frame += 1
+            }
+            else
+            {
+                object.sprite.frame = 0
+            }
+        }, object.sprite.timer)
     }
 
     this.moveSnap = function(x, y)
@@ -139,42 +174,5 @@ var Entity = function()
         }
 
         // Don't "return this" here, do it in the functions that call "this.update" instead
-    }
-
-    this.setAnimation = function(count, timer)
-    {
-        if (this.sprite)
-        {
-            this.sprite.frame = 0
-            this.sprite.count = count
-            this.sprite.timer = timer
-            this.sprite.animation = this.animate(this)
-        }
-
-        return this
-    }
-
-    this.pauseAnimation = function()
-    {
-        if (this.sprite.animation)
-        {
-            clearInterval(this.sprite.animation)
-        }
-    }
-
-    // We're using an external function to circumvent variable scope problems
-    this.animate = function(object)
-    {
-        setInterval(function()
-        {
-            if (object.sprite.frame < object.sprite.count - 1)
-            {
-                object.sprite.frame += 1
-            }
-            else
-            {
-                object.sprite.frame = 0
-            }
-        }, object.sprite.timer)
     }
 }

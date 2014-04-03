@@ -1,183 +1,135 @@
-var l = new Object() // The Lorina object that keeps the engine functions out of the way
-
-l.game = new Object() // Group the game functions
-l.debug = new Object() // Keep track of the various debug options
-
-l.screen = new Object() // Group the screen functions and values
-l.screen.engine = new Object()
-
-l.game.setup = function(gameColor, gamecenter, ads, fullscreen)
+var Lorina = function()
 {
-    if (gamecenter)
+    this.setup = function(color, gamecenter, ads)
     {
-        l.game.gamecenter = true
-    }
-    else
-    {
-        l.game.gamecenter = false
-    }
+        this.color = color
 
-    if (ads)
-    {
-        l.game.ads = true
-    }
-    else
-    {
-        l.game.ads = false
-    }
-
-    if (fullscreen)
-    {
-        document.body.style.background = gameColor
-    }
-    l.dom = document.getElementById('canvas')
-    l.ctx = document.getElementById('canvas').getContext('2d')
-	
-    l.canvas = new Object() // Used to reference the height and width of the canvas later on without breaking other functions
-	l.canvas.width = l.dom.width
-	l.canvas.height = l.dom.height
-	
-    if (!window.navigator.vendor)
-    {
-        l.canvas.agent = 'ejecta'
-    }
-    else if (window.navigator.vendor == 'Google Inc.')
-    {
-        l.canvas.agent = 'chrome'
-    }
-	
-    if (fullscreen)
-    {
-        l.game.fullscreen()
-        if (l.canvas.agent == 'chrome')
+        if (gamecenter)
         {
-            document.body.setAttribute('onresize', 'l.game.fullscreen()') // Add a listener that will always keep the canvas fullscreen
+            this.gamecenter = true
         }
-    }
-	
-    /*
-    l.object.make('camera', 0, 0, l.canvas.width, l.canvas.height)
-    l.entities.camera.color = gameColor
-    l.entities.camera.previous = new Object() // Keep track of the camera's previous position for use with the shaking function
-	l.entities.camera.previous.x = l.entities.camera.x
-	l.entities.camera.previous.y = l.entities.camera.y
-    */
-}
 
-l.game.fullscreen = function() // Engine-only function
-{
-    l.dom.style.position = 'absolute'
-    l.dom.style.left = '0px'
-    l.dom.style.top = '0px'
-    l.dom.width = window.innerWidth
-    l.dom.height = window.innerHeight
-    if (l.canvas)
+        if (ads)
+        {
+            this.ads = true
+        }
+
+        this.dom = document.getElementById('canvas')
+        this.ctx = document.getElementById('canvas').getContext('2d')
+        
+        return this
+    }
+
+    this.fullscreen = function()
     {
-        l.canvas.width = l.dom.width
-        l.canvas.height = l.dom.height
+        if (window.navigator.vendor) // Check if we're using a non-Ejecta browser
+        {
+            document.body.setAttribute('onresize', 'this.fullscreen()')
+        }
+
+        document.body.style.background = gameColor
+
+        this.dom.style.position = 'absolute'
+        this.dom.style.left = '0px'
+        this.dom.style.top = '0px'
+        this.dom.width = window.innerWidth
+        this.dom.height = window.innerHeight
+
+        return this
     }
-    if (l.entities.camera)
+
+    this.start = function(room)
     {
-        l.entities.camera.width = l.dom.width
-        l.entities.camera.height = l.dom.height
+        this.room(room)
+
+        return this
     }
-}
 
-l.game.start = function(startScreen)
-{
-    l.screen.engine.start = startScreen
-
-    if (l.screen.loading)
+    this.stop = function()
     {
-        l.change.screen('loading')
+        clearInterval(this.loop)
+
+        return this
     }
 
-    l.preloader.update()
-}
+    this.room = function(room)
+    {
+        clearInterval(this.loop)
+        this.loop = setInterval(room, 1000 / 60)
 
-l.game.stop = function() // Only works once the game is running; no effect during loading or setup
-{
-    clearInterval(l.game.loop)
-}
-
-l.change = new Object()
-
-l.change.screen = function(screen)
-{
-	clearInterval(l.game.loop)
-	l.game.state = screen
-	l.game.loop = setInterval(l.screen[screen], 1000 / 60)
+        return this
+    }
 }
 
 /*
-l.camera = new Object() // Group the camera functions
+this.camera = new Object() // Group the camera functions
 
-l.camera.follow = function(name, sandboxWidth, sandboxHeight)
+this.camera.follow = function(name, sandboxWidth, sandboxHeight)
 {
-    if (!l.entities.camera.shaking)
+    if (!this.entities.camera.shaking)
     {
-        l.entities.camera.following = true // Tell the world that we're following something with the camera
+        this.entities.camera.following = true // Tell the world that we're following something with the camera
 		
         if (sandboxWidth)
         {
-            if (l.entities[name].anchor.x < l.entities.camera.x + l.entities.camera.width / 2 - sandboxWidth / 2)
+            if (this.entities[name].anchor.x < this.entities.camera.x + this.entities.camera.width / 2 - sandboxWidth / 2)
             {
-                l.entities.camera.x = Math.round(l.entities[name].anchor.x - l.entities.camera.width / 2 + sandboxWidth / 2)
+                this.entities.camera.x = Math.round(this.entities[name].anchor.x - this.entities.camera.width / 2 + sandboxWidth / 2)
             }
-            else if (l.entities[name].anchor.x > l.entities.camera.x + l.entities.camera.width / 2 + sandboxWidth / 2)
+            else if (this.entities[name].anchor.x > this.entities.camera.x + this.entities.camera.width / 2 + sandboxWidth / 2)
             {
-                l.entities.camera.x = Math.round(l.entities[name].anchor.x - l.entities.camera.width / 2 - sandboxWidth / 2)
+                this.entities.camera.x = Math.round(this.entities[name].anchor.x - this.entities.camera.width / 2 - sandboxWidth / 2)
             }
         }
 		
         if (sandboxHeight)
         {
-            if (l.entities[name].anchor.y < l.entities.camera.y + l.entities.camera.height / 2 - sandboxHeight / 2)
+            if (this.entities[name].anchor.y < this.entities.camera.y + this.entities.camera.height / 2 - sandboxHeight / 2)
             {
-                l.entities.camera.y = Math.round(l.entities[name].anchor.y - l.entities.camera.height / 2 + sandboxHeight / 2)
+                this.entities.camera.y = Math.round(this.entities[name].anchor.y - this.entities.camera.height / 2 + sandboxHeight / 2)
             }
-            else if (l.entities[name].anchor.y > l.entities.camera.y + l.entities.camera.height / 2 + sandboxHeight / 2)
+            else if (this.entities[name].anchor.y > this.entities.camera.y + this.entities.camera.height / 2 + sandboxHeight / 2)
             {
-                l.entities.camera.y = Math.round(l.entities[name].anchor.y - l.entities.camera.height / 2 - sandboxHeight / 2)
+                this.entities.camera.y = Math.round(this.entities[name].anchor.y - this.entities.camera.height / 2 - sandboxHeight / 2)
             }
         }
 		
-        if (l.entities.camera.x < 0)
+        if (this.entities.camera.x < 0)
         {
-            l.entities.camera.x = 0
+            this.entities.camera.x = 0
         }
-        else if (l.entities.camera.x > l.canvas.width - l.entities.camera.width)
+        else if (this.entities.camera.x > this.canvas.width - this.entities.camera.width)
         {
-            l.entities.camera.x = l.canvas.width - l.entities.camera.width
+            this.entities.camera.x = this.canvas.width - this.entities.camera.width
         }
 		
-        if (l.entities.camera.y < 0)
+        if (this.entities.camera.y < 0)
         {
-            l.entities.camera.y = 0
+            this.entities.camera.y = 0
         }
-        else if (l.entities.camera.y > l.canvas.height - l.entities.camera.height)
+        else if (this.entities.camera.y > this.canvas.height - this.entities.camera.height)
         {
-            l.entities.camera.y = l.canvas.height - l.entities.camera.height
+            this.entities.camera.y = this.canvas.height - this.entities.camera.height
         }
     }
 }
 
-l.camera.reset = function()
+this.camera.reset = function()
 {
-    l.entities.camera.x = 0
-    l.entities.camera.y = 0
+    this.entities.camera.x = 0
+    this.entities.camera.y = 0
 }
 
-l.camera.shake = function(shakes, duration, severity)
+this.camera.shake = function(shakes, duration, severity)
 {
-    if (l.entities.camera.following)
+    if (this.entities.camera.following)
     {
-        l.entities.camera.shaking = true // Tell the "following" function that we're shaking
+        this.entities.camera.shaking = true // Tell the "following" function that we're shaking
     }
 	
     // "Back up" the camera's position
-    l.entities.camera.previous.x = l.entities.camera.x
-    l.entities.camera.previous.y = l.entities.camera.y
+    this.entities.camera.previous.x = this.entities.camera.x
+    this.entities.camera.previous.y = this.entities.camera.y
 	
     var timing = duration / (shakes * 2)
 	
@@ -187,44 +139,44 @@ l.camera.shake = function(shakes, duration, severity)
         {
             setTimeout(function() // Set the timeout that will reset the camera back to its proper position
 					   {
-					   l.entities.camera.x = l.entities.camera.previous.x
-					   l.entities.camera.y = l.entities.camera.previous.y
+					   this.entities.camera.x = this.entities.camera.previous.x
+					   this.entities.camera.y = this.entities.camera.previous.y
 					   }, timing * i)
         }
         else
         {
             setTimeout(function()
 					   {
-					   var xMovement = Math.round(l.tools.random(0 - severity / 2, severity / 2))
-					   var yMovement = Math.round(l.tools.random(0 - severity / 2, severity / 2))
+					   var xMovement = Math.round(this.tools.random(0 - severity / 2, severity / 2))
+					   var yMovement = Math.round(this.tools.random(0 - severity / 2, severity / 2))
 					   
 					   if (xMovement > 0)
 					   {
-					   if (l.entities.camera.x + xMovement < l.canvas.width - l.entities.camera.width)
+					   if (this.entities.camera.x + xMovement < this.canvas.width - this.entities.camera.width)
 					   {
-					   l.entities.camera.x += xMovement
+					   this.entities.camera.x += xMovement
 					   }
 					   }
 					   else
 					   {
-					   if (l.entities.camera.x - Math.abs(xMovement) > 0)
+					   if (this.entities.camera.x - Math.abs(xMovement) > 0)
 					   {
-					   l.entities.camera.x = l.entities.camera.x - Math.abs(xMovement)
+					   this.entities.camera.x = this.entities.camera.x - Math.abs(xMovement)
 					   }
 					   }
 					   
 					   if (yMovement > 0)
 					   {
-					   if (l.entities.camera.y + yMovement < l.canvas.height - l.entities.camera.height)
+					   if (this.entities.camera.y + yMovement < this.canvas.height - this.entities.camera.height)
 					   {
-					   l.entities.camera.y += yMovement
+					   this.entities.camera.y += yMovement
 					   }
 					   }
 					   else
 					   {
-					   if (l.entities.camera.y - Math.abs(yMovement) > 0)
+					   if (this.entities.camera.y - Math.abs(yMovement) > 0)
 					   {
-					   l.entities.camera.y -= Math.abs(yMovement)
+					   this.entities.camera.y -= Math.abs(yMovement)
 					   }
 					   }
 					   }, timing * i)
@@ -233,9 +185,9 @@ l.camera.shake = function(shakes, duration, severity)
 	
     setTimeout(function()
 			   {
-			   if (l.entities.camera.following)
+			   if (this.entities.camera.following)
 			   {
-			   l.entities.camera.shaking = false // Tell the following function that we're done shaking
+			   this.entities.camera.shaking = false // Tell the following function that we're done shaking
 			   }
 			   }, duration)
 }
