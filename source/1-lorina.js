@@ -55,11 +55,13 @@ l.game.setup = function(gameColor, gamecenter, ads, fullscreen)
         }
     }
 	
+    /*
     l.object.make('camera', 0, 0, l.canvas.width, l.canvas.height)
     l.entities.camera.color = gameColor
     l.entities.camera.previous = new Object() // Keep track of the camera's previous position for use with the shaking function
 	l.entities.camera.previous.x = l.entities.camera.x
 	l.entities.camera.previous.y = l.entities.camera.y
+    */
 }
 
 l.game.fullscreen = function() // Engine-only function
@@ -107,6 +109,7 @@ l.change.screen = function(screen)
 	l.game.loop = setInterval(l.screen[screen], 1000 / 60)
 }
 
+/*
 l.camera = new Object() // Group the camera functions
 
 l.camera.follow = function(name, sandboxWidth, sandboxHeight)
@@ -236,3 +239,4 @@ l.camera.shake = function(shakes, duration, severity)
 			   }
 			   }, duration)
 }
+*/
