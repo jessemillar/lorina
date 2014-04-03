@@ -1,230 +1,180 @@
-l.entities = new Object() // The object that keeps track of our game objects
-l.object = new Object() // Group the object functions
+// "return this" allows for command chaining
 
-l.object.make = function(name, x, y, width, height)
+var Entity = function()
 {
-    l.entities[name] = new Object()
-        l.entities[name].x = x
-        l.entities[name].y = y
-        l.entities[name].width = width
-        l.entities[name].height = height
-        l.entities[name].rotation = 0
-        l.entities[name].bounding = new Object()
-            l.entities[name].bounding.x = x
-            l.entities[name].bounding.y = y
-            l.entities[name].bounding.offset = new Object()
-                l.entities[name].bounding.offset.x = 0
-                l.entities[name].bounding.offset.y = 0
-            l.entities[name].bounding.width = width
-            l.entities[name].bounding.height = height
-        l.entities[name].anchor = new Object()
-            l.entities[name].anchor.offset = new Object()
-                l.entities[name].anchor.offset.x = width / 2
-                l.entities[name].anchor.offset.y = height / 2
-            l.entities[name].anchor.x = x + width / 2
-            l.entities[name].anchor.y = y + height / 2
-        l.entities[name].physics = new Object()
-            l.entities[name].physics.momentum = new Object()
-                l.entities[name].physics.momentum.x = 0
-                l.entities[name].physics.momentum.y = 0
-                l.entities[name].physics.momentum.total = 0
-}
-
-l.object.categorize = function(name, category)
-{
-    l.entities[name].category = category
-}
-
-l.object.sprite = function(name, location, width, height, count, timer)
-{
-    l.preloader.queue()
-    l.entities[name].sprite = new Image()
-        l.entities[name].sprite.src = location
-        l.entities[name].animate = new Object() // Group the non-src-related properties
-            if (width)
-            {
-                l.entities[name].animate.width = width
-            }
-            else
-            {
-                l.entities[name].animate.width = l.entities[name].width
-            }
-
-            if (height)
-            {
-                l.entities[name].animate.height = height
-            }
-            else
-            {
-                l.entities[name].animate.height = l.entities[name].height
-            }
-
-            if (count)
-            {
-                l.entities[name].animate.count = count
-                l.entities[name].animate.frame = 0
-            }
-
-            if (timer)
-            {
-                l.entities[name].animate.interval = l.object.animate(name, timer)
-            }
-    l.entities[name].sprite.onload = function()
+    this.setPosition = function(x, y)
     {
-        l.preloader.update()
+        this.x = x
+        this.y = y
+
+        return this
     }
-}
 
-l.object.animate = function(name, timer) // l.object.sprite automatically calls this
-{
-    setInterval(function()
+    this.setSize = function(width, height)
     {
-        if (l.entities[name].animate.frame < l.entities[name].animate.count - 1)
+        this.width = width
+        this.height = height
+
+        return this
+    }
+
+    /*
+    this.setGroup = function(group)
+    {
+        this.group = group
+
+        return this
+    }
+    */
+
+    this.setAnchor = function(x, y)
+    {
+        this.anchor = {offset: {x: x, y: y}}
+
+        this.update()
+
+        return this
+    }
+
+    this.setBound = function(x, y, width, height)
+    {
+        this.bound = {offset: {x: x, y: y}, width: width, height: height}
+
+        this.update()
+
+        return this
+    }
+
+    // Throw the preloader counting in here
+    this.setSprite = function(location)
+    {
+        this.sprite = {img: new Image()}
+
+        var parent = this // We can't normally access "this" from inside the eventListener, so we have to hack it to work
+
+        this.sprite.img.addEventListener('load', function()
         {
-            l.entities[name].animate.frame += 1
+            parent.sprite.width = this.width
+            parent.sprite.height = this.height
+        })
+
+        this.sprite.img.src = location
+
+        return this
+    }
+
+    this.moveSnap = function(x, y)
+    {
+        if (this.anchor)
+        {
+            this.x = x - this.anchor.offset.x
+            this.y = y - this.anchor.offset.y
         }
         else
         {
-            l.entities[name].animate.frame = 0
+            this.x = x
+            this.y = y
         }
-    }, timer)
-}
 
-l.object.anchor = function(name, x, y)
-{
-    l.entities[name].x -= x
-    l.entities[name].y -= y
-    l.entities[name].anchor.offset.x = x
-    l.entities[name].anchor.offset.y = y
-    l.object.update(name)
-}
+        this.update()
 
-l.object.bounding = function(name, x, y, width, height)
-{
-    l.entities[name].bounding.offset.x = x
-    l.entities[name].bounding.offset.y = y
-    l.entities[name].bounding.width = width
-    l.entities[name].bounding.height = height
-    l.object.update(name)
-}
-
-// Update "hidden" values that relate to the position of the object
-l.object.update = function(name) // Called automagically
-{
-    // Shift the anchor point (whether manually supplied or automatically centered) to reflect the object's new position
-    l.entities[name].anchor.x = l.entities[name].x + l.entities[name].anchor.offset.x
-    l.entities[name].anchor.y = l.entities[name].y + l.entities[name].anchor.offset.y
-    // Shift the bounding box (whether manually supplied or automatically encompassing) to reflect the object's new position
-    l.entities[name].bounding.x = l.entities[name].x + l.entities[name].bounding.offset.x
-    l.entities[name].bounding.y = l.entities[name].y + l.entities[name].bounding.offset.y
-}
-
-l.object.delete = function(name)
-{
-    if (l.entities[name])
-    {
-        delete l.entities[name]
+        return this
     }
-    else
+
+    this.moveUp = function(speed)
     {
-        for (var i in l.entities)
+        this.y -= speed
+
+        this.update()
+
+        return this
+    }
+
+    this.moveDown = function(speed)
+    {
+        this.y += speed
+
+        this.update()
+
+        return this
+    }
+
+    this.moveLeft = function(speed)
+    {
+        this.x -= speed
+
+        this.update()
+
+        return this
+    }
+
+    this.moveRight = function(speed)
+    {
+        this.x += speed
+
+        this.update()
+
+        return this
+    }
+
+    // Must manually run when "this.x" or "this.y" change
+    this.update = function()
+    {
+        if (!this.x && !this.y)
         {
-            if (l.entities[i].category == name)
+            this.x = 0
+            this.y = 0
+        }
+
+        if (this.anchor)
+        {
+            this.anchor.x = this.x + this.anchor.offset.x
+            this.anchor.y = this.y + this.anchor.offset.y
+        }
+
+        if (this.bound)
+        {
+            this.bound.x = this.x + this.bound.offset.x
+            this.bound.y = this.y + this.bound.offset.y
+        }
+
+        // Don't "return this" here, do it in the functions that call "this.update" instead
+    }
+
+    this.setAnimation = function(count, timer)
+    {
+        if (this.sprite)
+        {
+            this.sprite.frame = 0
+            this.sprite.count = count
+            this.sprite.timer = timer
+            this.sprite.animation = this.animate(this)
+        }
+
+        return this
+    }
+
+    this.pauseAnimation = function()
+    {
+        if (this.sprite.animation)
+        {
+            clearInterval(this.sprite.animation)
+        }
+    }
+
+    // We're using an external function to circumvent variable scope problems
+    this.animate = function(object)
+    {
+        setInterval(function()
+        {
+            if (object.sprite.frame < object.sprite.count - 1)
             {
-                l.object.delete(i)
+                object.sprite.frame += 1
             }
-        }
-    }
-}
-
-l.object.last = new Object() // Keep track of the "index" for each prototype we use to bring an object into the world
-
-l.object.from = function(name, x, y)
-{
-    if (!l.object.last[name])
-    {
-        l.object.last[name] = 0
-    }
-
-    var count = l.object.last[name] + 1
-    l.object.last[name] = count // Save the "index" of the latest prototype to the engine
-
-    if (l.prototype.entities[name])
-    {
-        l.entities[name + count] = new Object()
-            l.entities[name + count].prototype = name
-            l.entities[name + count].x = x - l.prototype.entities[name].anchor.offset.x
-            l.entities[name + count].y = y - l.prototype.entities[name].anchor.offset.y
-            l.entities[name + count].width = l.prototype.entities[name].width
-            l.entities[name + count].height = l.prototype.entities[name].height
-            l.entities[name + count].bounding = new Object()
-                l.entities[name + count].bounding.x = x
-                l.entities[name + count].bounding.y = y
-                l.entities[name + count].bounding.offset = new Object()
-                    l.entities[name + count].bounding.offset.x = l.prototype.entities[name].bounding.offset.x
-                    l.entities[name + count].bounding.offset.y = l.prototype.entities[name].bounding.offset.y
-                l.entities[name + count].bounding.width = l.prototype.entities[name].width
-                l.entities[name + count].bounding.height = l.prototype.entities[name].height
-            l.entities[name + count].anchor = new Object()
-                l.entities[name + count].anchor.offset = new Object()
-                    l.entities[name + count].anchor.offset.x = l.prototype.entities[name].anchor.offset.x
-                    l.entities[name + count].anchor.offset.y = l.prototype.entities[name].anchor.offset.y
-                l.entities[name + count].anchor.x = x
-                l.entities[name + count].anchor.y = y
-            l.entities[name + count].physics = new Object()
-                l.entities[name + count].physics.momentum = new Object()
-                    l.entities[name + count].physics.momentum.x = l.prototype.entities[name].physics.momentum.x
-                    l.entities[name + count].physics.momentum.y = l.prototype.entities[name].physics.momentum.y
-                    l.entities[name + count].physics.momentum.total = l.prototype.entities[name].physics.momentum.total
-        
-        if (l.prototype.entities[name].category)
-        {
-            l.entities[name + count].category = l.prototype.entities[name].category
-        }
-
-        if (l.prototype.entities[name].sprite)
-        {
-            l.entities[name + count].sprite = l.prototype.entities[name].sprite
-        }
-
-        if (l.prototype.entities[name].animate)
-        {
-            l.entities[name + count].animate = new Object()
-                l.entities[name + count].animate.width = l.prototype.entities[name].animate.width
-                l.entities[name + count].animate.height = l.prototype.entities[name].animate.height
-                l.entities[name + count].animate.count = l.prototype.entities[name].animate.count
-                l.entities[name + count].animate.frame = l.prototype.entities[name].animate.frame
-                if (l.prototype.entities[name].animate.timer)
-                {
-                    l.prototype.entities[name].animate.interval = l.object.animate(name, timer)
-                }
-        }
-    }
-}
-
-l.object.rotate = new Object()
-
-l.object.rotate.to = function(name, rotation)
-{
-    l.entities[name].rotation = rotation
-}
-
-l.object.rotate.clock = function(name, speed)
-{
-    l.entities[name].rotation += speed
-
-    if (l.entities[name].rotation > 360)
-    {
-        l.entities[name].rotation -= 360
-    }
-}
-
-l.object.rotate.counter = function(name, speed)
-{
-    l.entities[name].rotation -= speed
-    
-    if (l.entities[name].rotation < 0)
-    {
-        l.entities[name].rotation += 360
+            else
+            {
+                object.sprite.frame = 0
+            }
+        }, object.sprite.timer)
     }
 }

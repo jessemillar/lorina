@@ -242,7 +242,7 @@ l.draw.hud = function(name, flipped)
         }
     }
     else
-    {        
+    {
         for (var i in l.entities)
         {
             if (l.entities[i].category == name)
