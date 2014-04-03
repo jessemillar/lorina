@@ -29,6 +29,9 @@ var Entity = function()
     {
         this.anchor = {offset: {x: x, y: y}}
 
+        this.x -= this.anchor.offset.x
+        this.y -= this.anchor.offset.y
+
         this.update()
 
         return this
