@@ -14,28 +14,38 @@ var Lorina = function()
             this.ads = true
         }
 
-        this.dom = document.getElementById('canvas')
-        this.ctx = document.getElementById('canvas').getContext('2d')
+        window.dom = document.getElementById('canvas')
+        window.ctx = document.getElementById('canvas').getContext('2d')
         
         return this
     }
 
     this.fullscreen = function()
     {
+        var parent = this
+
         if (window.navigator.vendor) // Check if we're using a non-Ejecta browser
         {
-            document.body.setAttribute('onresize', 'this.fullscreen()')
+            window.onresize = function()
+            {
+                parent.setFullscreen()
+            }
         }
 
-        document.body.style.background = gameColor
-
-        this.dom.style.position = 'absolute'
-        this.dom.style.left = '0px'
-        this.dom.style.top = '0px'
-        this.dom.width = window.innerWidth
-        this.dom.height = window.innerHeight
+        this.setFullscreen()
 
         return this
+    }
+
+    this.setFullscreen = function()
+    {
+        document.body.style.background = this.color
+
+        window.dom.style.position = 'absolute'
+        window.dom.style.left = '0px'
+        window.dom.style.top = '0px'
+        window.dom.width = window.innerWidth
+        window.dom.height = window.innerHeight
     }
 
     this.start = function(room)
@@ -54,10 +64,28 @@ var Lorina = function()
 
     this.room = function(room)
     {
-        clearInterval(this.loop)
+        if (this.loop)
+        {
+            clearInterval(this.loop)
+        }
+
         this.loop = setInterval(room, 1000 / 60)
 
         return this
+    }
+
+    this.blank = function(color)
+    {
+        if (color)
+        {
+            window.ctx.fillStyle = color
+        }
+        else
+        {
+            window.ctx.fillStyle = this.color
+        }
+
+        window.ctx.fillRect(0, 0, window.dom.width, window.dom.height)
     }
 }
 

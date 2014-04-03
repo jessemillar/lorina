@@ -17,17 +17,6 @@ var Keyboard = function()
         return this
     }
 
-    /*
-    this.enableExternal = function(object)
-    {
-        document.body.setAttribute('onkeydown', function(event)
-        {
-            this.pressed(event)
-        })
-        // document.body.setAttribute('onkeyup', eval(object.cancel(event)))
-    }
-    */
-
     this.pressed = function(event)
     {
         if (event.keyCode == 27)

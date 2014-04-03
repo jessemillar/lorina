@@ -98,6 +98,11 @@ var Entity = function()
         }, object.sprite.timer)
     }
 
+    this.draw = function()
+    {
+        window.ctx.drawImage(this.sprite.img, Math.round(this.x), Math.round(this.y))
+    }
+
     this.moveSnap = function(x, y)
     {
         if (this.anchor)
@@ -146,6 +151,138 @@ var Entity = function()
     this.moveRight = function(speed)
     {
         this.x += speed
+
+        this.update()
+
+        return this
+    }
+
+    this.setFriction = function(friction)
+    {
+        this.friction = friction
+        this.xMomentum = 0
+        this.yMomentum = 0
+
+        return this
+    }
+
+    this.pushUp = function(force)
+    {
+        this.yMomentum -= force
+
+        return this
+    }
+
+    this.pushDown = function(force)
+    {
+        this.yMomentum += force
+
+        return this
+    }
+
+    this.pushLeft = function(force)
+    {
+        this.xMomentum -= force
+
+        return this
+    }
+
+    this.pushRight = function(force)
+    {
+        this.xMomentum += force
+
+        return this
+    }
+
+    this.bounce = function(xMin, xMax, yMin, yMax)
+    {
+        if (!xMin && !xMax && !yMin && !yMax)
+        {
+            xMin = 0
+            xMax = window.dom.width
+            yMin = 0
+            yMax = window.dom.height
+        }
+
+        if (!this.bound)
+        {
+            this.setBound(0, 0, this.width, this.height)
+        }
+
+        if (this.x + this.bound.offset.x <= xMin)
+        {
+            this.x = xMin - this.bound.offset.x
+            this.xMomentum = -this.xMomentum
+        }
+        else if (this.x + this.bound.offset.x + this.bound.width >= xMax)
+        {
+            this.x = xMax - this.bound.width - (this.width - this.bound.offset.x - this.bound.width)
+            this.xMomentum = -this.xMomentum
+        }
+
+        if (this.y + this.bound.offset.y <= yMin)
+        {
+            this.y = yMin - this.bound.offset.y
+            this.yMomentum = -this.yMomentum
+        }
+        else if (this.y + this.bound.offset.y + this.bound.height >= yMax)
+        {
+            this.y = yMax - this.bound.height - (this.height - this.bound.offset.y - this.bound.height)
+            this.yMomentum = -this.yMomentum
+        }
+
+        return this
+    }
+
+    this.physics = function()
+    {
+        if (this.xMomentum !== 0) // Horizontal motion
+        {
+            if (this.xMomentum < 0) // Moving left
+            {
+                this.moveLeft(Math.abs(this.xMomentum))
+                this.xMomentum += this.friction
+
+                if (this.xMomentum > 0)
+                {
+                    this.xMomentum = 0
+                }
+            }
+            else if (this.xMomentum > 0) // Moving right
+            {
+                this.moveRight(Math.abs(this.xMomentum))
+                this.xMomentum -= this.friction
+
+                if (this.xMomentum < 0)
+                {
+                    this.xMomentum = 0
+                }
+            }
+        }
+
+        if (this.yMomentum !== 0) // Vertical motion
+        {
+            if (this.yMomentum < 0) // Moving up
+            {
+                this.moveUp(Math.abs(this.yMomentum))
+                this.yMomentum += this.friction
+
+                if (this.yMomentum > 0)
+                {
+                    this.yMomentum = 0
+                }
+            }
+            else if (this.yMomentum > 0) // Moving down
+            {
+                this.moveDown(Math.abs(this.yMomentum))
+                this.yMomentum -= this.friction
+
+                if (this.yMomentum < 0)
+                {
+                    this.yMomentum = 0
+                }
+            }
+        }
 
         this.update()
 

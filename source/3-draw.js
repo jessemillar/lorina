@@ -14,7 +14,7 @@ l.buffer.object = function(name, flipped)
         l.buffer.database.push(thingy)
     }
     else
-    {        
+    {    
         for (var i in l.entities)
         {
             if (l.entities[i].category == name)
