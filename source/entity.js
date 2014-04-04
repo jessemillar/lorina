@@ -197,35 +197,41 @@ var Entity = function()
         return this
     }
 
+    /*
     this.pullToward = function(entity, force)
     {
+        this.update()
+
         var xSpeed = this.xMeasure(entity) / this.totalMeasure(entity) * force
         var ySpeed = this.yMeasure(entity) / this.totalMeasure(entity) * force
 
         if (this.totalMeasure(entity) > 0)
         {
-            if (this.anchor.x < entity.anchor.x && this.anchor.y < entity.anchor.y)
+            if (this.x < entity.x && this.y < entity.y)
             {
                 this.pushRight(xSpeed)
                 this.pushDown(ySpeed)
             }
-            else if (this.anchor.x > entity.anchor.x && this.anchor.y < entity.anchor.y)
+            else if (this.x > entity.x && this.y < entity.y)
             {
                 this.pushLeft(xSpeed)
                 this.pushDown(ySpeed)
             }
-            else if (this.anchor.x < entity.anchor.x && this.anchor.y > entity.anchor.y)
+            else if (this.x < entity.x && this.y > entity.y)
             {
                 this.pushRight(xSpeed)
                 this.pushUp(ySpeed)
             }
-            else if (this.anchor.x > entity.anchor.x && this.anchor.y > entity.anchor.y)
+            else if (this.x > entity.x && this.y > entity.y)
             {
                 this.pushLeft(xSpeed)
                 this.pushUp(ySpeed)
             }
         }
+
+        return this
     }
+    */
 
     this.bounce = function(xMin, xMax, yMin, yMax)
     {
@@ -346,21 +352,23 @@ var Entity = function()
         // Don't "return this" here, do it in the functions that call "this.update" instead
     }
 
+    /*
     this.xMeasure = function(entity)
     {
-        return Math.round(Math.abs(this.anchor.x - entity.anchor.x))
+        return Math.abs(this.x - entity.x)
     }
 
     this.yMeasure = function(entity)
     {
-        return Math.round(Math.abs(this.anchor.y - entity.anchor.y))
+        return Math.abs(this.y - entity.y)
     }
 
     this.totalMeasure = function(entity)
     {
-        var horizontal = this.xMeasure(this.anchor.x, entity.anchor.x)
-        var vertical = this.yMeasure(this.anchor.y, entity.anchor.y)
+        var horizontal = this.xMeasure(this.x, entity.x)
+        var vertical = this.yMeasure(this.y, entity.y)
 
-        return Math.rounf(Math.sqrt(horizontal * horizontal + vertical * vertical))
+        return Math.sqrt(horizontal * horizontal + vertical * vertical)
     }
+    */
 }

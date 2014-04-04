@@ -16,6 +16,8 @@ var earth = new Entity()
 		 .setAnchor(125 / 2, 125 / 2)
 		 .setFriction(earthFriction)
 
+console.log(earth)
+
 var moon = new Entity()
 	moon.setSprite('images/moon.png')
 		.setPosition(50, 50)
@@ -44,9 +46,9 @@ var main = function()
 		earth.pushRight(earthSpeed) // Push the earth right
 	}
 
-	moon.pullToward(earth, moonSpeed) // Pull the moon toward the earth
+	// moon.pullToward(earth, moonSpeed).physics() // Pull the moon toward the earth
 
-	earth.physics().bounce()
+	earth.bounce().physics()
 
 	game.blank()
 	earth.draw()
