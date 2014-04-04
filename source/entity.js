@@ -27,10 +27,10 @@ var Entity = function()
 
     this.setAnchor = function(x, y)
     {
-        this.anchor = {offset: {x: x, y: y}}
+        this.anchor = {xOffset: x, yOffset: y}
 
-        this.x -= this.anchor.offset.x
-        this.y -= this.anchor.offset.y
+        this.x -= this.anchor.xOffset
+        this.y -= this.anchor.yOffset
 
         this.update()
 
@@ -39,7 +39,7 @@ var Entity = function()
 
     this.setBound = function(x, y, width, height)
     {
-        this.bound = {offset: {x: x, y: y}, width: width, height: height}
+        this.bound = {xOffset: x, yOffset: y, width: width, height: height}
 
         this.update()
 
@@ -110,8 +110,8 @@ var Entity = function()
     {
         if (this.anchor)
         {
-            this.x = x - this.anchor.offset.x
-            this.y = y - this.anchor.offset.y
+            this.x = x - this.anchor.xOffset
+            this.y = y - this.anchor.yOffset
         }
         else
         {
@@ -197,6 +197,36 @@ var Entity = function()
         return this
     }
 
+    this.pullToward = function(entity, force)
+    {
+        var xSpeed = this.xMeasure(entity) / this.totalMeasure(entity) * force
+        var ySpeed = this.yMeasure(entity) / this.totalMeasure(entity) * force
+
+        if (this.totalMeasure(entity) > 0)
+        {
+            if (this.anchor.x < entity.anchor.x && this.anchor.y < entity.anchor.y)
+            {
+                this.pushRight(xSpeed)
+                this.pushDown(ySpeed)
+            }
+            else if (this.anchor.x > entity.anchor.x && this.anchor.y < entity.anchor.y)
+            {
+                this.pushLeft(xSpeed)
+                this.pushDown(ySpeed)
+            }
+            else if (this.anchor.x < entity.anchor.x && this.anchor.y > entity.anchor.y)
+            {
+                this.pushRight(xSpeed)
+                this.pushUp(ySpeed)
+            }
+            else if (this.anchor.x > entity.anchor.x && this.anchor.y > entity.anchor.y)
+            {
+                this.pushLeft(xSpeed)
+                this.pushUp(ySpeed)
+            }
+        }
+    }
+
     this.bounce = function(xMin, xMax, yMin, yMax)
     {
         if (!xMin && !xMax && !yMin && !yMax)
@@ -212,32 +242,32 @@ var Entity = function()
             this.setBound(0, 0, this.width, this.height)
         }
 
-        if (this.x + this.bound.offset.x <= xMin)
+        if (this.x + this.bound.xOffset <= xMin)
         {
-            this.x = xMin - this.bound.offset.x
+            this.x = xMin - this.bound.xOffset
             this.xMomentum = -this.xMomentum
         }
-        else if (this.x + this.bound.offset.x + this.bound.width >= xMax)
+        else if (this.x + this.bound.xOffset + this.bound.width >= xMax)
         {
-            this.x = xMax - this.bound.width - (this.width - this.bound.offset.x - this.bound.width)
+            this.x = xMax - this.bound.width - (this.width - this.bound.xOffset - this.bound.width)
             this.xMomentum = -this.xMomentum
         }
 
-        if (this.y + this.bound.offset.y <= yMin)
+        if (this.y + this.bound.yOffset <= yMin)
         {
-            this.y = yMin - this.bound.offset.y
+            this.y = yMin - this.bound.yOffset
             this.yMomentum = -this.yMomentum
         }
-        else if (this.y + this.bound.offset.y + this.bound.height >= yMax)
+        else if (this.y + this.bound.yOffset + this.bound.height >= yMax)
         {
-            this.y = yMax - this.bound.height - (this.height - this.bound.offset.y - this.bound.height)
+            this.y = yMax - this.bound.height - (this.height - this.bound.yOffset - this.bound.height)
             this.yMomentum = -this.yMomentum
         }
 
         return this
     }
 
-    this.physics = function()
+    this.physics = function() // Run to continuously update the friction of objects influenced by physics
     {
         if (this.xMomentum !== 0) // Horizontal motion
         {
@@ -303,16 +333,34 @@ var Entity = function()
 
         if (this.anchor)
         {
-            this.anchor.x = this.x + this.anchor.offset.x
-            this.anchor.y = this.y + this.anchor.offset.y
+            this.anchor.x = this.x + this.anchor.xOffset
+            this.anchor.y = this.y + this.anchor.yOffset
         }
 
         if (this.bound)
         {
-            this.bound.x = this.x + this.bound.offset.x
-            this.bound.y = this.y + this.bound.offset.y
+            this.bound.x = this.x + this.bound.xOffset
+            this.bound.y = this.y + this.bound.yOffset
         }
 
         // Don't "return this" here, do it in the functions that call "this.update" instead
+    }
+
+    this.xMeasure = function(entity)
+    {
+        return Math.round(Math.abs(this.anchor.x - entity.anchor.x))
+    }
+
+    this.yMeasure = function(entity)
+    {
+        return Math.round(Math.abs(this.anchor.y - entity.anchor.y))
+    }
+
+    this.totalMeasure = function(entity)
+    {
+        var horizontal = this.xMeasure(this.anchor.x, entity.anchor.x)
+        var vertical = this.yMeasure(this.anchor.y, entity.anchor.y)
+
+        return Math.rounf(Math.sqrt(horizontal * horizontal + vertical * vertical))
     }
 }
