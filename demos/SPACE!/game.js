@@ -3,20 +3,18 @@ var earthFriction = earthSpeed / 15
 var moonSpeed = 0.75
 var moonFriction = moonSpeed / 15
 
-var game = new Lorina()
 var keyboard = new Keyboard()
 	keyboard.enable()
 
-game.setup('#111111').fullscreen()
+l.setup('#111111')
+l.fullscreen()
 
 var earth = new Entity()
 	earth.setSprite('images/earth.png')
-		 .setPosition(window.dom.width / 2, window.dom.height / 2)
+		 .setPosition(l.dom.width / 2, l.dom.height / 2)
 		 .setSize(125, 125)
 		 .setAnchor(125 / 2, 125 / 2)
 		 .setFriction(earthFriction)
-
-console.log(earth)
 
 var moon = new Entity()
 	moon.setSprite('images/moon.png')
@@ -46,13 +44,13 @@ var main = function()
 		earth.pushRight(earthSpeed) // Push the earth right
 	}
 
-	// moon.pullToward(earth, moonSpeed).physics() // Pull the moon toward the earth
+	moon.pullToward(earth, moonSpeed).physics() // Pull the moon toward the earth
 
 	earth.bounce().physics()
 
-	game.blank()
+	l.blank()
 	earth.draw()
 	moon.draw()
 }
 
-game.start(main) // Only call once the room functions are defined
+l.start(main) // Only call once the room functions are defined

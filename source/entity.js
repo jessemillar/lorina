@@ -103,7 +103,7 @@ var Entity = function()
 
     this.draw = function()
     {
-        window.ctx.drawImage(this.sprite.img, Math.round(this.x), Math.round(this.y))
+        l.ctx.drawImage(this.sprite.img, Math.round(this.x), Math.round(this.y))
     }
 
     this.moveSnap = function(x, y)
@@ -169,6 +169,12 @@ var Entity = function()
         return this
     }
 
+    this.freeze = function()
+    {
+        this.xMomentum = 0
+        this.yMomentum = 0
+    }
+
     this.pushUp = function(force)
     {
         this.yMomentum -= force
@@ -197,32 +203,33 @@ var Entity = function()
         return this
     }
 
-    /*
     this.pullToward = function(entity, force)
     {
-        this.update()
+        var horizontal = Math.abs(this.anchor.x - entity.anchor.x)
+        var vertical = Math.abs(this.anchor.y - entity.anchor.y)
+        var total = Math.sqrt(Math.abs(this.anchor.x - entity.anchor.x) * Math.abs(this.anchor.x - entity.anchor.x) + Math.abs(this.anchor.y - entity.anchor.y) * Math.abs(this.anchor.y - entity.anchor.y))
 
-        var xSpeed = this.xMeasure(entity) / this.totalMeasure(entity) * force
-        var ySpeed = this.yMeasure(entity) / this.totalMeasure(entity) * force
+        var xSpeed = horizontal / total * force
+        var ySpeed = vertical / total * force
 
-        if (this.totalMeasure(entity) > 0)
+        if (total > 1)
         {
-            if (this.x < entity.x && this.y < entity.y)
+            if (this.anchor.x < entity.anchor.x && this.anchor.y < entity.anchor.y)
             {
                 this.pushRight(xSpeed)
                 this.pushDown(ySpeed)
             }
-            else if (this.x > entity.x && this.y < entity.y)
+            else if (this.anchor.x > entity.anchor.x && this.anchor.y < entity.anchor.y)
             {
                 this.pushLeft(xSpeed)
                 this.pushDown(ySpeed)
             }
-            else if (this.x < entity.x && this.y > entity.y)
+            else if (this.anchor.x < entity.anchor.x && this.anchor.y > entity.anchor.y)
             {
                 this.pushRight(xSpeed)
                 this.pushUp(ySpeed)
             }
-            else if (this.x > entity.x && this.y > entity.y)
+            else if (this.anchor.x > entity.anchor.x && this.anchor.y > entity.anchor.y)
             {
                 this.pushLeft(xSpeed)
                 this.pushUp(ySpeed)
@@ -231,16 +238,15 @@ var Entity = function()
 
         return this
     }
-    */
 
     this.bounce = function(xMin, xMax, yMin, yMax)
     {
         if (!xMin && !xMax && !yMin && !yMax)
         {
             xMin = 0
-            xMax = window.dom.width
+            xMax = l.dom.width
             yMin = 0
-            yMax = window.dom.height
+            yMax = l.dom.height
         }
 
         if (!this.bound)
@@ -351,24 +357,4 @@ var Entity = function()
 
         // Don't "return this" here, do it in the functions that call "this.update" instead
     }
-
-    /*
-    this.xMeasure = function(entity)
-    {
-        return Math.abs(this.x - entity.x)
-    }
-
-    this.yMeasure = function(entity)
-    {
-        return Math.abs(this.y - entity.y)
-    }
-
-    this.totalMeasure = function(entity)
-    {
-        var horizontal = this.xMeasure(this.x, entity.x)
-        var vertical = this.yMeasure(this.y, entity.y)
-
-        return Math.sqrt(horizontal * horizontal + vertical * vertical)
-    }
-    */
 }
