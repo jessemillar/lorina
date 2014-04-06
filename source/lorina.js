@@ -4,31 +4,33 @@ l.setup = function(color, gamecenter, ads)
 {
     l.color = color
 
-    if (gamecenter)
-    {
-        l.gamecenter = true
-    }
-
-    if (ads)
-    {
-        l.ads = true
-    }
-
     l.dom = document.getElementById('canvas')
     l.ctx = document.getElementById('canvas').getContext('2d')
-}
 
-l.fullscreen = function()
-{
     if (window.navigator.vendor) // Check if we're using a non-Ejecta browser
     {
-        window.onresize = function()
+        if (gamecenter) // If the second value is true, do fullscreen instead of gamecenter
         {
-            parent.setFullscreen()
+            window.onresize = function()
+            {
+                parent.setFullscreen()
+            }
+
+            l.setFullscreen()
         }
     }
+    else
+    {
+        if (gamecenter)
+        {
+            l.gamecenter = true
+        }
 
-    l.setFullscreen()
+        if (ads)
+        {
+            l.ads = true
+        }
+    }
 }
 
 l.setFullscreen = function()

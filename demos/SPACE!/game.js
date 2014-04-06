@@ -4,10 +4,8 @@ var moonSpeed = 0.75
 var moonFriction = moonSpeed / 15
 
 var keyboard = new Keyboard()
-	keyboard.enable()
 
-l.setup('#111111')
-l.fullscreen()
+l.setup('#111111', true)
 
 var earth = new Entity()
 	earth.setSprite('images/earth.png')
