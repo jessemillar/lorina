@@ -1,5 +1,10 @@
 // "return this" allows for command chaining
 
+// set
+// pause
+// push
+// pull
+
 var Entity = function()
 {
     this.setPosition = function(x, y)
@@ -27,10 +32,11 @@ var Entity = function()
 
     this.setAnchor = function(x, y)
     {
-        this.anchor = {xOffset: x, yOffset: y}
+        this.anchor = {offset: {x: x, y: y}}
 
-        this.x -= this.anchor.xOffset
-        this.y -= this.anchor.yOffset
+        // This is ghetto; fix later
+        this.x -= this.anchor.offset.x
+        this.y -= this.anchor.offset.y
 
         this.update()
 
@@ -39,7 +45,7 @@ var Entity = function()
 
     this.setBound = function(x, y, width, height)
     {
-        this.bound = {xOffset: x, yOffset: y, width: width, height: height}
+        this.bound = {offset: {x: x, y: y}, width: width, height: height}
 
         this.update()
 
@@ -85,33 +91,33 @@ var Entity = function()
         }
     }
 
-    // We're using an external function to circumvent variable scope problems
-    this.animate = function(object)
-    {
-        setInterval(function()
+        // We're using an external function to circumvent variable scope problems
+        this.animate = function(object)
         {
-            if (object.sprite.frame < object.sprite.count - 1)
+            setInterval(function()
             {
-                object.sprite.frame += 1
-            }
-            else
-            {
-                object.sprite.frame = 0
-            }
-        }, object.sprite.timer)
-    }
+                if (object.sprite.frame < object.sprite.count - 1)
+                {
+                    object.sprite.frame += 1
+                }
+                else
+                {
+                    object.sprite.frame = 0
+                }
+            }, object.sprite.timer)
+        }
 
     this.draw = function()
     {
         l.ctx.drawImage(this.sprite.img, Math.round(this.x), Math.round(this.y))
     }
 
-    this.moveSnap = function(x, y)
+    this.snapTo = function(x, y)
     {
         if (this.anchor)
         {
-            this.x = x - this.anchor.xOffset
-            this.y = y - this.anchor.yOffset
+            this.x = x - this.anchor.offset.x
+            this.y = y - this.anchor.offset.y
         }
         else
         {
@@ -163,42 +169,41 @@ var Entity = function()
     this.setFriction = function(friction)
     {
         this.friction = friction
-        this.xMomentum = 0
-        this.yMomentum = 0
+        this.momentum = {x: 0, y: 0}
 
         return this
     }
 
     this.freeze = function()
     {
-        this.xMomentum = 0
-        this.yMomentum = 0
+        this.momentum.x = 0
+        this.momentum.y = 0
     }
 
     this.pushUp = function(force)
     {
-        this.yMomentum -= force
+        this.momentum.y -= force
 
         return this
     }
 
     this.pushDown = function(force)
     {
-        this.yMomentum += force
+        this.momentum.y += force
 
         return this
     }
 
     this.pushLeft = function(force)
     {
-        this.xMomentum -= force
+        this.momentum.x -= force
 
         return this
     }
 
     this.pushRight = function(force)
     {
-        this.xMomentum += force
+        this.momentum.x += force
 
         return this
     }
@@ -244,9 +249,9 @@ var Entity = function()
         if (!xMin && !xMax && !yMin && !yMax)
         {
             xMin = 0
-            xMax = l.dom.width
+            xMax = l.canvas.width
             yMin = 0
-            yMax = l.dom.height
+            yMax = l.canvas.height
         }
 
         if (!this.bound)
@@ -254,26 +259,26 @@ var Entity = function()
             this.setBound(0, 0, this.width, this.height)
         }
 
-        if (this.x + this.bound.xOffset <= xMin)
+        if (this.x + this.bound.offset.x <= xMin)
         {
-            this.x = xMin - this.bound.xOffset
-            this.xMomentum = -this.xMomentum
+            this.x = xMin - this.bound.offset.x
+            this.momentum.x = -this.momentum.x
         }
-        else if (this.x + this.bound.xOffset + this.bound.width >= xMax)
+        else if (this.x + this.bound.offset.x + this.bound.width >= xMax)
         {
-            this.x = xMax - this.bound.width - (this.width - this.bound.xOffset - this.bound.width)
-            this.xMomentum = -this.xMomentum
+            this.x = xMax - this.bound.width - (this.width - this.bound.offset.x - this.bound.width)
+            this.momentum.x = -this.momentum.x
         }
 
-        if (this.y + this.bound.yOffset <= yMin)
+        if (this.y + this.bound.offset.y <= yMin)
         {
-            this.y = yMin - this.bound.yOffset
-            this.yMomentum = -this.yMomentum
+            this.y = yMin - this.bound.offset.y
+            this.momentum.y = -this.momentum.y
         }
-        else if (this.y + this.bound.yOffset + this.bound.height >= yMax)
+        else if (this.y + this.bound.offset.y + this.bound.height >= yMax)
         {
-            this.y = yMax - this.bound.height - (this.height - this.bound.yOffset - this.bound.height)
-            this.yMomentum = -this.yMomentum
+            this.y = yMax - this.bound.height - (this.height - this.bound.offset.y - this.bound.height)
+            this.momentum.y = -this.momentum.y
         }
 
         return this
@@ -281,50 +286,50 @@ var Entity = function()
 
     this.physics = function() // Run to continuously update the friction of objects influenced by physics
     {
-        if (this.xMomentum !== 0) // Horizontal motion
+        if (this.momentum.x !== 0) // Horizontal motion
         {
-            if (this.xMomentum < 0) // Moving left
+            if (this.momentum.x < 0) // Moving left
             {
-                this.moveLeft(Math.abs(this.xMomentum))
-                this.xMomentum += this.friction
+                this.moveLeft(Math.abs(this.momentum.x))
+                this.momentum.x += this.friction
 
-                if (this.xMomentum > 0)
+                if (this.momentum.x > 0)
                 {
-                    this.xMomentum = 0
+                    this.momentum.x = 0
                 }
             }
-            else if (this.xMomentum > 0) // Moving right
+            else if (this.momentum.x > 0) // Moving right
             {
-                this.moveRight(Math.abs(this.xMomentum))
-                this.xMomentum -= this.friction
+                this.moveRight(Math.abs(this.momentum.x))
+                this.momentum.x -= this.friction
 
-                if (this.xMomentum < 0)
+                if (this.momentum.x < 0)
                 {
-                    this.xMomentum = 0
+                    this.momentum.x = 0
                 }
             }
         }
 
-        if (this.yMomentum !== 0) // Vertical motion
+        if (this.momentum.y !== 0) // Vertical motion
         {
-            if (this.yMomentum < 0) // Moving up
+            if (this.momentum.y < 0) // Moving up
             {
-                this.moveUp(Math.abs(this.yMomentum))
-                this.yMomentum += this.friction
+                this.moveUp(Math.abs(this.momentum.y))
+                this.momentum.y += this.friction
 
-                if (this.yMomentum > 0)
+                if (this.momentum.y > 0)
                 {
-                    this.yMomentum = 0
+                    this.momentum.y = 0
                 }
             }
-            else if (this.yMomentum > 0) // Moving down
+            else if (this.momentum.y > 0) // Moving down
             {
-                this.moveDown(Math.abs(this.yMomentum))
-                this.yMomentum -= this.friction
+                this.moveDown(Math.abs(this.momentum.y))
+                this.momentum.y -= this.friction
 
-                if (this.yMomentum < 0)
+                if (this.momentum.y < 0)
                 {
-                    this.yMomentum = 0
+                    this.momentum.y = 0
                 }
             }
         }
@@ -334,27 +339,27 @@ var Entity = function()
         return this
     }
 
-    // Must manually run when "this.x" or "this.y" change
-    this.update = function()
-    {
-        if (!this.x && !this.y)
+        // Must manually run when "this.x" or "this.y" change
+        this.update = function()
         {
-            this.x = 0
-            this.y = 0
-        }
+            if (!this.x && !this.y)
+            {
+                this.x = 0
+                this.y = 0
+            }
 
-        if (this.anchor)
-        {
-            this.anchor.x = this.x + this.anchor.xOffset
-            this.anchor.y = this.y + this.anchor.yOffset
-        }
+            if (this.anchor)
+            {
+                this.anchor.x = this.x + this.anchor.offset.x
+                this.anchor.y = this.y + this.anchor.offset.y
+            }
 
-        if (this.bound)
-        {
-            this.bound.x = this.x + this.bound.xOffset
-            this.bound.y = this.y + this.bound.yOffset
-        }
+            if (this.bound)
+            {
+                this.bound.x = this.x + this.bound.offset.x
+                this.bound.y = this.y + this.bound.offset.y
+            }
 
-        // Don't "return this" here, do it in the functions that call "this.update" instead
-    }
+            // Don't "return this" here, do it in the functions that call "this.update" instead
+        }
 }
