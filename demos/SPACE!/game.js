@@ -6,10 +6,11 @@ var earthFriction = earthSpeed / 15
 var moonSpeed = 0.75
 var moonFriction = moonSpeed / 15
 
+var game = new Lorina()
 var camera = new Camera()
 var keyboard = new Keyboard()
 
-l.setup('#111111', true)
+game.setup('#111111', true).fullscreen()
 
 var earth = new Entity()
 	earth.setSprite('images/earth.png')
@@ -52,9 +53,9 @@ var main = function()
 
 	earth.bounce().physics()
 
-	l.blank()
+	game.blank()
 	earth.draw()
 	moon.draw()
 }
 
-l.start(main) // Only call once the room functions are defined
+game.start(main) // Only call once the room functions are defined
