@@ -1,6 +1,3 @@
-// Gratitude is a catalyst to all Christ-like attributes
-// - Dieter
-
 var earthSpeed = 0.5
 var earthFriction = earthSpeed / 15
 var moonSpeed = 0.75
@@ -12,6 +9,7 @@ var keyboard = new Keyboard()
 var game = new Lorina() // Required for all games
 	game.setColor('#111111')
 		.makeFullscreen()
+		.setSize(l.canvas.width * 2, l.canvas.height * 2)
 
 var earth = new Entity()
 	earth.setSprite('images/earth.png')
@@ -30,7 +28,7 @@ var moon = new Entity()
 // I would recommend that you keep the data for your room functions in an external file and reference it here
 var main = function()
 {
-	camera.follow(earth)
+	camera.follow(earth, 0, 0)
 
 	if (keyboard.up) // If we're pressing the 'up' arrow key, do this...
 	{
@@ -55,8 +53,9 @@ var main = function()
 	earth.bounce().physics()
 
 	game.blank()
-	earth.draw()
-	moon.draw()
+	earth.buffer()
+	moon.buffer()
+	game.draw()
 }
 
 game.start(main) // Only call once the room functions are defined

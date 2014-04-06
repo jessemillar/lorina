@@ -1,10 +1,3 @@
-// "return this" allows for command chaining
-
-// set
-// pause
-// push
-// pull
-
 var Entity = function()
 {
     this.setPosition = function(x, y)
@@ -106,6 +99,11 @@ var Entity = function()
                 }
             }, object.sprite.timer)
         }
+
+    this.buffer = function()
+    {
+        l.buffer.push(this)
+    }
 
     this.draw = function()
     {

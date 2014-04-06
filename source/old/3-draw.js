@@ -2,29 +2,6 @@ l.buffer = new Object() // Group the buffer functions (for z-indexing)
 
 l.buffer.database = new Array() // The array we'll use to sort the objects-to-be-drawn by y coordinate for cool z-indexing
 
-l.buffer.object = function(name, flipped)
-{
-    if (l.entities[name])
-    {
-        var thingy = new Object()
-            thingy.name = name
-            thingy.y = l.entities[name].anchor.y
-            thingy.flipped = flipped
-
-        l.buffer.database.push(thingy)
-    }
-    else
-    {    
-        for (var i in l.entities)
-        {
-            if (l.entities[i].category == name)
-            {
-                l.buffer.object(i, flipped)
-            }
-        }
-    }
-}
-
 l.draw = new Object() // Organize all the draw functions into one object
 
 l.draw.blank = function(color)
