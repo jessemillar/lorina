@@ -1,8 +1,12 @@
+// Gratitude is a catalyst to all Christ-like attributes
+// - Dieter
+
 var earthSpeed = 0.5
 var earthFriction = earthSpeed / 15
 var moonSpeed = 0.75
 var moonFriction = moonSpeed / 15
 
+var camera = new Camera()
 var keyboard = new Keyboard()
 
 l.setup('#111111', true)
@@ -24,6 +28,8 @@ var moon = new Entity()
 // I would recommend that you keep the data for your room functions in an external file and reference it here
 var main = function()
 {
+	camera.follow(earth)	
+
 	if (keyboard.up) // If we're pressing the 'up' arrow key, do this...
 	{
 		earth.pushUp(earthSpeed)
