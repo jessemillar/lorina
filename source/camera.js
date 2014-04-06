@@ -1,73 +1,72 @@
-// Probably doesn't work currently
-
 var Camera = function()
 {
-	this.follow = function(entity, sandboxWidth, sandboxHeight)
-	{
-		if (!this.shaking)
-		{
-			this.following = true // Tell the world that we're following something with the camera
-
-			if (sandboxWidth)
-			{
-				if (entity.anchor.x < this.x + this.width / 2 - sandboxWidth / 2)
-				{
-					this.x = Math.round(entity.anchor.x - this.width / 2 + sandboxWidth / 2)
-				}
-				else if (entity.anchor.x > this.x + this.width / 2 + sandboxWidth / 2)
-				{
-					this.x = Math.round(entity.anchor.x - this.width / 2 - sandboxWidth / 2)
-				}
-			}
-
-			if (sandboxHeight)
-			{
-				if (entity.anchor.y < this.y + this.height / 2 - sandboxHeight / 2)
-				{
-					this.y = Math.round(entity.anchor.y - this.height / 2 + sandboxHeight / 2)
-				}
-				else if (entity.anchor.y > this.y + this.height / 2 + sandboxHeight / 2)
-				{
-					this.y = Math.round(entity.anchor.y - this.height / 2 - sandboxHeight / 2)
-				}
-			}
-
-			if (this.x < 0)
-			{
-				this.x = 0
-			}
-			else if (this.x > l.dom.width - this.width)
-			{
-				this.x = l.dom.width - this.width
-			}
-
-			if (this.y < 0)
-			{
-				this.y = 0
-			}
-			else if (this.y > l.dom.height - this.height)
-			{
-				this.y = l.dom.height - this.height
-			}
-		}
-	}
+	l.camera = {x: 0, y: 0, sandbox: {width: 0, height: 0}}
 
 	this.reset = function()
 	{
-		this.x = 0
-		this.y = 0
+		l.camera.x = 0
+		l.camera.y = 0
 	}
 
+	this.follow = function(entity, width, height)
+	{
+		l.camera.sandbox.width = width
+		l.camera.sandbox.height = height
+
+		if (this.state != 'shaking')
+		{
+			if (l.camera.sandbox.width)
+			{
+				if (entity.anchor.x < l.camera.x + l.dom.width / 2 - l.camera.sandbox.width / 2)
+				{
+					l.camera.x = entity.anchor.x - l.dom.width / 2 + l.camera.sandbox.width / 2
+				}
+				else if (entity.anchor.x > l.camera.x + l.dom.width / 2 + l.camera.sandbox.width / 2)
+				{
+					l.camera.x = entity.anchor.x - l.dom.width / 2 - l.camera.sandbox.width / 2
+				}
+			}
+
+			if (l.camera.sandbox.height)
+			{
+				if (entity.anchor.y < l.camera.y + l.dom.height / 2 - l.camera.sandbox.height / 2)
+				{
+					l.camera.y = entity.anchor.y - l.dom.height / 2 + l.camera.sandbox.height / 2
+				}
+				else if (entity.anchor.y > l.camera.y + l.dom.height / 2 + l.camera.sandbox.height / 2)
+				{
+					l.camera.y = entity.anchor.y - l.dom.height / 2 - l.camera.sandbox.height / 2
+				}
+			}
+
+			if (l.camera.x < 0)
+			{
+				l.camera.x = 0
+			}
+			else if (l.camera.x > l.canvas.width - l.dom.width)
+			{
+				l.camera.x = l.canvas.width - l.dom.width
+			}
+
+			if (l.camera.y < 0)
+			{
+				l.camera.y = 0
+			}
+			else if (l.camera.y > l.canvas.height - l.dom.height)
+			{
+				l.camera.y = l.canvas.height - l.dom.height
+			}
+		}
+	}
+
+	/*
 	this.shake = function(shakes, duration, severity)
 	{
-		if (this.following)
-		{
-			this.shaking = true // Tell the "following" function that we're shaking
-		}
+		this.state = true // Tell the "following" function that we're shaking
 		
 		// "Back up" the camera's position
-		this.previous.x = this.x
-		this.previous.y = this.y
+		this.previous.x = l.camera.x
+		this.previous.y = l.camera.y
 		
 		var timing = duration / (shakes * 2)
 		
@@ -77,44 +76,44 @@ var Camera = function()
 			{
 				setTimeout(function() // Set the timeout that will reset the camera back to its proper position
 				{
-					this.x = this.previous.x
-					this.y = this.previous.y
+					l.camera.x = this.previous.x
+					l.camera.y = this.previous.y
 				}, timing * i)
 			}
 			else
 			{
 				setTimeout(function()
 				{
-					var xMovement = Math.round(l.tools.random(0 - severity / 2, severity / 2))
-					var yMovement = Math.round(l.tools.random(0 - severity / 2, severity / 2))
+					var xMovement = l.tools.random(0 - severity / 2, severity / 2)
+					var yMovement = l.tools.random(0 - severity / 2, severity / 2)
 
 					if (xMovement > 0)
 					{
-						if (this.x + xMovement < l.dom.width - this.width)
+						if (l.camera.x + xMovement < l.dom.width - l.dom.width)
 						{
-							this.x += xMovement
+							l.camera.x += xMovement
 						}
 					}
 					else
 					{
-						if (this.x - Math.abs(xMovement) > 0)
+						if (l.camera.x - Math.abs(xMovement) > 0)
 						{
-							this.x = this.x - Math.abs(xMovement)
+							l.camera.x = l.camera.x - Math.abs(xMovement)
 						}
 					}
 
 					if (yMovement > 0)
 					{
-						if (this.y + yMovement < l.dom.height - this.height)
+						if (l.camera.y + yMovement < l.dom.height - l.dom.height)
 						{
-							this.y += yMovement
+							l.camera.y += yMovement
 						}
 					}
 					else
 					{
-						if (this.y - Math.abs(yMovement) > 0)
+						if (l.camera.y - Math.abs(yMovement) > 0)
 						{
-							this.y -= Math.abs(yMovement)
+							l.camera.y -= Math.abs(yMovement)
 						}
 					}
 				}, timing * i)
@@ -123,10 +122,8 @@ var Camera = function()
 		
 		setTimeout(function()
 		{
-			if (this.following)
-			{
-				this.shaking = false // Tell the following function that we're done shaking
-			}
+			this.state = 'resting' // Tell the world that we're done shaking
 		}, duration)
 	}
+	*/
 }

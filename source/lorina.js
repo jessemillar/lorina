@@ -132,7 +132,7 @@ var Lorina = function()
 
     this.draw = function()
     {
-        // Sort the database for z-indexing
+        // Sort the buffer for z-indexing
         l.buffer.sort(function(a, b)
         {
             return a.anchor.y - b.anchor.y
@@ -140,7 +140,7 @@ var Lorina = function()
 
         for (var i = 0; i < l.buffer.length; i++)
         {
-            l.ctx.drawImage(l.buffer[i].sprite.img, Math.round(l.buffer[i].x), Math.round(l.buffer[i].y))
+            l.ctx.drawImage(l.buffer[i].sprite.img, Math.round(l.buffer[i].x - l.camera.x), Math.round(l.buffer[i].y - l.camera.y))
         }
 
         l.buffer.length = 0 // Wipe the buffer for the next pass

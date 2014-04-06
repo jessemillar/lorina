@@ -11,6 +11,9 @@ var game = new Lorina() // Required for all games
 		.makeFullscreen()
 		.setSize(l.canvas.width * 2, l.canvas.height * 2)
 
+var star = new Blueprint()
+	start.setSprite('images/star.png')
+
 var earth = new Entity()
 	earth.setSprite('images/earth.png')
 		 .setPosition(l.dom.width / 2, l.dom.height / 2)
@@ -28,7 +31,7 @@ var moon = new Entity()
 // I would recommend that you keep the data for your room functions in an external file and reference it here
 var main = function()
 {
-	camera.follow(earth, 0, 0)
+	camera.follow(earth, 100, 100)
 
 	if (keyboard.up) // If we're pressing the 'up' arrow key, do this...
 	{

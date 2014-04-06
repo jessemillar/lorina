@@ -1,5 +1,7 @@
 var Entity = function()
 {
+    this.sprite = {img: new Image()}
+
     this.setPosition = function(x, y)
     {
         this.x = x
@@ -27,14 +29,18 @@ var Entity = function()
     {
         this.anchor = {offset: {x: x, y: y}}
 
-        // This is ghetto; fix later
-        this.x -= this.anchor.offset.x
-        this.y -= this.anchor.offset.y
+        this.reposition()
 
         this.update()
 
         return this
     }
+
+        this.reposition = function()
+        {
+            this.x -= this.anchor.offset.x
+            this.y -= this.anchor.offset.y
+        }
 
     this.setBound = function(x, y, width, height)
     {
@@ -48,14 +54,12 @@ var Entity = function()
     // Throw the preloader counting in here
     this.setSprite = function(location)
     {
-        this.sprite = {img: new Image()}
-
-        var parent = this // We can't normally access "this" from inside the eventListener, so we have to hack it to work
+        var self = this // We can't normally access "this" from inside the eventListener, so we have to hack it to work
 
         this.sprite.img.addEventListener('load', function()
         {
-            parent.sprite.width = this.width
-            parent.sprite.height = this.height
+            self.sprite.width = this.width
+            self.sprite.height = this.height
         })
 
         this.sprite.img.src = location
@@ -65,16 +69,29 @@ var Entity = function()
 
     this.setAnimation = function(count, timer)
     {
-        if (this.sprite)
-        {
-            this.sprite.frame = 0
-            this.sprite.count = count
-            this.sprite.timer = timer
-            this.sprite.animation = this.animate(this)
-        }
+        this.sprite.frame = 0
+        this.sprite.count = count
+        this.sprite.timer = timer
+        this.sprite.animation = this.animate(this)
 
         return this
     }
+
+        // Use an external function to circumvent variable scope problems
+        this.animate = function(entity)
+        {
+            setInterval(function()
+            {
+                if (entity.sprite.frame < entity.sprite.count - 1)
+                {
+                    entity.sprite.frame += 1
+                }
+                else
+                {
+                    entity.sprite.frame = 0
+                }
+            }, entity.sprite.timer)
+        }
 
     this.pauseAnimation = function()
     {
@@ -83,22 +100,6 @@ var Entity = function()
             clearInterval(this.sprite.animation)
         }
     }
-
-        // We're using an external function to circumvent variable scope problems
-        this.animate = function(object)
-        {
-            setInterval(function()
-            {
-                if (object.sprite.frame < object.sprite.count - 1)
-                {
-                    object.sprite.frame += 1
-                }
-                else
-                {
-                    object.sprite.frame = 0
-                }
-            }, object.sprite.timer)
-        }
 
     this.buffer = function()
     {
@@ -112,16 +113,10 @@ var Entity = function()
 
     this.snapTo = function(x, y)
     {
-        if (this.anchor)
-        {
-            this.x = x - this.anchor.offset.x
-            this.y = y - this.anchor.offset.y
-        }
-        else
-        {
-            this.x = x
-            this.y = y
-        }
+        this.x = x
+        this.y = y
+
+        this.reposition()
 
         this.update()
 
