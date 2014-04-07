@@ -1,5 +1,11 @@
 var Entity = function()
 {
+    this.x = 0
+    this.y = 0
+    this.width = 0
+    this.height = 0
+    this.anchor = {offset: {x: 0, y: 0}}
+    this.bound = {offset: {x: 0, y: 0}, width: 0, height: 0}
     this.sprite = {img: new Image()}
 
     this.setPosition = function(x, y)
@@ -14,6 +20,7 @@ var Entity = function()
     {
         this.width = width
         this.height = height
+        this.setBound(0, 0, this.width, this.height)
 
         return this
     }
@@ -335,23 +342,11 @@ var Entity = function()
         // Must manually run when "this.x" or "this.y" change
         this.update = function()
         {
-            if (!this.x && !this.y)
-            {
-                this.x = 0
-                this.y = 0
-            }
+            this.anchor.x = this.x + this.anchor.offset.x
+            this.anchor.y = this.y + this.anchor.offset.y
 
-            if (this.anchor)
-            {
-                this.anchor.x = this.x + this.anchor.offset.x
-                this.anchor.y = this.y + this.anchor.offset.y
-            }
-
-            if (this.bound)
-            {
-                this.bound.x = this.x + this.bound.offset.x
-                this.bound.y = this.y + this.bound.offset.y
-            }
+            this.bound.x = this.x + this.bound.offset.x
+            this.bound.y = this.y + this.bound.offset.y
 
             // Don't "return this" here, do it in the functions that call "this.update" instead
         }

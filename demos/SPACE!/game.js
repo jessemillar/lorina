@@ -1,18 +1,24 @@
+var starCount = 50
+
 var earthSpeed = 0.5
 var earthFriction = earthSpeed / 15
 var moonSpeed = 0.75
 var moonFriction = moonSpeed / 15
 
-var camera = new Camera()
 var keyboard = new Keyboard()
 
 var game = new Lorina() // Required for all games
 	game.setColor('#111111')
 		.makeFullscreen()
-		.setSize(l.canvas.width * 2, l.canvas.height * 2)
+		// .setSize(l.canvas.width * 2, l.canvas.height * 2)
 
+/*
 var star = new Blueprint()
-	start.setSprite('images/star.png')
+	star.setSprite('images/star.png')
+		.setSize(10, 10)
+		.setAnchor(5, 5)
+		.setGroup('stars')
+*/
 
 var earth = new Entity()
 	earth.setSprite('images/earth.png')
@@ -31,8 +37,6 @@ var moon = new Entity()
 // I would recommend that you keep the data for your room functions in an external file and reference it here
 var main = function()
 {
-	camera.follow(earth, 100, 100)
-
 	if (keyboard.up) // If we're pressing the 'up' arrow key, do this...
 	{
 		earth.pushUp(earthSpeed)

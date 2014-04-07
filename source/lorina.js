@@ -6,8 +6,7 @@ var Lorina = function()
     l.ctx = document.getElementById('canvas').getContext('2d')
     l.canvas = new Object()
     l.buffer = new Array()
-
-    var self = this // Use for the screen resize listener
+    l.camera = {x: 0, y: 0}
 
     // Put the sizing function above where we use it to set the default canvas size
     this.setSize = function(width, height)
@@ -40,8 +39,10 @@ var Lorina = function()
     this.makeFullscreen = function()
     {
         if (window.navigator.vendor) // Check if we're using a non-Ejecta browser
-        {
+        {            
             document.body.style.background = this.color
+
+            var self = this
 
             window.onresize = function()
             {
@@ -144,5 +145,24 @@ var Lorina = function()
         }
 
         l.buffer.length = 0 // Wipe the buffer for the next pass
+
+        return this
+    }
+
+    this.random = function(min, max)
+    {
+        return Math.random() * (max - min) + min
+    }
+
+    this.checkCollision = function(a, b)
+    {
+        if (a.bound.x < b.bound.x + b.bound.width && a.bound.x + a.bound.width > b.bound.x && a.bound.y < b.bound.y + b.bound.height && a.bound.y + a.bound.height > b.bound.y)
+        {
+            return true
+        }
+        else
+        {
+            return false
+        }
     }
 }
