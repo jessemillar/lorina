@@ -7,7 +7,6 @@ var Lorina = function()
     l.canvas = new Object()
     l.buffer = new Array()
     l.camera = {x: 0, y: 0}
-    l.groups = new Object()
 
     // Put the sizing function above where we use it to set the default canvas size
     this.setSize = function(width, height)
@@ -131,6 +130,8 @@ var Lorina = function()
 
         l.ctx.fillRect(0, 0, l.dom.width, l.dom.height)
 
+        // l.ctx.clearRect(0, 0, l.dom.width, l.dom.height)
+
         l.buffer.length = 0 // Wipe the buffer for the next pass
 
         return this
@@ -161,9 +162,16 @@ var Lorina = function()
 
     this.checkCollision = function(a, b)
     {
-        if (a.bound.x < b.bound.x + b.bound.width && a.bound.x + a.bound.width > b.bound.x && a.bound.y < b.bound.y + b.bound.height && a.bound.y + a.bound.height > b.bound.y)
+        if (!a.deleted && !b.deleted)
         {
-            return true
+            if (a.bound.x < b.bound.x + b.bound.width && a.bound.x + a.bound.width > b.bound.x && a.bound.y < b.bound.y + b.bound.height && a.bound.y + a.bound.height > b.bound.y)
+            {
+                return true
+            }
+            else
+            {
+                return false
+            }
         }
         else
         {

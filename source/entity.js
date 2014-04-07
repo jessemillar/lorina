@@ -8,6 +8,13 @@ var Entity = function()
     this.bound = {offset: {x: 0, y: 0}, width: 0, height: 0}
     this.sprite = {img: new Image()}
 
+    this.delete = function()
+    {
+        this.deleted = true
+
+        return this
+    }
+
     this.setPosition = function(x, y)
     {
         this.x = x
@@ -21,22 +28,6 @@ var Entity = function()
         this.width = width
         this.height = height
         this.setBound(0, 0, this.width, this.height)
-
-        return this
-    }
-
-    this.setGroup = function(group)
-    {
-        this.group = group
-
-        if (l.groups[group])
-        {
-            l.groups[group].push(this)
-        }
-        else
-        {
-            l.groups[group] = [this]
-        }
 
         return this
     }
@@ -119,12 +110,18 @@ var Entity = function()
 
     this.buffer = function()
     {
-        l.buffer.push(this)
+        if (!this.deleted)
+        {
+            l.buffer.push(this)            
+        }
     }
 
     this.draw = function()
     {
-        l.ctx.drawImage(this.sprite.img, Math.round(this.x), Math.round(this.y))
+        if (!this.deleted)
+        {
+            l.ctx.drawImage(this.sprite.img, Math.round(this.x), Math.round(this.y))
+        }
     }
 
     this.snapTo = function(x, y)
