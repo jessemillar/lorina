@@ -1,19 +1,19 @@
-/*
 var Blueprint = function()
 {
     this.sprite = {img: new Image()}
+
+    this.setPosition = function(x, y)
+    {
+        this.x = x
+        this.y = y
+
+        return this
+    }
 
     this.setSize = function(width, height)
     {
         this.width = width
         this.height = height
-
-        return this
-    }
-
-    this.setGroup = function(group)
-    {
-        this.group = group
 
         return this
     }
@@ -65,4 +65,3 @@ var Blueprint = function()
         return this
     }
 }
-*/

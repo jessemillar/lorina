@@ -1,4 +1,4 @@
-var starCount = 50
+var starCount = 3
 
 var earthSpeed = 0.5
 var earthFriction = earthSpeed / 15
@@ -9,8 +9,30 @@ var game = new Lorina()
 	game.setColor('#111111')
 		.makeFullscreen()
 
+var measure = new Measure()
+
 var keyboard = new Keyboard()
 var mouse = new Mouse()
+
+var stars = new Group()
+
+var star = new Blueprint()
+	star.setSprite('images/star.png')
+		.setSize(10, 10)
+		.setAnchor(5, 5)
+
+// Maybe throw into a function?
+var i = starCount
+
+while (i--)
+{
+	var entity = 'star' + i
+
+	var entity = new Entity()
+		entity.copy(star)
+		entity.setPosition(measure.random(0, l.canvas.width), measure.random(0, l.canvas.height))
+		stars.add(entity)
+}
 
 var planets = new Group()
 

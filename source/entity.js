@@ -8,6 +8,17 @@ var Entity = function()
     this.bound = {offset: {x: 0, y: 0}, width: 0, height: 0}
     this.sprite = {img: new Image()}
 
+    this.copy = function(entity)
+    {
+        this.x = entity.x
+        this.y = entity.y
+        this.width = entity.width
+        this.height = entity.height
+        this.anchor = entity.anchor
+        this.bound = entity.bound
+        this.sprite = entity.sprite
+    }
+
     this.delete = function()
     {
         this.deleted = true
