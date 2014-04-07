@@ -1,5 +1,11 @@
 var Blueprint = function()
 {
+    this.x = 0
+    this.y = 0
+    this.width = 0
+    this.height = 0
+    this.anchor = {offset: {x: 0, y: 0}}
+    this.bound = {offset: {x: 0, y: 0}, width: 0, height: 0}
     this.sprite = {img: new Image()}
 
     this.setPosition = function(x, y)

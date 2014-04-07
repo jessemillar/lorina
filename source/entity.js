@@ -17,6 +17,8 @@ var Entity = function()
         this.anchor = entity.anchor
         this.bound = entity.bound
         this.sprite = entity.sprite
+
+        return this
     }
 
     this.delete = function()
@@ -233,6 +235,8 @@ var Entity = function()
 
         var xSpeed = horizontal / total * force
         var ySpeed = vertical / total * force
+
+        console.log(xSpeed)
 
         if (total > 1)
         {

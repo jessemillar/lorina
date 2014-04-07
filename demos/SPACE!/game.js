@@ -1,9 +1,11 @@
-var starCount = 3
+var starCount = 2
 
 var earthSpeed = 0.5
 var earthFriction = earthSpeed / 15
 var moonSpeed = 0.75
 var moonFriction = moonSpeed / 15
+var starSpeed = moonSpeed / 2
+var starFriction = moonFriction / 2
 
 var game = new Lorina()
 	game.setColor('#111111')
@@ -21,7 +23,6 @@ var star = new Blueprint()
 		.setSize(10, 10)
 		.setAnchor(5, 5)
 
-// Maybe throw into a function?
 var i = starCount
 
 while (i--)
@@ -30,7 +31,8 @@ while (i--)
 
 	var entity = new Entity()
 		entity.copy(star)
-		entity.setPosition(measure.random(0, l.canvas.width), measure.random(0, l.canvas.height))
+			  .setPosition(measure.random(0, l.canvas.width), measure.random(0, l.canvas.height))
+			  .setFriction(starFriction)
 		stars.add(entity)
 }
 
@@ -74,12 +76,13 @@ var main = function()
 	}
 
 	moon.pullToward(earth, moonSpeed).physics()
+	stars.pullToward(earth, starSpeed).physics()
 
 	earth.bounce().physics()
 
 	game.blank()
-	earth.buffer()
-	moon.buffer()
+	planets.buffer()
+	stars.buffer()
 	game.draw()
 }
 
