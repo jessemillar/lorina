@@ -29,6 +29,15 @@ var Entity = function()
     {
         this.group = group
 
+        if (l.groups[group])
+        {
+            l.groups[group].push(this)
+        }
+        else
+        {
+            l.groups[group] = [this]
+        }
+
         return this
     }
 

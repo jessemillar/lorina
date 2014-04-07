@@ -7,6 +7,7 @@ var Lorina = function()
     l.canvas = new Object()
     l.buffer = new Array()
     l.camera = {x: 0, y: 0}
+    l.groups = new Object()
 
     // Put the sizing function above where we use it to set the default canvas size
     this.setSize = function(width, height)
@@ -143,7 +144,9 @@ var Lorina = function()
             return a.anchor.y - b.anchor.y
         })
 
-        for (var i = 0; i < l.buffer.length; i++)
+        var i = l.buffer.length
+
+        while (i--)
         {
             l.ctx.drawImage(l.buffer[i].sprite.img, Math.round(l.buffer[i].x - l.camera.x), Math.round(l.buffer[i].y - l.camera.y))
         }

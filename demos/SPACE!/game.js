@@ -5,30 +5,37 @@ var earthFriction = earthSpeed / 15
 var moonSpeed = 0.75
 var moonFriction = moonSpeed / 15
 
-var game = new Lorina()
-	game.setColor('#111111')
-		.makeFullscreen()
+game = new Lorina()
+game.setColor('#111111')
+	.makeFullscreen()
 
-var keyboard = new Keyboard()
-var mouse = new Mouse()
+keyboard = new Keyboard()
+mouse = new Mouse()
 
-var earth = new Entity()
-	earth.setSprite('images/earth.png')
-		 .setPosition(l.dom.width / 2, l.dom.height / 2)
-		 .setSize(125, 125)
-		 .setAnchor(125 / 2, 125 / 2)
-		 .setFriction(earthFriction)
+earth = new Entity()
+earth.setSprite('images/earth.png')
+	 .setPosition(l.dom.width / 2, l.dom.height / 2)
+	 .setSize(125, 125)
+	 .setAnchor(125 / 2, 125 / 2)
+	 .setFriction(earthFriction)
+	 .setGroup('planets')
 
-var moon = new Entity()
-	moon.setSprite('images/moon.png')
-		.setPosition(50, 50)
-		.setSize(85, 85)
-		.setAnchor(85 / 2, 85 / 2)
-		.setFriction(moonFriction)
+moon = new Entity()
+moon.setSprite('images/moon.png')
+	.setPosition(50, 50)
+	.setSize(85, 85)
+	.setAnchor(85 / 2, 85 / 2)
+	.setFriction(moonFriction)
+	.setGroup('planets')
 
 // I would recommend that you keep the data for your room functions in an external file and reference it here
 var main = function()
 {
+	if (keyboard.space)
+	{
+		earth.delete()
+	}
+
 	if (keyboard.up)
 	{
 		earth.pushUp(earthSpeed)

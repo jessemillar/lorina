@@ -25,7 +25,9 @@ var Touch = function()
 	{
 		if (this.database.length > 0)
 		{
-			for (var i = 0; i < this.database.length; i++)
+			var i = this.database.length
+
+			while (i--)
 			{
 				if (this.database[i].pageX < entity.bound.x + entity.bound.width && this.database[i].pageX > entity.bound.x &&
 				this.database[i].pageY < entity.bound.y + entity.bound.height && this.database[i].pageY > entity.bound.y)
