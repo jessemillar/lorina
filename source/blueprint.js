@@ -1,3 +1,4 @@
+/*
 var Blueprint = function()
 {
     this.sprite = {img: new Image()}
@@ -64,3 +65,4 @@ var Blueprint = function()
         return this
     }
 }
+*/

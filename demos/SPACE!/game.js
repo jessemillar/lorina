@@ -5,20 +5,12 @@ var earthFriction = earthSpeed / 15
 var moonSpeed = 0.75
 var moonFriction = moonSpeed / 15
 
-var keyboard = new Keyboard()
-
-var game = new Lorina() // Required for all games
+var game = new Lorina()
 	game.setColor('#111111')
 		.makeFullscreen()
-		// .setSize(l.canvas.width * 2, l.canvas.height * 2)
 
-/*
-var star = new Blueprint()
-	star.setSprite('images/star.png')
-		.setSize(10, 10)
-		.setAnchor(5, 5)
-		.setGroup('stars')
-*/
+var keyboard = new Keyboard()
+var mouse = new Mouse()
 
 var earth = new Entity()
 	earth.setSprite('images/earth.png')
@@ -37,25 +29,25 @@ var moon = new Entity()
 // I would recommend that you keep the data for your room functions in an external file and reference it here
 var main = function()
 {
-	if (keyboard.up) // If we're pressing the 'up' arrow key, do this...
+	if (keyboard.up)
 	{
 		earth.pushUp(earthSpeed)
 	}
-	else if (keyboard.down) // If we're pressing the 'down' arrow key, do this...
+	else if (keyboard.down)
 	{
-		earth.pushDown(earthSpeed) // Push the earth down
+		earth.pushDown(earthSpeed)
 	}
 
-	if (keyboard.left) // If we're pressing the 'left' arrow key, do this...
+	if (keyboard.left)
 	{
-		earth.pushLeft(earthSpeed) // Push the earth left
+		earth.pushLeft(earthSpeed)
 	}
-	else if (keyboard.right) // If we're pressing the 'right' arrow key, do this...
+	else if (keyboard.right)
 	{
-		earth.pushRight(earthSpeed) // Push the earth right
+		earth.pushRight(earthSpeed)
 	}
 
-	moon.pullToward(earth, moonSpeed).physics() // Pull the moon toward the earth
+	moon.pullToward(earth, moonSpeed).physics()
 
 	earth.bounce().physics()
 

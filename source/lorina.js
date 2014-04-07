@@ -68,6 +68,7 @@ var Lorina = function()
             return this
         }
 
+    /*
     this.enableGamecenter = function()
     {
         this.gamecenter = true
@@ -81,6 +82,7 @@ var Lorina = function()
 
         return this
     }
+    */
 
     this.start = function(room)
     {
@@ -128,6 +130,8 @@ var Lorina = function()
 
         l.ctx.fillRect(0, 0, l.dom.width, l.dom.height)
 
+        l.buffer.length = 0 // Wipe the buffer for the next pass
+
         return this
     }
 
@@ -143,8 +147,6 @@ var Lorina = function()
         {
             l.ctx.drawImage(l.buffer[i].sprite.img, Math.round(l.buffer[i].x - l.camera.x), Math.round(l.buffer[i].y - l.camera.y))
         }
-
-        l.buffer.length = 0 // Wipe the buffer for the next pass
 
         return this
     }
