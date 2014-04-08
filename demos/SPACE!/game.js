@@ -1,4 +1,4 @@
-var starCount = 2
+var starCount = 3000
 
 var earthSpeed = 0.5
 var earthFriction = earthSpeed / 15
@@ -20,8 +20,8 @@ var stars = new Group()
 
 var star = new Blueprint()
 	star.setSprite('images/star.png')
-		.setSize(10, 10)
-		.setAnchor(5, 5)
+		.setSize(7, 7)
+		.setAnchor(4, 4)
 
 var i = starCount
 
@@ -57,6 +57,11 @@ var moon = new Entity()
 // I would recommend that you keep the data for your room functions in an external file and reference it here
 var main = function()
 {
+	if (keyboard.space)
+	{
+		console.log(earth)
+	}
+
 	if (keyboard.up)
 	{
 		earth.pushUp(earthSpeed)
@@ -75,13 +80,14 @@ var main = function()
 		earth.pushRight(earthSpeed)
 	}
 
-	moon.pullToward(earth, moonSpeed).physics()
+	// moon.pullToward(earth, moonSpeed).physics()
 	stars.pullToward(earth, starSpeed).physics()
 
 	earth.bounce().physics()
 
 	game.blank()
-	planets.buffer()
+	// planets.buffer()
+	earth.buffer()
 	stars.buffer()
 	game.draw()
 }

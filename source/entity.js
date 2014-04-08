@@ -10,13 +10,15 @@ var Entity = function()
 
     this.copy = function(entity)
     {
-        this.x = entity.x
-        this.y = entity.y
-        this.width = entity.width
-        this.height = entity.height
-        this.anchor = entity.anchor
-        this.bound = entity.bound
+        this.x = parseInt(entity.x)
+        this.y = parseInt(entity.y)
+        this.width = parseInt(entity.width)
+        this.height = parseInt(entity.height)
+        this.anchor = {offset: {x: parseInt(entity.anchor.offset.x), y: parseInt(entity.anchor.offset.y)}}
+        this.bound = {offset: {x: parseInt(entity.bound.offset.x), y: parseInt(entity.bound.offset.y)}, width: parseInt(entity.bound.width), height: parseInt(entity.bound.height)}
         this.sprite = entity.sprite
+
+        this.update()
 
         return this
     }
@@ -236,7 +238,7 @@ var Entity = function()
         var xSpeed = horizontal / total * force
         var ySpeed = vertical / total * force
 
-        console.log(xSpeed)
+        // console.log(xSpeed, ySpeed, this.anchor.x, entity.anchor.x)
 
         if (total > 1)
         {
