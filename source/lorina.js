@@ -7,6 +7,8 @@ var Lorina = function()
     l.canvas = new Object()
     l.buffer = new Array()
     l.camera = {x: 0, y: 0}
+    l.preloader = {total: 0, current: 0, percent: 0}
+    l.loaded = false
 
     // Put the sizing function above where we use it to set the default canvas size
     this.setSize = function(width, height)
@@ -129,8 +131,6 @@ var Lorina = function()
         }
 
         l.ctx.fillRect(0, 0, l.dom.width, l.dom.height)
-
-        // l.ctx.clearRect(0, 0, l.dom.width, l.dom.height)
 
         l.buffer.length = 0 // Wipe the buffer for the next pass
 

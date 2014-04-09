@@ -55,13 +55,18 @@ var moon = new Entity()
 	planets.add(moon)
 
 // I would recommend that you keep the data for your room functions in an external file and reference it here
-var main = function()
+var loading = function()
 {
-	if (keyboard.space)
+	if (l.loaded)
 	{
-		console.log(earth)
+		game.setRoom(main)
 	}
 
+	game.blank('#FF0000')
+}
+
+var main = function()
+{
 	if (keyboard.up)
 	{
 		earth.pushUp(earthSpeed)
@@ -92,4 +97,4 @@ var main = function()
 	game.draw()
 }
 
-game.start(main) // Only call once the room functions are defined
+game.start(loading) // Only call once the room functions are defined
