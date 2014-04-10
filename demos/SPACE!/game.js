@@ -1,4 +1,4 @@
-var starCount = 1
+var starCount = 2500
 
 var earthSpeed = 0.5
 var earthFriction = earthSpeed / 15
@@ -41,10 +41,9 @@ var earth = new Entity()
 	earth.setSprite('images/earth.png')
 		 .setPosition(l.dom.width / 2, l.dom.height / 2)
 		 .setSize(125, 125)
-		 .setAnchor(10, 10)
-		 .setBound(-10, -10, 125, 125)
+		 .setAnchor(125 / 2, 125 / 2)
+		 .setBound(-125 / 2, -125 / 2, 125, 125)
 		 .setFriction(earthFriction)
-		 .flip('both')
 	planets.add(earth)
 
 var moon = new Entity()
@@ -52,7 +51,7 @@ var moon = new Entity()
 		 .setPosition(100, 100)
 		 .setSize(100, 100)
 		 .setAnchor(100 / 2, 100 / 2)
-		 .setBound(100 / 2, 100 / 2, 100, 100)
+		 .setBound(-100 / 2, -100 / 2, 100, 100)
 		 .setFriction(starFriction)
 	planets.add(moon)
 
@@ -99,8 +98,7 @@ var main = function()
 
 	game.blank()
 	typewriter.setPosition(l.dom.width / 2, 100).writeText('Welcome to the world, World.  Move with the arrow keys.')
-	// planets.buffer()
-	earth.draw().debug()
+	planets.buffer()
 	stars.buffer()
 	game.draw()
 }

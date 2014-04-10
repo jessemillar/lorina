@@ -23,21 +23,24 @@ var Entity = function()
 
     this.debug = function(color)
     {
-        if (color)
+        if (!this.deleted)
         {
-            l.ctx.fillStyle = color
+            if (color)
+            {
+                l.ctx.fillStyle = color
+            }
+            else
+            {
+                l.ctx.fillStyle = '#FF0000'
+            }
+
+            l.ctx.globalAlpha = 0.5
+
+            l.ctx.fillRect(this.x + this.bound.x, this.y + this.bound.y, this.bound.width, this.bound.height)
+            l.ctx.fillRect(this.x - 2, this.y - 2, 5, 5)
+
+            l.ctx.globalAlpha = 1
         }
-        else
-        {
-            l.ctx.fillStyle = '#FF0000'
-        }
-
-        l.ctx.globalAlpha = 0.5
-
-        l.ctx.fillRect(this.x + this.bound.x, this.y + this.bound.y, this.bound.width, this.bound.height)
-        l.ctx.fillRect(this.x - 2, this.y - 2, 5, 5)
-
-        l.ctx.globalAlpha = 1
 
         return this
     }
@@ -320,25 +323,25 @@ var Entity = function()
             yMax = l.canvas.height
         }
 
-        if (this.x - this.bound.x <= xMin)
+        if (this.x + this.bound.x <= xMin)
         {
-            this.x = xMin + this.bound.x
+            this.x = xMin - this.bound.x
             this.momentum.x = -this.momentum.x
         }
-        else if (this.x - this.bound.x + this.bound.width >= xMax)
+        else if (this.x + this.bound.x + this.bound.width >= xMax)
         {
-            this.x = xMax - this.bound.width + this.bound.x
+            this.x = xMax - this.bound.width - this.bound.x
             this.momentum.x = -this.momentum.x
         }
 
-        if (this.y - this.bound.y <= yMin)
+        if (this.y + this.bound.y <= yMin)
         {
-            this.y = yMin + this.bound.y
+            this.y = yMin - this.bound.y
             this.momentum.y = -this.momentum.y
         }
-        else if (this.y - this.bound.y + this.bound.height >= yMax)
+        else if (this.y + this.bound.y + this.bound.height >= yMax)
         {
-            this.y = yMax - this.bound.height + this.bound.y
+            this.y = yMax - this.bound.height - this.bound.y
             this.momentum.y = -this.momentum.y
         }
 

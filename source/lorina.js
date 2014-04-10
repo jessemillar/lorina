@@ -149,7 +149,8 @@ var Lorina = function()
 
         while (i--)
         {
-            l.ctx.drawImage(l.buffer[i].sprite.img, Math.round(l.buffer[i].x - l.buffer[i].anchor.x - l.camera.x), Math.round(l.buffer[i].y - l.buffer[i].anchor.y - l.camera.y))
+            l.buffer[i].draw()
+            // l.ctx.drawImage(l.buffer[i].sprite.img, Math.round(l.buffer[i].x - l.buffer[i].anchor.x - l.camera.x), Math.round(l.buffer[i].y - l.buffer[i].anchor.y - l.camera.y))
         }
 
         return this
@@ -159,7 +160,7 @@ var Lorina = function()
     {
         if (!a.deleted && !b.deleted)
         {
-            if (a.x - a.bound.x < b.x - b.bound.x + b.bound.width && a.x - a.bound.x + a.bound.width > b.x - b.bound.x && a.y - a.bound.y < b.y - b.bound.y + b.bound.height && a.y - a.bound.y + a.bound.height > b.y - b.bound.y)
+            if (a.x + a.bound.x < b.x + b.bound.x + b.bound.width && a.x + a.bound.x + a.bound.width > b.x + b.bound.x && a.y + a.bound.y < b.y + b.bound.y + b.bound.height && a.y + a.bound.y + a.bound.height > b.y + b.bound.y)
             {
                 return b
             }
