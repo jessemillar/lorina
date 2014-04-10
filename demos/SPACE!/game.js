@@ -12,6 +12,8 @@ var game = new Lorina()
 		.makeFullscreen()
 
 var measure = new Measure()
+var typewriter = new Typewriter()
+	typewriter.setFont('Fipps').setColor('#FFFFA2').setSize(50)
 
 var keyboard = new Keyboard()
 var mouse = new Mouse()
@@ -85,13 +87,14 @@ var main = function()
 		earth.pushRight(earthSpeed)
 	}
 
-	// moon.pullToward(earth, moonSpeed).physics()
+	moon.pullToward(earth, moonSpeed).physics()
 	stars.pullToward(earth, starSpeed).physics()
 
 	earth.bounce().physics()
 
 	game.blank()
-	// planets.buffer()
+	typewriter.setPosition(10, 100).writeText('Hello, World!')
+	planets.buffer()
 	earth.buffer()
 	stars.buffer()
 	game.draw()
