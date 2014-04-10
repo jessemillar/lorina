@@ -155,13 +155,13 @@ var Lorina = function()
         return this
     }
 
-    this.checkCollision = function(a, b)
+    this.collision = function(a, b)
     {
         if (!a.deleted && !b.deleted)
         {
             if (a.x - a.bound.x < b.x - b.bound.x + b.bound.width && a.x - a.bound.x + a.bound.width > b.x - b.bound.x && a.y - a.bound.y < b.y - b.bound.y + b.bound.height && a.y - a.bound.y + a.bound.height > b.y - b.bound.y)
             {
-                return true
+                return b
             }
             else
             {

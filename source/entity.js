@@ -34,7 +34,7 @@ var Entity = function()
 
         l.ctx.globalAlpha = 0.5
 
-        l.ctx.fillRect(this.x - this.bound.x, this.y - this.bound.y, this.bound.width, this.bound.height)
+        l.ctx.fillRect(this.x + this.bound.x, this.y + this.bound.y, this.bound.width, this.bound.height)
         l.ctx.fillRect(this.x - 2, this.y - 2, 5, 5)
 
         l.ctx.globalAlpha = 1
@@ -117,7 +117,6 @@ var Entity = function()
         return this
     }
 
-        // Use an external function to circumvent variable scope problems
         this.animate = function(entity)
         {
             setInterval(function()
@@ -139,6 +138,8 @@ var Entity = function()
         {
             clearInterval(this.sprite.animation)
         }
+
+        return this
     }
 
     this.buffer = function()
@@ -147,14 +148,52 @@ var Entity = function()
         {
             l.buffer.push(this)            
         }
+
+        return this
+    }
+
+    this.flip = function(direction)
+    {
+        this.flipped = direction
+
+        return this
     }
 
     this.draw = function()
     {
         if (!this.deleted)
         {
-            l.ctx.drawImage(this.sprite.img, Math.round(this.x - this.anchor.x), Math.round(this.y - this.anchor.y))
+            if (this.flipped)
+            {
+                l.ctx.save()
+
+                if (this.flipped == 'horizontal')
+                {
+                    l.ctx.translate(Math.round(this.x + this.width - (this.anchor.x * 2) - l.camera.x), Math.round(this.y - l.camera.y))
+                    l.ctx.scale(-1, 1)
+                }
+                else if (this.flipped == 'vertical')
+                {
+                    l.ctx.translate(Math.round(this.x - l.camera.x), Math.round(this.y + this.height - (this.anchor.y * 2) - l.camera.y))
+                    l.ctx.scale(1, -1)
+                }
+                else if (this.flipped == 'both')
+                {
+                    l.ctx.translate(Math.round(this.x + this.width - (this.anchor.x * 2) - l.camera.x), Math.round(this.y + this.height - (this.anchor.y * 2) - l.camera.y))
+                    l.ctx.scale(-1, -1)
+                }
+
+                l.ctx.drawImage(this.sprite.img, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y))
+
+                l.ctx.restore()
+            }
+            else
+            {
+                l.ctx.drawImage(this.sprite.img, Math.round(this.x - this.anchor.x), Math.round(this.y - this.anchor.y))
+            }
         }
+
+        return this
     }
 
     this.snapTo = function(x, y)
