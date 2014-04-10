@@ -1,11 +1,9 @@
-var starCount = 3000
+var starCount = 2500
 
 var earthSpeed = 0.5
 var earthFriction = earthSpeed / 15
-var moonSpeed = 0.75
-var moonFriction = moonSpeed / 15
-var starSpeed = moonSpeed / 2
-var starFriction = moonFriction / 2
+var starSpeed = 0.4
+var starFriction = 0.025
 
 var game = new Lorina()
 	game.setColor('#111111')
@@ -13,7 +11,7 @@ var game = new Lorina()
 
 var measure = new Measure()
 var typewriter = new Typewriter()
-	typewriter.setFont('Fipps').setColor('#FFFFA2').setSize(50)
+	typewriter.setFont('Wendy').setColor('#FFFFFF').setAlignment('center').setSize(35)
 
 var keyboard = new Keyboard()
 var mouse = new Mouse()
@@ -22,7 +20,6 @@ var stars = new Group()
 
 var star = new Blueprint()
 	star.setSprite('images/star.png')
-		.setSize(7, 7)
 		.setAnchor(4, 4)
 
 var i = starCount
@@ -45,15 +42,17 @@ var earth = new Entity()
 		 .setPosition(l.dom.width / 2, l.dom.height / 2)
 		 .setSize(125, 125)
 		 .setAnchor(125 / 2, 125 / 2)
+		 .setBound(125 / 2, 125 / 2, 125, 125)
 		 .setFriction(earthFriction)
 	planets.add(earth)
 
 var moon = new Entity()
 	moon.setSprite('images/moon.png')
-		.setPosition(50, 50)
-		.setSize(85, 85)
-		.setAnchor(85 / 2, 85 / 2)
-		.setFriction(moonFriction)
+		 .setPosition(100, 100)
+		 .setSize(100, 100)
+		 .setAnchor(100 / 2, 100 / 2)
+		 .setBound(100 / 2, 100 / 2, 100, 100)
+		 .setFriction(starFriction)
 	planets.add(moon)
 
 // I would recommend that you keep the data for your room functions in an external file and reference it here
@@ -87,15 +86,14 @@ var main = function()
 		earth.pushRight(earthSpeed)
 	}
 
-	moon.pullToward(earth, moonSpeed).physics()
-	stars.pullToward(earth, starSpeed).physics()
+	stars.physics().pullToward(earth, starSpeed)
+	// moon.physics().pullToward(earth, starSpeed)
 
 	earth.bounce().physics()
 
 	game.blank()
-	typewriter.setPosition(10, 100).writeText('Hello, World!')
+	typewriter.setPosition(l.dom.width / 2, l.dom.height / 5).writeText('Hello, World')
 	planets.buffer()
-	earth.buffer()
 	stars.buffer()
 	game.draw()
 }

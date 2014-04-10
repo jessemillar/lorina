@@ -33,6 +33,18 @@ var Group = function()
         return this
     }
 
+    this.debug = function(color)
+    {
+        var i = this.database.length
+
+        while (i--)
+        {
+            this.database[i].debug(color)
+        }
+
+        return this
+    }
+
     this.delete = function()
     {
         var i = this.database.length

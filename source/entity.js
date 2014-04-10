@@ -4,8 +4,8 @@ var Entity = function()
     this.y = 0
     this.width = 0
     this.height = 0
-    this.anchor = {offset: {x: 0, y: 0}}
-    this.bound = {offset: {x: 0, y: 0}, width: 0, height: 0}
+    this.anchor = {x: 0, y: 0}
+    this.bound = {x: 0, y: 0, width: 0, height: 0}
     this.sprite = {img: new Image()}
 
     this.copy = function(entity)
@@ -14,11 +14,30 @@ var Entity = function()
         this.y = parseInt(entity.y)
         this.width = parseInt(entity.width)
         this.height = parseInt(entity.height)
-        this.anchor = {offset: {x: parseInt(entity.anchor.offset.x), y: parseInt(entity.anchor.offset.y)}}
-        this.bound = {offset: {x: parseInt(entity.bound.offset.x), y: parseInt(entity.bound.offset.y)}, width: parseInt(entity.bound.width), height: parseInt(entity.bound.height)}
+        this.anchor = {x: parseInt(entity.anchor.x), y: parseInt(entity.anchor.y)}
+        this.bound = {x: parseInt(entity.bound.x), y: parseInt(entity.bound.y), width: parseInt(entity.bound.width), height: parseInt(entity.bound.height)}
         this.sprite = entity.sprite
 
-        this.update()
+        return this
+    }
+
+    this.debug = function(color)
+    {
+        if (color)
+        {
+            l.ctx.fillStyle = color
+        }
+        else
+        {
+            l.ctx.fillStyle = '#FF0000'
+        }
+
+        l.ctx.globalAlpha = 0.5
+
+        l.ctx.fillRect(this.x - this.bound.x, this.y - this.bound.y, this.bound.width, this.bound.height)
+        l.ctx.fillRect(this.x - 2, this.y - 2, 5, 5)
+
+        l.ctx.globalAlpha = 1
 
         return this
     }
@@ -49,26 +68,14 @@ var Entity = function()
 
     this.setAnchor = function(x, y)
     {
-        this.anchor = {offset: {x: x, y: y}}
-
-        this.reposition()
-
-        this.update()
+        this.anchor = {x: x, y: y}
 
         return this
     }
 
-        this.reposition = function()
-        {
-            this.x -= this.anchor.offset.x
-            this.y -= this.anchor.offset.y
-        }
-
     this.setBound = function(x, y, width, height)
     {
-        this.bound = {offset: {x: x, y: y}, width: width, height: height}
-
-        this.update()
+        this.bound = {x: x, y: y, width: width, height: height}
 
         return this
     }
@@ -146,7 +153,7 @@ var Entity = function()
     {
         if (!this.deleted)
         {
-            l.ctx.drawImage(this.sprite.img, Math.round(this.x), Math.round(this.y))
+            l.ctx.drawImage(this.sprite.img, Math.round(this.x - this.anchor.x), Math.round(this.y - this.anchor.y))
         }
     }
 
@@ -155,18 +162,12 @@ var Entity = function()
         this.x = x
         this.y = y
 
-        this.reposition()
-
-        this.update()
-
         return this
     }
 
     this.moveUp = function(speed)
     {
         this.y -= speed
-
-        this.update()
 
         return this
     }
@@ -175,8 +176,6 @@ var Entity = function()
     {
         this.y += speed
 
-        this.update()
-
         return this
     }
 
@@ -184,16 +183,12 @@ var Entity = function()
     {
         this.x -= speed
 
-        this.update()
-
         return this
     }
 
     this.moveRight = function(speed)
     {
         this.x += speed
-
-        this.update()
 
         return this
     }
@@ -242,33 +237,31 @@ var Entity = function()
 
     this.pullToward = function(entity, force)
     {
-        var horizontal = Math.abs(this.anchor.x - entity.anchor.x)
-        var vertical = Math.abs(this.anchor.y - entity.anchor.y)
-        var total = Math.sqrt(Math.abs(this.anchor.x - entity.anchor.x) * Math.abs(this.anchor.x - entity.anchor.x) + Math.abs(this.anchor.y - entity.anchor.y) * Math.abs(this.anchor.y - entity.anchor.y))
+        var horizontal = Math.abs(this.x - entity.x)
+        var vertical = Math.abs(this.y - entity.y)
+        var total = Math.sqrt(Math.abs(this.x - entity.x) * Math.abs(this.x - entity.x) + Math.abs(this.y - entity.y) * Math.abs(this.y - entity.y))
 
         var xSpeed = horizontal / total * force
         var ySpeed = vertical / total * force
 
-        // console.log(xSpeed, ySpeed, this.anchor.x, entity.anchor.x)
-
         if (total > 1)
         {
-            if (this.anchor.x < entity.anchor.x && this.anchor.y < entity.anchor.y)
+            if (this.x < entity.x && this.y < entity.y)
             {
                 this.pushRight(xSpeed)
                 this.pushDown(ySpeed)
             }
-            else if (this.anchor.x > entity.anchor.x && this.anchor.y < entity.anchor.y)
+            else if (this.x > entity.x && this.y < entity.y)
             {
                 this.pushLeft(xSpeed)
                 this.pushDown(ySpeed)
             }
-            else if (this.anchor.x < entity.anchor.x && this.anchor.y > entity.anchor.y)
+            else if (this.x < entity.x && this.y > entity.y)
             {
                 this.pushRight(xSpeed)
                 this.pushUp(ySpeed)
             }
-            else if (this.anchor.x > entity.anchor.x && this.anchor.y > entity.anchor.y)
+            else if (this.x > entity.x && this.y > entity.y)
             {
                 this.pushLeft(xSpeed)
                 this.pushUp(ySpeed)
@@ -288,30 +281,25 @@ var Entity = function()
             yMax = l.canvas.height
         }
 
-        if (!this.bound)
+        if (this.x - this.bound.x <= xMin)
         {
-            this.setBound(0, 0, this.width, this.height)
-        }
-
-        if (this.x + this.bound.offset.x <= xMin)
-        {
-            this.x = xMin - this.bound.offset.x
+            this.x = xMin + this.bound.x
             this.momentum.x = -this.momentum.x
         }
-        else if (this.x + this.bound.offset.x + this.bound.width >= xMax)
+        else if (this.x - this.bound.x + this.bound.width >= xMax)
         {
-            this.x = xMax - this.bound.width - (this.width - this.bound.offset.x - this.bound.width)
+            this.x = xMax - this.bound.width + this.bound.x
             this.momentum.x = -this.momentum.x
         }
 
-        if (this.y + this.bound.offset.y <= yMin)
+        if (this.y - this.bound.y <= yMin)
         {
-            this.y = yMin - this.bound.offset.y
+            this.y = yMin + this.bound.y
             this.momentum.y = -this.momentum.y
         }
-        else if (this.y + this.bound.offset.y + this.bound.height >= yMax)
+        else if (this.y - this.bound.y + this.bound.height >= yMax)
         {
-            this.y = yMax - this.bound.height - (this.height - this.bound.offset.y - this.bound.height)
+            this.y = yMax - this.bound.height + this.bound.y
             this.momentum.y = -this.momentum.y
         }
 
@@ -368,20 +356,6 @@ var Entity = function()
             }
         }
 
-        this.update()
-
         return this
     }
-
-        // Must manually run when "this.x" or "this.y" change
-        this.update = function()
-        {
-            this.anchor.x = this.x + this.anchor.offset.x
-            this.anchor.y = this.y + this.anchor.offset.y
-
-            this.bound.x = this.x + this.bound.offset.x
-            this.bound.y = this.y + this.bound.offset.y
-
-            // Don't "return this" here, do it in the functions that call "this.update" instead
-        }
 }

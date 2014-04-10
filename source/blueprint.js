@@ -26,14 +26,14 @@ var Blueprint = function()
 
     this.setAnchor = function(x, y)
     {
-        this.anchor = {offset: {x: x, y: y}}
+        this.anchor = {x: x, y: y}
 
         return this
     }
 
     this.setBound = function(x, y, width, height)
     {
-        this.bound = {offset: {x: x, y: y}, width: width, height: height}
+        this.bound = {x: x, y: y, width: width, height: height}
 
         return this
     }
