@@ -9,6 +9,11 @@ var game = new Lorina()
 	game.setColor('#111111')
 		.makeFullscreen()
 
+l.canvas.width += l.canvas.width
+l.canvas.height += l.canvas.height
+
+var camera = new Camera()
+
 var measure = new Measure()
 var typewriter = new Typewriter()
 	typewriter.setFont('Wendy').setColor('#FFFFFF').setAlignment('center').setSize(35)
@@ -96,11 +101,15 @@ var main = function()
 		game.collision(earth, moon).delete()
 	}
 
+	camera.follow(earth)
+
 	game.blank()
 	typewriter.setPosition(l.dom.width / 2, 100).writeText('Welcome to the world, World.  Move with the arrow keys.')
 	planets.buffer()
 	stars.buffer()
 	game.draw()
+
+	planets.debug()
 }
 
 game.start(loading) // Only call once the room functions are defined

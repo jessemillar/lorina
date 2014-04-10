@@ -1,6 +1,6 @@
 var Camera = function()
 {
-	l.camera = {x: 0, y: 0, sandbox: {width: 0, height: 0}}
+	l.camera = {x: 0, y: 0, sandbox: {width: 1, height: 1}}
 
 	this.reset = function()
 	{
@@ -8,34 +8,47 @@ var Camera = function()
 		l.camera.y = 0
 	}
 
-	this.follow = function(entity, width, height)
+	this.setSandbox = function(width, height)
 	{
 		l.camera.sandbox.width = width
 		l.camera.sandbox.height = height
 
-		if (this.state != 'shaking')
+		if (l.camera.sandbox.width <= 0)
 		{
+			l.camera.sandbox.width = 1
+		}
+
+		if (l.camera.sandbox.height <= 0)
+		{
+			l.camera.sandbox.height = 1
+		}
+	}
+
+	this.follow = function(entity)
+	{
+		// if (this.state != 'shaking')
+		// {
 			if (l.camera.sandbox.width)
 			{
-				if (entity.anchor.x < l.camera.x + l.dom.width / 2 - l.camera.sandbox.width / 2)
+				if (entity.x < l.camera.x + l.dom.width / 2 - l.camera.sandbox.width / 2)
 				{
-					l.camera.x = entity.anchor.x - l.dom.width / 2 + l.camera.sandbox.width / 2
+					l.camera.x = entity.x - l.dom.width / 2 + l.camera.sandbox.width / 2
 				}
-				else if (entity.anchor.x > l.camera.x + l.dom.width / 2 + l.camera.sandbox.width / 2)
+				else if (entity.x > l.camera.x + l.dom.width / 2 + l.camera.sandbox.width / 2)
 				{
-					l.camera.x = entity.anchor.x - l.dom.width / 2 - l.camera.sandbox.width / 2
+					l.camera.x = entity.x - l.dom.width / 2 - l.camera.sandbox.width / 2
 				}
 			}
 
 			if (l.camera.sandbox.height)
 			{
-				if (entity.anchor.y < l.camera.y + l.dom.height / 2 - l.camera.sandbox.height / 2)
+				if (entity.y < l.camera.y + l.dom.height / 2 - l.camera.sandbox.height / 2)
 				{
-					l.camera.y = entity.anchor.y - l.dom.height / 2 + l.camera.sandbox.height / 2
+					l.camera.y = entity.y - l.dom.height / 2 + l.camera.sandbox.height / 2
 				}
-				else if (entity.anchor.y > l.camera.y + l.dom.height / 2 + l.camera.sandbox.height / 2)
+				else if (entity.y > l.camera.y + l.dom.height / 2 + l.camera.sandbox.height / 2)
 				{
-					l.camera.y = entity.anchor.y - l.dom.height / 2 - l.camera.sandbox.height / 2
+					l.camera.y = entity.y - l.dom.height / 2 - l.camera.sandbox.height / 2
 				}
 			}
 
@@ -56,7 +69,7 @@ var Camera = function()
 			{
 				l.camera.y = l.canvas.height - l.dom.height
 			}
-		}
+		// }
 	}
 
 	/*

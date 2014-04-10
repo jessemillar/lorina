@@ -36,8 +36,8 @@ var Entity = function()
 
             l.ctx.globalAlpha = 0.5
 
-            l.ctx.fillRect(this.x + this.bound.x, this.y + this.bound.y, this.bound.width, this.bound.height)
-            l.ctx.fillRect(this.x - 2, this.y - 2, 5, 5)
+            l.ctx.fillRect(this.x + this.bound.x - l.camera.x, this.y + this.bound.y - l.camera.y, this.bound.width, this.bound.height)
+            l.ctx.fillRect(this.x - 2 - l.camera.x, this.y - 2 - l.camera.y, 5, 5)
 
             l.ctx.globalAlpha = 1
         }
@@ -192,7 +192,7 @@ var Entity = function()
             }
             else
             {
-                l.ctx.drawImage(this.sprite.img, Math.round(this.x - this.anchor.x), Math.round(this.y - this.anchor.y))
+                l.ctx.drawImage(this.sprite.img, Math.round(this.x - this.anchor.x - l.camera.x), Math.round(this.y - this.anchor.y - l.camera.y))
             }
         }
 
