@@ -1,5 +1,19 @@
 var Typewriter = function()
 {
+	this.setOpacity = function(opacity)
+	{
+		this.opacity = opacity
+
+		return this
+	}
+
+	this.setStyle = function(style)
+	{
+		this.style = style
+
+		return this
+	}
+
 	this.setFont = function(font)
 	{
 		this.font = font
@@ -45,22 +59,36 @@ var Typewriter = function()
 
 	this.writeText = function(string)
 	{
-		if (this.font && this.size)
+		if (this.style)
 		{
-			l.ctx.font = this.size + 'px ' + this.font
-		}
-		else if (this.font)
-		{
-			l.ctx.font = '10px ' + this.font
-		}
-		else if (this.size)
-		{
-			l.ctx.font = this.size + 'px sans-serif'
+			var style = this.style
 		}
 		else
 		{
-			l.ctx.font = '10px sans-serif'
+			var style = ''
 		}
+
+		if (this.size)
+		{
+			var size = this.size
+		}
+		else
+		{
+			var size = ''
+		}
+
+		if (this.font)
+		{
+			var font = this.font
+		}
+		else
+		{
+			var font = ''
+		}
+
+
+		l.ctx.font = style + ' ' +  size + 'px ' + font
+
 
 		if (this.color)
 		{
@@ -89,6 +117,11 @@ var Typewriter = function()
 			this.y += 10
 		}
 
+		if (this.opacity)
+		{
+			l.ctx.globalAlpha = this.opacity
+		}
+
 		if (this.textMode == 'hud')
 		{
 			l.ctx.fillText(string, this.x, this.y)
@@ -97,6 +130,8 @@ var Typewriter = function()
 		{
 			l.ctx.fillText(string, this.x - l.camera.x, this.y - l.camera.y)
 		}
+
+		l.ctx.globalAlpha = 1
 
 		return this
 	}

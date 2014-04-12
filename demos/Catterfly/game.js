@@ -6,6 +6,8 @@ var game = new Lorina()
 		.makeFullscreen()
 
 var tool = new Tool()
+var typewriter = new Typewriter()
+	typewriter.setSize(20).setFont('Helvetica').setColor('#111111').setStyle('bold italic')
 
 var butterflies = new Group()
 
@@ -34,7 +36,8 @@ var loading = function()
 		game.setRoom(main)
 	}
 
-	game.blank('#FF0000')
+	game.blank('#FFFFFF')
+	typewriter.setPosition(10, 10).writeText('Loading')
 }
 
 var main = function()
