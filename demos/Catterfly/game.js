@@ -1,10 +1,11 @@
-var butterflyCount = 100
+var butterflyCount = 200
+var butterflyForce = 2
 
 var game = new Lorina()
 	game.setColor('#7FDBFF')
 		.makeFullscreen()
 
-var measure = new Measure()
+var tool = new Tool()
 
 var butterflies = new Group()
 
@@ -16,11 +17,12 @@ while (i--)
 
 	var entity = new Entity()
 		entity.setSprite('images/butterfly.png')
-			  .setPosition(measure.random(0, l.canvas.width), measure.random(0, l.canvas.height))
+			  .setPosition(tool.random(0, l.canvas.width), tool.random(0, l.canvas.height))
 			  .setAnchor(25, 25)
 			  .setSize(50, 50)
-			  .setAnimation(2, measure.random(50, 500))
+			  .setAnimation(2, tool.random(100, 300))
 			  .setFriction(0)
+			  .scatter(butterflyForce)
 		butterflies.add(entity)
 }
 

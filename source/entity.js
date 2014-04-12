@@ -284,6 +284,14 @@ var Entity = function()
         return this
     }
 
+    this.scatter = function(maxForce)
+    {
+        this.momentum.x = Math.random() * (maxForce - (maxForce * -1)) + (maxForce * -1)
+        this.momentum.y = Math.random() * (maxForce - (maxForce * -1)) + (maxForce * -1)
+
+        return this
+    }
+
     this.pullToward = function(entity, force)
     {
         var horizontal = Math.abs(this.x - entity.x)

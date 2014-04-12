@@ -1,4 +1,4 @@
-var Measure = function()
+var Tool = function()
 {
     this.random = function(min, max)
     {
