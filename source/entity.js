@@ -8,15 +8,6 @@ var Entity = function()
     this.bound = {x: 0, y: 0, width: 0, height: 0}
     this.sprite = {img: new Image()}
 
-    this.copy = function(entity)
-    {
-        this.sprite = entity.sprite
-        this.sprite.width = parseInt(entity.sprite.width)
-        this.sprite.height = parseInt(entity.sprite.height)
-
-        return this
-    }
-
     this.debug = function(color)
     {
         if (!this.deleted)
@@ -56,18 +47,27 @@ var Entity = function()
         return this
     }
 
-    this.setSize = function(width, height)
+    this.setAnchor = function(x, y)
     {
-        this.width = width
-        this.height = height
-        this.setBound(0, 0, this.width, this.height)
+        this.anchor = {x: x, y: y}
+
+        if (this.width && this.height)
+        {
+            this.setBound(0 - this.anchor.x, 0 - this.anchor.y, this.width, this.height)
+        }
 
         return this
     }
 
-    this.setAnchor = function(x, y)
+    this.setSize = function(width, height)
     {
-        this.anchor = {x: x, y: y}
+        this.width = width
+        this.height = height
+
+        if (this.anchor.x && this.anchor.y)
+        {
+            this.setBound(0 - this.anchor.x, 0 - this.anchor.y, this.width, this.height)
+        }
 
         return this
     }
@@ -355,7 +355,7 @@ var Entity = function()
         return this
     }
 
-    this.physics = function() // Run to continuously update the friction of objects influenced by physics
+    this.updatePhysics = function() // Run to continuously update the friction of objects influenced by physics
     {
         if (this.momentum.x !== 0) // Horizontal motion
         {

@@ -1,4 +1,4 @@
-var butterflyCount = 3
+var butterflyCount = 100
 
 var game = new Lorina()
 	game.setColor('#7FDBFF')
@@ -8,9 +8,6 @@ var measure = new Measure()
 
 var butterflies = new Group()
 
-var butterfly = new Loader()
-	butterfly.setSprite('images/butterfly.png')
-
 var i = butterflyCount
 
 while (i--)
@@ -18,10 +15,12 @@ while (i--)
 	var entity = 'butterfly' + i
 
 	var entity = new Entity()
-		entity.copy(butterfly)
+		entity.setSprite('images/butterfly.png')
 			  .setPosition(measure.random(0, l.canvas.width), measure.random(0, l.canvas.height))
 			  .setAnchor(25, 25)
-			  .setAnimation(2, measure.random(10, 2000))
+			  .setSize(50, 50)
+			  .setAnimation(2, measure.random(50, 500))
+			  .setFriction(0)
 		butterflies.add(entity)
 }
 
@@ -38,9 +37,13 @@ var loading = function()
 
 var main = function()
 {
+	butterflies.updatePhysics().bounce()
+
 	game.blank()
 	butterflies.buffer()
 	game.draw()
+
+	// butterflies.debug()
 }
 
 game.start(loading) // Only call once the room functions are defined

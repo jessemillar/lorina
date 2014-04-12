@@ -322,13 +322,13 @@ var Group = function()
         return this
     }
 
-    this.physics = function() // Run to continuously update the friction of objects influenced by physics
+    this.updatePhysics = function() // Run to continuously update the friction of objects influenced by physics
     {
         var i = this.database.length
 
         while (i--)
         {
-            this.database[i].physics()
+            this.database[i].updatePhysics()
         }
 
         return this
