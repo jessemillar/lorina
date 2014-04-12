@@ -1,4 +1,4 @@
-var butterflyCount = 200
+var butterflyCount = 250
 var butterflyForce = 2
 
 var game = new Lorina()
@@ -26,6 +26,7 @@ while (i--)
 			  .setAnimation(2, tool.random(100, 300))
 			  .setFriction(0)
 			  .scatter(butterflyForce)
+			  .rotate(tool.random(0, 360))
 		butterflies.add(entity)
 }
 

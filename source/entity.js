@@ -79,6 +79,13 @@ var Entity = function()
         return this
     }
 
+    this.rotate = function(rotated)
+    {
+        this.rotated = rotated
+
+        return this
+    }
+
     this.setSprite = function(location)
     {
         var self = this
@@ -159,24 +166,33 @@ var Entity = function()
     {
         if (!this.deleted)
         {
-            if (this.flipped)
+            if (this.flipped || this.rotated)
             {
                 l.ctx.save()
 
-                if (this.flipped == 'horizontal')
+                if (this.flipped)
                 {
-                    l.ctx.translate(Math.round(this.x + this.width - (this.anchor.x * 2) - l.camera.x), Math.round(this.y - l.camera.y))
-                    l.ctx.scale(-1, 1)
+                    if (this.flipped == 'horizontal')
+                    {
+                        l.ctx.translate(Math.round(this.x + this.width - (this.anchor.x * 2) - l.camera.x), Math.round(this.y - l.camera.y))
+                        l.ctx.scale(-1, 1)
+                    }
+                    else if (this.flipped == 'vertical')
+                    {
+                        l.ctx.translate(Math.round(this.x - l.camera.x), Math.round(this.y + this.height - (this.anchor.y * 2) - l.camera.y))
+                        l.ctx.scale(1, -1)
+                    }
+                    else if (this.flipped == 'both')
+                    {
+                        l.ctx.translate(Math.round(this.x + this.width - (this.anchor.x * 2) - l.camera.x), Math.round(this.y + this.height - (this.anchor.y * 2) - l.camera.y))
+                        l.ctx.scale(-1, -1)
+                    }
                 }
-                else if (this.flipped == 'vertical')
+
+                if (this.rotated)
                 {
-                    l.ctx.translate(Math.round(this.x - l.camera.x), Math.round(this.y + this.height - (this.anchor.y * 2) - l.camera.y))
-                    l.ctx.scale(1, -1)
-                }
-                else if (this.flipped == 'both')
-                {
-                    l.ctx.translate(Math.round(this.x + this.width - (this.anchor.x * 2) - l.camera.x), Math.round(this.y + this.height - (this.anchor.y * 2) - l.camera.y))
-                    l.ctx.scale(-1, -1)
+                    l.ctx.translate(Math.round(this.x), Math.round(this.y))
+                    l.ctx.rotate(this.rotated * Math.PI / 180)
                 }
 
                 if (this.sprite.count)

@@ -1,4 +1,4 @@
-var starCount = 2500
+var starCount = 2000
 var dustCount = 1000
 
 var earthSpeed = 0.5
@@ -13,7 +13,7 @@ var game = new Lorina()
 
 var camera = new Camera()
 
-var measure = new Measure()
+var tool = new Tool()
 var typewriter = new Typewriter()
 	typewriter.setFont('Wendy').setColor('#FFFFFF').setAlignment('center').setSize(35)
 
@@ -23,14 +23,6 @@ var mouse = new Mouse()
 var stars = new Group()
 var dusties = new Group()
 
-var star = new Blueprint()
-	star.setSprite('images/star.png')
-		.setAnchor(4, 4)
-
-var dust = new Blueprint()
-	dust.setSprite('images/dust.png')
-		.setAnchor(2, 2)
-
 var i = starCount
 
 while (i--)
@@ -38,8 +30,9 @@ while (i--)
 	var entity = 'star' + i
 
 	var entity = new Entity()
-		entity.copy(star)
-			  .setPosition(measure.random(0, l.canvas.width), measure.random(0, l.canvas.height))
+		entity.setSprite('images/star.png')
+			  .setAnchor(4, 4)
+			  .setPosition(tool.random(0, l.canvas.width), tool.random(0, l.canvas.height))
 			  .setFriction(starFriction)
 		stars.add(entity)
 }
@@ -51,8 +44,9 @@ while (i--)
 	var entity = 'dust' + i
 
 	var entity = new Entity()
-		entity.copy(dust)
-			  .setPosition(measure.random(0, l.canvas.width), measure.random(0, l.canvas.height))
+		entity.setSprite('images/dust.png')
+			  .setAnchor(2, 2)
+			  .setPosition(tool.random(0, l.canvas.width), tool.random(0, l.canvas.height))
 		dusties.add(entity)
 }
 
@@ -107,10 +101,10 @@ var main = function()
 		earth.pushRight(earthSpeed)
 	}
 
-	stars.physics().pullToward(earth, starSpeed)
+	stars.updatePhysics().pullToward(earth, starSpeed)
 	// moon.physics().pullToward(earth, starSpeed)
 
-	earth.bounce().physics()
+	earth.bounce().updatePhysics()
 
 	/*
 	if (game.collision(earth, moon))
