@@ -47,9 +47,20 @@ var Blueprint = function()
         {
             self.sprite.width = this.width
             self.sprite.height = this.height
+
+            l.preloader.current--
+            l.preloader.percent = Math.round(l.preloader.current / l.preloader.total)
+
+            if (l.preloader.current == 0)
+            {
+                l.loaded = true
+            }
         })
 
         this.sprite.img.src = location
+
+        l.preloader.total++
+        l.preloader.current++
 
         return this
     }

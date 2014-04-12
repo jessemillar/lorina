@@ -1,16 +1,15 @@
 var starCount = 2500
+var dustCount = 1000
 
 var earthSpeed = 0.5
 var earthFriction = earthSpeed / 15
 var starSpeed = 0.4
-var starFriction = 0.025
+var starFriction = 0.035
 
 var game = new Lorina()
 	game.setColor('#111111')
 		.makeFullscreen()
-
-l.canvas.width += l.canvas.width
-l.canvas.height += l.canvas.height
+		.setRoomSize(l.dom.width * 2, l.dom.height * 2)
 
 var camera = new Camera()
 
@@ -22,10 +21,15 @@ var keyboard = new Keyboard()
 var mouse = new Mouse()
 
 var stars = new Group()
+var dusties = new Group()
 
 var star = new Blueprint()
 	star.setSprite('images/star.png')
 		.setAnchor(4, 4)
+
+var dust = new Blueprint()
+	dust.setSprite('images/dust.png')
+		.setAnchor(2, 2)
 
 var i = starCount
 
@@ -40,11 +44,23 @@ while (i--)
 		stars.add(entity)
 }
 
+var i = dustCount
+
+while (i--)
+{
+	var entity = 'dust' + i
+
+	var entity = new Entity()
+		entity.copy(dust)
+			  .setPosition(measure.random(0, l.canvas.width), measure.random(0, l.canvas.height))
+		dusties.add(entity)
+}
+
 var planets = new Group()
 
 var earth = new Entity()
 	earth.setSprite('images/earth.png')
-		 .setPosition(l.dom.width / 2, l.dom.height / 2)
+		 .setPosition(l.canvas.width / 2, l.canvas.height / 2)
 		 .setSize(125, 125)
 		 .setAnchor(125 / 2, 125 / 2)
 		 .setBound(-125 / 2, -125 / 2, 125, 125)
@@ -96,20 +112,22 @@ var main = function()
 
 	earth.bounce().physics()
 
+	/*
 	if (game.collision(earth, moon))
 	{
 		game.collision(earth, moon).delete()
 	}
+	*/
 
 	camera.follow(earth)
 
 	game.blank()
-	typewriter.setPosition(l.dom.width / 2, 100).writeText('Welcome to the world, World.  Move with the arrow keys.')
-	planets.buffer()
+	typewriter.setPosition(l.canvas.width / 2, l.canvas.height / 2 - 200).writeText('Welcome to space, Mr. World.  Move with the arrow keys.')
+	// planets.buffer()
+	earth.buffer()
 	stars.buffer()
+	dusties.buffer()
 	game.draw()
-
-	planets.debug()
 }
 
 game.start(loading) // Only call once the room functions are defined

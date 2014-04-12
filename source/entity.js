@@ -115,6 +115,7 @@ var Entity = function()
         this.sprite.frame = 0
         this.sprite.count = count
         this.sprite.timer = timer
+        
         this.sprite.animation = this.animate(this)
 
         return this
