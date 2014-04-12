@@ -10,13 +10,9 @@ var Entity = function()
 
     this.copy = function(entity)
     {
-        this.x = parseInt(entity.x)
-        this.y = parseInt(entity.y)
-        this.width = parseInt(entity.width)
-        this.height = parseInt(entity.height)
-        this.anchor = {x: parseInt(entity.anchor.x), y: parseInt(entity.anchor.y)}
-        this.bound = {x: parseInt(entity.bound.x), y: parseInt(entity.bound.y), width: parseInt(entity.bound.width), height: parseInt(entity.bound.height)}
         this.sprite = entity.sprite
+        this.sprite.width = parseInt(entity.sprite.width)
+        this.sprite.height = parseInt(entity.sprite.height)
 
         return this
     }
@@ -83,10 +79,9 @@ var Entity = function()
         return this
     }
 
-    // Throw the preloader counting in here
     this.setSprite = function(location)
     {
-        var self = this // We can't normally access "this" from inside the eventListener, so we have to hack it to work
+        var self = this
 
         this.sprite.img.addEventListener('load', function()
         {
@@ -114,27 +109,24 @@ var Entity = function()
     {
         this.sprite.frame = 0
         this.sprite.count = count
-        this.sprite.timer = timer
-        
-        this.sprite.animation = this.animate(this)
+        this.sprite.timer = Math.round(timer)
+
+        var self = this
+
+        this.animation = setInterval(function()
+        {
+            if (self.sprite.frame < self.sprite.count - 1)
+            {
+                self.sprite.frame += 1
+            }
+            else
+            {
+                self.sprite.frame = 0
+            }
+        }, self.sprite.timer)
 
         return this
     }
-
-        this.animate = function(entity)
-        {
-            setInterval(function()
-            {
-                if (entity.sprite.frame < entity.sprite.count - 1)
-                {
-                    entity.sprite.frame += 1
-                }
-                else
-                {
-                    entity.sprite.frame = 0
-                }
-            }, entity.sprite.timer)
-        }
 
     this.pauseAnimation = function()
     {
@@ -187,13 +179,27 @@ var Entity = function()
                     l.ctx.scale(-1, -1)
                 }
 
-                l.ctx.drawImage(this.sprite.img, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y))
+                if (this.sprite.count)
+                {
+                    l.ctx.drawImage(this.sprite.img, this.sprite.frame * (this.sprite.width / this.sprite.count), 0, Math.round(this.sprite.width / this.sprite.count), this.sprite.height, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y), Math.round(this.sprite.width / this.sprite.count), this.sprite.height)
+                }
+                else
+                {
+                    l.ctx.drawImage(this.sprite.img, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y))
+                }
 
                 l.ctx.restore()
             }
             else
             {
-                l.ctx.drawImage(this.sprite.img, Math.round(this.x - this.anchor.x - l.camera.x), Math.round(this.y - this.anchor.y - l.camera.y))
+                if (this.sprite.count)
+                {
+                    l.ctx.drawImage(this.sprite.img, this.sprite.frame * (this.sprite.width / this.sprite.count), 0, Math.round(this.sprite.width / this.sprite.count), this.sprite.height, Math.round(this.x - this.anchor.x - l.camera.x), Math.round(this.y - this.anchor.y - l.camera.y), Math.round(this.sprite.width / this.sprite.count), this.sprite.height)
+                }
+                else
+                {
+                    l.ctx.drawImage(this.sprite.img, Math.round(this.x - this.anchor.x - l.camera.x), Math.round(this.y - this.anchor.y - l.camera.y))
+                }
             }
         }
 

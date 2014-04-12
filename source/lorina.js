@@ -52,6 +52,9 @@ var Lorina = function()
             }
 
             this.setFullscreen()
+
+            l.canvas.width = l.dom.width
+            l.canvas.height = l.dom.height
         }
 
         return this
@@ -64,8 +67,6 @@ var Lorina = function()
             l.dom.style.top = '0px'
             l.dom.width = window.innerWidth
             l.dom.height = window.innerHeight
-            // l.canvas.width = l.dom.width
-            // l.canvas.height = l.dom.height
 
             return this
         }
@@ -139,7 +140,6 @@ var Lorina = function()
 
     this.draw = function()
     {
-        // Sort the buffer for z-indexing
         l.buffer.sort(function(a, b)
         {
             return a.y - b.y
@@ -150,7 +150,6 @@ var Lorina = function()
         while (i--)
         {
             l.buffer[i].draw()
-            // l.ctx.drawImage(l.buffer[i].sprite.img, Math.round(l.buffer[i].x - l.buffer[i].anchor.x - l.camera.x), Math.round(l.buffer[i].y - l.buffer[i].anchor.y - l.camera.y))
         }
 
         return this

@@ -8,10 +8,8 @@ var measure = new Measure()
 
 var butterflies = new Group()
 
-var butterfly = new Blueprint()
+var butterfly = new Loader()
 	butterfly.setSprite('images/butterfly.png')
-			 .setAnimation(2, 300)
-			 .setAnchor(25, 25)
 
 var i = butterflyCount
 
@@ -22,14 +20,14 @@ while (i--)
 	var entity = new Entity()
 		entity.copy(butterfly)
 			  .setPosition(measure.random(0, l.canvas.width), measure.random(0, l.canvas.height))
+			  .setAnchor(25, 25)
+			  .setAnimation(2, measure.random(10, 2000))
 		butterflies.add(entity)
 }
 
 // I would recommend that you keep the data for your room functions in an external file and reference it here
 var loading = function()
 {
-	console.log(l.preloader.current, l.preloader.total)
-
 	if (l.loaded)
 	{
 		game.setRoom(main)
