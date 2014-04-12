@@ -4,6 +4,7 @@ var butterflyForce = 2
 var game = new Lorina()
 	game.setColor('#7FDBFF')
 		.makeFullscreen()
+		.fullscreenStretch()
 
 var tool = new Tool()
 var typewriter = new Typewriter()

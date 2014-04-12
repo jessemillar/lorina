@@ -38,6 +38,13 @@ var Lorina = function()
         this.setRoomSize(l.dom.width, l.dom.height)
     }
 
+    this.fullscreenStretch = function()
+    {
+        this.stretch = true
+
+        return this
+    }
+
     this.makeFullscreen = function()
     {
         if (window.navigator.vendor) // Check if we're using a non-Ejecta browser
@@ -67,6 +74,12 @@ var Lorina = function()
             l.dom.style.top = '0px'
             l.dom.width = window.innerWidth
             l.dom.height = window.innerHeight
+
+            if (this.stretch)
+            {
+                l.canvas.width = l.dom.width
+                l.canvas.height = l.dom.height
+            }
 
             return this
         }
