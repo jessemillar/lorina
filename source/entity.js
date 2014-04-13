@@ -197,7 +197,7 @@ var Entity = function()
 
                 if (this.sprite.count)
                 {
-                    l.ctx.drawImage(this.sprite.img, this.sprite.frame * (this.sprite.width / this.sprite.count), 0, Math.round(this.sprite.width / this.sprite.count), this.sprite.height, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y), Math.round(this.sprite.width / this.sprite.count), this.sprite.height)
+                    l.ctx.drawImage(this.sprite.img, this.sprite.frame * (this.sprite.width / this.sprite.count), 0, this.sprite.width / this.sprite.count, this.sprite.height, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y), this.sprite.width / this.sprite.count, this.sprite.height)
                 }
                 else
                 {
@@ -210,7 +210,7 @@ var Entity = function()
             {
                 if (this.sprite.count)
                 {
-                    l.ctx.drawImage(this.sprite.img, this.sprite.frame * (this.sprite.width / this.sprite.count), 0, Math.round(this.sprite.width / this.sprite.count), this.sprite.height, Math.round(this.x - this.anchor.x - l.camera.x), Math.round(this.y - this.anchor.y - l.camera.y), Math.round(this.sprite.width / this.sprite.count), this.sprite.height)
+                    l.ctx.drawImage(this.sprite.img, this.sprite.frame * (this.sprite.width / this.sprite.count), 0, this.sprite.width / this.sprite.count, this.sprite.height, Math.round(this.x - this.anchor.x - l.camera.x), Math.round(this.y - this.anchor.y - l.camera.y), this.sprite.width / this.sprite.count, this.sprite.height)
                 }
                 else
                 {

@@ -1,3 +1,4 @@
+var moonCount = 500
 var starCount = 2000
 var dustCount = 1000
 
@@ -20,8 +21,33 @@ var typewriter = new Typewriter()
 var keyboard = new Keyboard()
 var mouse = new Mouse()
 
+var moons = new Group()
 var stars = new Group()
 var dusties = new Group()
+
+var earth = new Entity()
+	earth.setSprite('images/earth.png')
+		 .setPosition(l.canvas.width / 2, l.canvas.height / 2)
+		 .setSize(125, 125)
+		 .setAnchor(125 / 2, 125 / 2)
+		 .setBound(-125 / 2, -125 / 2, 125, 125)
+		 .setFriction(earthFriction)
+
+var i = moonCount
+
+while (i--)
+{
+	var entity = 'moon' + i
+
+	var moon = new Entity()
+		moon.setSprite('images/moon.png')
+			 .setPosition(tool.random(0, l.canvas.width), tool.random(0, l.canvas.height))
+			 .setSize(100, 100)
+			 .setAnchor(100 / 2, 100 / 2)
+			 .setBound(-100 / 2, -100 / 2, 100, 100)
+			 .setFriction(starFriction)
+		moons.add(moon)
+}
 
 var i = starCount
 
@@ -49,26 +75,6 @@ while (i--)
 			  .setPosition(tool.random(0, l.canvas.width), tool.random(0, l.canvas.height))
 		dusties.add(entity)
 }
-
-var planets = new Group()
-
-var earth = new Entity()
-	earth.setSprite('images/earth.png')
-		 .setPosition(l.canvas.width / 2, l.canvas.height / 2)
-		 .setSize(125, 125)
-		 .setAnchor(125 / 2, 125 / 2)
-		 .setBound(-125 / 2, -125 / 2, 125, 125)
-		 .setFriction(earthFriction)
-	planets.add(earth)
-
-var moon = new Entity()
-	moon.setSprite('images/moon.png')
-		 .setPosition(100, 100)
-		 .setSize(100, 100)
-		 .setAnchor(100 / 2, 100 / 2)
-		 .setBound(-100 / 2, -100 / 2, 100, 100)
-		 .setFriction(starFriction)
-	planets.add(moon)
 
 // I would recommend that you keep the data for your room functions in an external file and reference it here
 var loading = function()
@@ -101,27 +107,29 @@ var main = function()
 		earth.pushRight(earthSpeed)
 	}
 
-	stars.updatePhysics().pullToward(earth, starSpeed)
-	// moon.physics().pullToward(earth, starSpeed)
+	stars.pullToward(earth, starSpeed).updatePhysics()
+	moons.pullToward(earth, starSpeed / 8).updatePhysics()
 
 	earth.bounce().updatePhysics()
 
-	/*
-	if (game.collision(earth, moon))
+	var j = game.checkCollision(earth, moons)
+
+	if (j)
 	{
-		game.collision(earth, moon).delete()
+		j.delete()
 	}
-	*/
 
 	camera.follow(earth)
 
 	game.blank()
 	typewriter.setPosition(l.canvas.width / 2, l.canvas.height / 2 - 200).writeText('Welcome to space, Mr. World.  Move with the arrow keys.')
-	// planets.buffer()
 	earth.buffer()
+	moons.buffer()
 	stars.buffer()
 	dusties.buffer()
 	game.draw()
+
+	// moons.debug()
 }
 
 game.start(loading) // Only call once the room functions are defined
