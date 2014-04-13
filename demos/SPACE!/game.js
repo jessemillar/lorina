@@ -1,4 +1,4 @@
-var moonCount = 100
+var moonCount = 250
 var starCount = 2000
 var dustCount = 1000
 
