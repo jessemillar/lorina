@@ -1,4 +1,4 @@
-var moonCount = 500
+var moonCount = 100
 var starCount = 2000
 var dustCount = 1000
 
@@ -18,8 +18,13 @@ var tool = new Tool()
 var typewriter = new Typewriter()
 	typewriter.setFont('Wendy').setColor('#FFFFFF').setAlignment('center').setSize(35)
 
+var song = new Speaker()
+	song.setAudio('sounds/song.wav')
+
+var gameover = new Speaker()
+	gameover.setAudio('sounds/gameover.wav')
+
 var keyboard = new Keyboard()
-var mouse = new Mouse()
 
 var moons = new Group()
 var stars = new Group()
@@ -91,10 +96,12 @@ var main = function()
 {
 	if (keyboard.up)
 	{
+		gameover.loop()
 		earth.pushUp(earthSpeed)
 	}
 	else if (keyboard.down)
 	{
+		gameover.pause()
 		earth.pushDown(earthSpeed)
 	}
 
@@ -108,7 +115,7 @@ var main = function()
 	}
 
 	stars.pullToward(earth, starSpeed).updatePhysics()
-	moons.pullToward(earth, starSpeed / 8).updatePhysics()
+	// moons.pullToward(earth, starSpeed / 8).updatePhysics()
 
 	earth.bounce().updatePhysics()
 

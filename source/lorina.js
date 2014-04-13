@@ -7,8 +7,25 @@ var Lorina = function()
     l.canvas = new Object()
     l.buffer = new Array()
     l.camera = {x: 0, y: 0}
-    l.preloader = {total: 0, current: 0, percent: 0}
     l.loaded = false
+    l.preloader = {total: 0, current: 0, percent: 0}
+
+    l.preloader.add = function()
+    {
+        l.preloader.total++
+        l.preloader.current++
+    }
+
+    l.preloader.subtract = function()
+    {
+        l.preloader.current--
+        l.preloader.percent = Math.round(l.preloader.current / l.preloader.total)
+
+        if (l.preloader.current == 0)
+        {
+            l.loaded = true
+        }
+    }
 
     // Put the sizing function above where we use it to set the default canvas size
     this.setRoomSize = function(width, height)

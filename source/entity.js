@@ -90,24 +90,22 @@ var Entity = function()
     {
         var self = this
 
-        this.sprite.img.addEventListener('load', function()
+        this.sprite.img.onload = function()
         {
             self.sprite.width = this.width
             self.sprite.height = this.height
 
-            l.preloader.current--
-            l.preloader.percent = Math.round(l.preloader.current / l.preloader.total)
+            l.preloader.subtract()
 
             if (l.preloader.current == 0)
             {
                 l.loaded = true
             }
-        })
+        }
 
         this.sprite.img.src = location
 
-        l.preloader.total++
-        l.preloader.current++
+        l.preloader.add()
 
         return this
     }
