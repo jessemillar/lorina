@@ -347,9 +347,9 @@ var Entity = function()
         if (!xMin && !xMax && !yMin && !yMax)
         {
             xMin = 0
-            xMax = l.canvas.width
+            xMax = l.room.width
             yMin = 0
-            yMax = l.canvas.height
+            yMax = l.room.height
         }
 
         if (this.x + this.bound.x <= xMin)

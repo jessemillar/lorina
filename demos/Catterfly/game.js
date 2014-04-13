@@ -4,7 +4,7 @@ var butterflyForce = 2
 var game = new Lorina()
 	game.setColor('#7FDBFF')
 		.makeFullscreen()
-		.fullscreenStretch()
+		.makeRoomFullscreen()
 
 var tool = new Tool()
 var typewriter = new Typewriter()
@@ -20,7 +20,7 @@ while (i--)
 
 	var entity = new Entity()
 		entity.setSprite('images/butterfly.png')
-			  .setPosition(tool.random(0, l.canvas.width), tool.random(0, l.canvas.height))
+			  .setPosition(tool.random(0, l.room.width), tool.random(0, l.room.height))
 			  .setAnchor(25, 25)
 			  .setSize(50, 50)
 			  .setAnimation(2, tool.random(100, 300))

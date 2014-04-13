@@ -4,7 +4,7 @@ var Lorina = function()
 {
     l.dom = document.getElementById('canvas')
     l.ctx = document.getElementById('canvas').getContext('2d')
-    l.canvas = new Object()
+    l.room = new Object()
     l.buffer = new Array()
     l.camera = {x: 0, y: 0}
     l.loaded = false
@@ -30,8 +30,8 @@ var Lorina = function()
     // Put the sizing function above where we use it to set the default canvas size
     this.setRoomSize = function(width, height)
     {
-        l.canvas.width = width
-        l.canvas.height = height
+        l.room.width = width
+        l.room.height = height
         
         return this
     }
@@ -48,14 +48,14 @@ var Lorina = function()
     if (window.navigator.vendor) // Check if we're using a non-Ejecta browser
     {
         this.setRoomSize(256, 224) // I'm so clever for using the SNES's resolution as the default canvas size
-            this.setDomSize(l.canvas.width, l.canvas.height)
+            this.setDomSize(l.room.width, l.room.height)
     }
     else
     {
         this.setRoomSize(l.dom.width, l.dom.height)
     }
 
-    this.fullscreenStretch = function()
+    this.makeRoomFullscreen = function()
     {
         this.stretch = true
 
@@ -77,8 +77,8 @@ var Lorina = function()
 
             this.setFullscreen()
 
-            l.canvas.width = l.dom.width
-            l.canvas.height = l.dom.height
+            l.room.width = l.dom.width
+            l.room.height = l.dom.height
         }
 
         return this
@@ -94,8 +94,8 @@ var Lorina = function()
 
             if (this.stretch)
             {
-                l.canvas.width = l.dom.width
-                l.canvas.height = l.dom.height
+                l.room.width = l.dom.width
+                l.room.height = l.dom.height
             }
 
             return this

@@ -56,18 +56,18 @@ var Camera = function()
 			{
 				l.camera.x = 0
 			}
-			else if (l.camera.x > l.canvas.width - l.dom.width)
+			else if (l.camera.x > l.room.width - l.dom.width)
 			{
-				l.camera.x = l.canvas.width - l.dom.width
+				l.camera.x = l.room.width - l.dom.width
 			}
 
 			if (l.camera.y < 0)
 			{
 				l.camera.y = 0
 			}
-			else if (l.camera.y > l.canvas.height - l.dom.height)
+			else if (l.camera.y > l.room.height - l.dom.height)
 			{
-				l.camera.y = l.canvas.height - l.dom.height
+				l.camera.y = l.room.height - l.dom.height
 			}
 		// }
 	}

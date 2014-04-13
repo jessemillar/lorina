@@ -1,4 +1,4 @@
-var Touch = function()
+var Finger = function()
 {
 	this.database = new Array() // Keep track of where we're touching on the screen
 

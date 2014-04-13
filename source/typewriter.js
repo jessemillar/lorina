@@ -57,7 +57,7 @@ var Typewriter = function()
 		return this
 	}
 
-	this.writeText = function(string)
+	this.write = function(string)
 	{
 		if (this.style)
 		{
