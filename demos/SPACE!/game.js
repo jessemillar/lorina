@@ -1,47 +1,142 @@
-var moonSpeed = 25
+var moonCount = 100
+var starCount = 2000
+var dustCount = 1000
 
-l.game.setup('#111111', false, false, true) // Make the game fullscreen and don't enable Game Center or iAds since we're not running natively on an iOS device
-l.keyboard.enable() // Let's use the keyboard, shall we?
+var earthSpeed = 0.5
+var earthFriction = earthSpeed / 15
+var starSpeed = 0.4
+var starFriction = 0.035
 
-l.physics.friction(2) // Set the friction value
+var game = new Lorina()
+	game.setColor('#111111')
+		.makeFullscreen()
+		.setRoomSize(l.dom.width * 2, l.dom.height * 2)
 
-l.object.make('earth', l.canvas.width / 2, l.canvas.height / 2, 125, 125) // Make the 'earth' object and center it in the middle of the canvas
-	l.object.sprite('earth', 'images/earth.png') // Define a sprite for the object
-	l.object.anchor('earth', 125 / 2, 125 / 2) // Make the anchor at the center of the 'earth'
-	l.object.categorize('earth', 'celestial') // Categorize the object to simplify draw and movement commands later
+var camera = new Camera()
 
-l.object.make('moon', 50, 50, 85, 85) // Make the 'moon' object
-	l.object.sprite('moon', 'images/moon.png') // Define a sprite for the object
-	l.object.anchor('moon', 85 / 2, 85 / 2) // Make the anchor at the center of the 'moon'
-	l.object.categorize('moon', 'celestial') // Categorize the object to simplify draw and movement commands later
+var tool = new Tool()
+var typewriter = new Typewriter()
+	typewriter.setFont('Wendy').setColor('#FFFFFF').setAlignment('center').setSize(35)
 
-l.game.start('game') // Tell the preloader to load everything and then go to the 'game' screen
+var song = new Speaker()
+	song.setAudio('sounds/song.wav')
 
-l.screen.game = function() // This is our 'game' screen that's run by the preloader
+var gameover = new Speaker()
+	gameover.setAudio('sounds/gameover.wav')
+
+var keyboard = new Keyboard()
+
+var moons = new Group()
+var stars = new Group()
+var dusties = new Group()
+
+var earth = new Entity()
+	earth.setSprite('images/earth.png')
+		 .setPosition(l.canvas.width / 2, l.canvas.height / 2)
+		 .setSize(125, 125)
+		 .setAnchor(125 / 2, 125 / 2)
+		 .setBound(-125 / 2, -125 / 2, 125, 125)
+		 .setFriction(earthFriction)
+
+var i = moonCount
+
+while (i--)
 {
-	if (l.keyboard.up) // If we're pressing the 'up' arrow key, do this...
-	{
-		l.physics.push.up('earth', 10) // Push the earth up
-	}
-	else if (l.keyboard.down) // If we're pressing the 'down' arrow key, do this...
-	{
-		l.physics.push.down('earth', 10) // Push the earth down
-	}
+	var entity = 'moon' + i
 
-	if (l.keyboard.left) // If we're pressing the 'left' arrow key, do this...
-	{
-		l.physics.push.left('earth', 10) // Push the earth left
-	}
-	else if (l.keyboard.right) // If we're pressing the 'right' arrow key, do this...
-	{
-		l.physics.push.right('earth', 10) // Push the earth right
-	}
-
-	l.physics.pull.toward('moon', 'earth', moonSpeed) // Pull the moon toward the earth
-	l.physics.bounce('earth') // Make the 'earth' object bounce off the edges of the screen
-	l.physics.update('celestial') // Update the physics of the objects in the 'celestial' category
-
-	l.draw.blank() // Blank the screen before drawing
-	l.buffer.object('celestial') // Buffer the objects in the 'celestial' category for later drawing
-	l.draw.objects() // Draw the objects in the buffer after sorting them for z-ordering
+	var moon = new Entity()
+		moon.setSprite('images/moon.png')
+			 .setPosition(tool.random(0, l.canvas.width), tool.random(0, l.canvas.height))
+			 .setSize(100, 100)
+			 .setAnchor(100 / 2, 100 / 2)
+			 .setBound(-100 / 2, -100 / 2, 100, 100)
+			 .setFriction(starFriction)
+		moons.add(moon)
 }
+
+var i = starCount
+
+while (i--)
+{
+	var entity = 'star' + i
+
+	var entity = new Entity()
+		entity.setSprite('images/star.png')
+			  .setAnchor(4, 4)
+			  .setPosition(tool.random(0, l.canvas.width), tool.random(0, l.canvas.height))
+			  .setFriction(starFriction)
+		stars.add(entity)
+}
+
+var i = dustCount
+
+while (i--)
+{
+	var entity = 'dust' + i
+
+	var entity = new Entity()
+		entity.setSprite('images/dust.png')
+			  .setAnchor(2, 2)
+			  .setPosition(tool.random(0, l.canvas.width), tool.random(0, l.canvas.height))
+		dusties.add(entity)
+}
+
+// I would recommend that you keep the data for your room functions in an external file and reference it here
+var loading = function()
+{
+	if (l.loaded)
+	{
+		game.setRoom(main)
+	}
+
+	game.blank('#FF0000')
+}
+
+var main = function()
+{
+	if (keyboard.up)
+	{
+		gameover.loop()
+		earth.pushUp(earthSpeed)
+	}
+	else if (keyboard.down)
+	{
+		gameover.pause()
+		earth.pushDown(earthSpeed)
+	}
+
+	if (keyboard.left)
+	{
+		earth.pushLeft(earthSpeed)
+	}
+	else if (keyboard.right)
+	{
+		earth.pushRight(earthSpeed)
+	}
+
+	stars.pullToward(earth, starSpeed).updatePhysics()
+	// moons.pullToward(earth, starSpeed / 8).updatePhysics()
+
+	earth.bounce().updatePhysics()
+
+	var j = game.checkCollision(earth, moons)
+
+	if (j)
+	{
+		j.delete()
+	}
+
+	camera.follow(earth)
+
+	game.blank()
+	typewriter.setPosition(l.canvas.width / 2, l.canvas.height / 2 - 200).writeText('Welcome to space, Mr. World.  Move with the arrow keys.')
+	earth.buffer()
+	moons.buffer()
+	stars.buffer()
+	dusties.buffer()
+	game.draw()
+
+	// moons.debug()
+}
+
+game.start(loading) // Only call once the room functions are defined
