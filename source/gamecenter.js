@@ -1,4 +1,4 @@
-var Gamecenter = function()
+var GameCenter = function()
 {
 	this.authed = false
 	this.socket = new Ejecta.GameCenter()
