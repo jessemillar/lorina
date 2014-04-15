@@ -70,7 +70,7 @@ var Camera = function()
 		}
 	}
 
-	this.shake = function(severity, shakes, duration)
+	this.shake = function(shakes, severity, duration)
 	{
 		if (l.camera.state == 'resting')
 		{
@@ -86,18 +86,11 @@ var Camera = function()
 
 		for (var i = 0; i < shakes * 2; i++)
 		{
-			if (i % 2 == 0)
-			{
-				self.shakeShake(i * timing, severity)
-			}
-			else
-			{
-				self.shakeReset(i * timing)
-			}
+			self.milkshake(i, timing, severity)
 		}
 	}
 
-		this.shakeShake = function(timing, severity)
+		this.milkshake = function(i, timing, severity)
 		{
 			setTimeout(function()
 			{
@@ -126,17 +119,14 @@ var Camera = function()
 				{
 					l.camera.y -= Math.abs(yShake)
 				}
-			}, timing)
-		}
+			}, i * timing)
 
-		this.shakeReset = function(timing)
-		{
 			setTimeout(function()
 			{
 				l.camera.state = 'resting'
 
 				l.camera.x = l.camera.previous.x
 				l.camera.y = l.camera.previous.y
-			}, timing)
+			}, i * timing + timing / 2)
 		}
 }

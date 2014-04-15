@@ -96,12 +96,10 @@ var main = function()
 {
 	if (keyboard.up)
 	{
-		gameover.loop()
 		earth.pushUp(earthSpeed)
 	}
 	else if (keyboard.down)
 	{
-		gameover.pause()
 		earth.pushDown(earthSpeed)
 	}
 
@@ -124,13 +122,14 @@ var main = function()
 	if (j)
 	{
 		j.delete()
-		camera.shake(50, 5, 500)
+		gameover.play()
+		camera.shake(2, 35, 250)
 	}
 
 	camera.follow(earth)
 
 	game.blank()
-	typewriter.setPosition(l.room.width / 2, l.room.height / 2 - 200).write('Welcome to space, Mr. World.  Move with the arrow keys.')
+	typewriter.setPosition(l.room.width / 2, l.room.height / 2 - 200).write('Hello, World.  Move with the arrow keys.')
 	earth.buffer()
 	moons.buffer()
 	stars.buffer()
