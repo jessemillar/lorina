@@ -90,7 +90,7 @@ var Camera = function()
 		}
 	}
 
-		this.milkshake = function(i, timing, severity)
+		this.milkshake = function(i, timing, severity) // Tehe.  I'm so clever.
 		{
 			setTimeout(function()
 			{

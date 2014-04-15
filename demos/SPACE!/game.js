@@ -14,6 +14,9 @@ var game = new Lorina()
 
 var camera = new Camera()
 
+var keyboard = new Keyboard()
+var mouse = new Mouse()
+
 var tool = new Tool()
 var typewriter = new Typewriter()
 	typewriter.setFont('Wendy').setColor('#FFFFFF').setAlignment('center').setSize(35)
@@ -23,8 +26,6 @@ var song = new Speaker()
 
 var gameover = new Speaker()
 	gameover.setAudio('sounds/gameover.wav')
-
-var keyboard = new Keyboard()
 
 var moons = new Group()
 var stars = new Group()

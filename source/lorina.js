@@ -64,22 +64,19 @@ var Lorina = function()
 
     this.makeFullscreen = function()
     {
-        if (window.navigator.vendor) // Check if we're using a non-Ejecta browser
-        {            
-            document.body.style.background = this.color
+        document.body.style.background = this.color
 
-            var self = this
+        var self = this
 
-            window.onresize = function()
-            {
-                self.setFullscreen()
-            }
-
-            this.setFullscreen()
-
-            l.room.width = l.dom.width
-            l.room.height = l.dom.height
+        window.onresize = function()
+        {
+            self.setFullscreen()
         }
+
+        this.setFullscreen()
+
+        l.room.width = l.dom.width
+        l.room.height = l.dom.height
 
         return this
     }

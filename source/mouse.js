@@ -20,8 +20,8 @@ var Mouse = function()
 
 	this.null = function()
 	{
-		self.x = null
-		self.y = null
+		this.x = null
+		this.y = null
 	}
 
 	this.clicked = function(event)
