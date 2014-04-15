@@ -1,7 +1,5 @@
 var Camera = function()
 {
-	l.camera = {x: 0, y: 0, sandbox: {width: 1, height: 1}}
-
 	this.reset = function()
 	{
 		l.camera.x = 0
@@ -26,8 +24,8 @@ var Camera = function()
 
 	this.follow = function(entity)
 	{
-		// if (this.state != 'shaking')
-		// {
+		if (l.camera.state == 'resting')
+		{
 			if (l.camera.sandbox.width)
 			{
 				if (entity.x < l.camera.x + l.dom.width / 2 - l.camera.sandbox.width / 2)
@@ -69,74 +67,76 @@ var Camera = function()
 			{
 				l.camera.y = l.room.height - l.dom.height
 			}
-		// }
+		}
 	}
 
-	/*
-	this.shake = function(shakes, duration, severity)
+	this.shake = function(severity, shakes, duration)
 	{
-		this.state = true // Tell the "following" function that we're shaking
+		if (l.camera.state == 'resting')
+		{
+			l.camera.previous.x = l.camera.x
+			l.camera.previous.y = l.camera.y
+		}
+
+		l.camera.state = 'shaking'
 		
-		// "Back up" the camera's position
-		this.previous.x = l.camera.x
-		this.previous.y = l.camera.y
-		
+		var self = this
+
 		var timing = duration / (shakes * 2)
-		
+
 		for (var i = 0; i < shakes * 2; i++)
 		{
 			if (i % 2 == 0)
 			{
-				setTimeout(function() // Set the timeout that will reset the camera back to its proper position
-				{
-					l.camera.x = this.previous.x
-					l.camera.y = this.previous.y
-				}, timing * i)
+				self.shakeShake(i * timing, severity)
 			}
 			else
 			{
-				setTimeout(function()
-				{
-					var xMovement = l.tools.random(0 - severity / 2, severity / 2)
-					var yMovement = l.tools.random(0 - severity / 2, severity / 2)
-
-					if (xMovement > 0)
-					{
-						if (l.camera.x + xMovement < l.dom.width - l.dom.width)
-						{
-							l.camera.x += xMovement
-						}
-					}
-					else
-					{
-						if (l.camera.x - Math.abs(xMovement) > 0)
-						{
-							l.camera.x = l.camera.x - Math.abs(xMovement)
-						}
-					}
-
-					if (yMovement > 0)
-					{
-						if (l.camera.y + yMovement < l.dom.height - l.dom.height)
-						{
-							l.camera.y += yMovement
-						}
-					}
-					else
-					{
-						if (l.camera.y - Math.abs(yMovement) > 0)
-						{
-							l.camera.y -= Math.abs(yMovement)
-						}
-					}
-				}, timing * i)
+				self.shakeReset(i * timing)
 			}
 		}
-		
-		setTimeout(function()
-		{
-			this.state = 'resting' // Tell the world that we're done shaking
-		}, duration)
 	}
-	*/
+
+		this.shakeShake = function(timing, severity)
+		{
+			setTimeout(function()
+			{
+				l.camera.state = 'shaking'
+
+				var min = 0 - severity / 2
+				var max = severity / 2
+
+				var xShake = Math.random() * (max - min) + min
+				var yShake = Math.random() * (max - min) + min
+
+				if (xShake > 0)
+				{
+					l.camera.x += xShake
+				}
+				else
+				{
+					l.camera.x -= Math.abs(xShake)
+				}
+
+				if (yShake > 0)
+				{
+					l.camera.y += yShake
+				}
+				else
+				{
+					l.camera.y -= Math.abs(yShake)
+				}
+			}, timing)
+		}
+
+		this.shakeReset = function(timing)
+		{
+			setTimeout(function()
+			{
+				l.camera.state = 'resting'
+
+				l.camera.x = l.camera.previous.x
+				l.camera.y = l.camera.previous.y
+			}, timing)
+		}
 }

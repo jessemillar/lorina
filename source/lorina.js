@@ -6,7 +6,7 @@ var Lorina = function()
     l.ctx = document.getElementById('canvas').getContext('2d')
     l.room = new Object()
     l.buffer = new Array()
-    l.camera = {x: 0, y: 0}
+    l.camera = {state: 'resting', x: 0, y: 0, previous: {x: 0, y: 0}, sandbox: {width: 1, height: 1}}
     l.loaded = false
     l.preloader = {total: 0, current: 0, percent: 0}
 

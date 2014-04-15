@@ -1,4 +1,4 @@
-var moonCount = 250
+var moonCount = 10
 var starCount = 2000
 var dustCount = 1000
 
@@ -124,12 +124,13 @@ var main = function()
 	if (j)
 	{
 		j.delete()
+		camera.shake(50, 5, 500)
 	}
 
 	camera.follow(earth)
 
 	game.blank()
-	typewriter.setPosition(l.room.width / 2, l.room.height / 2 - 200).writeText('Welcome to space, Mr. World.  Move with the arrow keys.')
+	typewriter.setPosition(l.room.width / 2, l.room.height / 2 - 200).write('Welcome to space, Mr. World.  Move with the arrow keys.')
 	earth.buffer()
 	moons.buffer()
 	stars.buffer()
