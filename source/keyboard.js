@@ -34,6 +34,11 @@ var Keyboard = function()
             this.shift = true
         }
 
+        if (event.keyCode == 87)
+        {
+            this.w = true
+        }
+
         if (event.keyCode == 65)
         {
             this.a = true
@@ -42,6 +47,11 @@ var Keyboard = function()
         if (event.keyCode == 83)
         {
             this.s = true
+        }
+
+        if (event.keyCode == 68)
+        {
+            this.d = true
         }
 
         if (event.keyCode == 38)
@@ -87,6 +97,11 @@ var Keyboard = function()
             this.shift = false
         }
 
+        if (event.keyCode == 87)
+        {
+            this.w = false
+        }
+
         if (event.keyCode == 65)
         {
             this.a = false
@@ -95,6 +110,11 @@ var Keyboard = function()
         if (event.keyCode == 83)
         {
             this.s = false
+        }
+
+        if (event.keyCode == 68)
+        {
+            this.d = false
         }
 
         if (event.keyCode == 38)

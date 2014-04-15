@@ -79,7 +79,19 @@ var Entity = function()
         return this
     }
 
-    this.rotate = function(rotated)
+    this.rotate = function(amount)
+    {
+        if (!this.rotated)
+        {
+            this.rotated = 0
+        }
+
+        this.rotated += amount
+
+        return this
+    }
+
+    this.rotateTo = function(rotated)
     {
         this.rotated = rotated
 
@@ -190,7 +202,7 @@ var Entity = function()
                 if (this.rotated)
                 {
                     l.ctx.translate(Math.round(this.x), Math.round(this.y))
-                    l.ctx.rotate(this.rotated * Math.PI / 180)
+                    l.ctx.rotate(this.rotated * Math.PI / 180 * -1)
                 }
 
                 if (this.sprite.count)
