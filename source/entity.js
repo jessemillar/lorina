@@ -269,7 +269,7 @@ var Entity = function()
 
     this.setFriction = function(friction)
     {
-        this.friction = friction
+        this.friction = {total: friction, x: 0, y: 0}
         this.momentum = {x: 0, y: 0}
 
         return this
@@ -366,13 +366,27 @@ var Entity = function()
 
     this.updatePhysics = function() // Run to continuously update the friction of objects influenced by physics
     {
+        if (this.momentum.x && this.momentum.y)
+        {
+            if (Math.abs(this.momentum.x) > Math.abs(this.momentum.y))
+            {
+                this.friction.x = this.friction.total
+                this.friction.y = Math.abs(this.momentum.y / this.momentum.x * this.friction.total)
+            }
+            else
+            {
+                this.friction.x = Math.abs(this.momentum.x / this.momentum.y * this.friction.total)
+                this.friction.y = this.friction.total
+            }
+        }
+
         if (this.momentum.x !== 0) // Horizontal motion
         {
             this.moveHorizontal(this.momentum.x)
 
             if (this.momentum.x < 0) // Moving left
             {
-                this.momentum.x += this.friction
+                this.momentum.x += this.friction.x
 
                 if (this.momentum.x > 0)
                 {
@@ -381,7 +395,7 @@ var Entity = function()
             }
             else if (this.momentum.x > 0) // Moving right
             {
-                this.momentum.x -= this.friction
+                this.momentum.x -= this.friction.x
 
                 if (this.momentum.x < 0)
                 {
@@ -396,7 +410,7 @@ var Entity = function()
 
             if (this.momentum.y < 0) // Moving up
             {
-                this.momentum.y += this.friction
+                this.momentum.y += this.friction.y
 
                 if (this.momentum.y > 0)
                 {
@@ -405,7 +419,7 @@ var Entity = function()
             }
             else if (this.momentum.y > 0) // Moving down
             {
-                this.momentum.y -= this.friction
+                this.momentum.y -= this.friction.y
 
                 if (this.momentum.y < 0)
                 {
