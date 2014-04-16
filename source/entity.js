@@ -5,6 +5,7 @@ var Entity = function()
     this.width = 0
     this.height = 0
     this.anchor = {x: 0, y: 0}
+    this.degree = 0
     this.bound = {x: 0, y: 0, width: 0, height: 0}
     this.sprite = {img: new Image()}
 
@@ -81,19 +82,23 @@ var Entity = function()
 
     this.rotate = function(amount)
     {
-        if (!this.rotated)
-        {
-            this.rotated = 0
-        }
+        this.degree += amount
 
-        this.rotated += amount
+        if (this.degree < 0)
+        {
+            this.degree += 360
+        }
+        else if (this.degree > 360)
+        {
+            this.degree -= 360
+        }
 
         return this
     }
 
-    this.rotateTo = function(rotated)
+    this.rotateTo = function(degree)
     {
-        this.rotated = rotated
+        this.degree = degree
 
         return this
     }
@@ -176,7 +181,7 @@ var Entity = function()
     {
         if (!this.deleted)
         {
-            if (this.flipped || this.rotated)
+            if (this.flipped || this.degree)
             {
                 l.ctx.save()
 
@@ -199,10 +204,10 @@ var Entity = function()
                     }
                 }
 
-                if (this.rotated)
+                if (this.degree)
                 {
-                    l.ctx.translate(Math.round(this.x), Math.round(this.y))
-                    l.ctx.rotate(this.rotated * Math.PI / 180 * -1)
+                    l.ctx.translate(Math.round(this.x - l.camera.x), Math.round(this.y - l.camera.x))
+                    l.ctx.rotate(this.degree * Math.PI / 180 * -1)
                 }
 
                 if (this.sprite.count)
@@ -240,30 +245,24 @@ var Entity = function()
         return this
     }
 
-    this.moveUp = function(speed)
+    this.moveTowardDegree = function(degree, speed)
     {
-        this.y -= speed
+        this.x += Math.cos(degree * Math.PI / 180) * speed
+        this.y += -Math.sin(degree * Math.PI / 180) * speed
 
         return this
     }
 
-    this.moveDown = function(speed)
-    {
-        this.y += speed
-
-        return this
-    }
-
-    this.moveLeft = function(speed)
-    {
-        this.x -= speed
-
-        return this
-    }
-
-    this.moveRight = function(speed)
+    this.moveHorizontal = function(speed)
     {
         this.x += speed
+
+        return this
+    }
+
+    this.moveVertical = function(speed)
+    {
+        this.y += speed
 
         return this
     }
@@ -282,30 +281,24 @@ var Entity = function()
         this.momentum.y = 0
     }
 
-    this.pushUp = function(force)
+    this.pushTowardDegree = function(degree, force)
     {
-        this.momentum.y -= force
+        this.momentum.x = Math.cos(degree * Math.PI / 180) * force
+        this.momentum.y = -Math.sin(degree * Math.PI / 180) * force
 
         return this
     }
 
-    this.pushDown = function(force)
-    {
-        this.momentum.y += force
-
-        return this
-    }
-
-    this.pushLeft = function(force)
-    {
-        this.momentum.x -= force
-
-        return this
-    }
-
-    this.pushRight = function(force)
+    this.pushHorizontal = function(force)
     {
         this.momentum.x += force
+
+        return this
+    }
+
+    this.pushVertical = function(force)
+    {
+        this.momentum.y += force
 
         return this
     }
@@ -320,35 +313,17 @@ var Entity = function()
 
     this.pullToward = function(entity, force)
     {
-        var horizontal = Math.abs(this.x - entity.x)
-        var vertical = Math.abs(this.y - entity.y)
-        var total = Math.sqrt(Math.abs(this.x - entity.x) * Math.abs(this.x - entity.x) + Math.abs(this.y - entity.y) * Math.abs(this.y - entity.y))
+        var horizontal = entity.x - this.x
+        var vertical = entity.y - this.y
+        var total = Math.sqrt(horizontal * horizontal + vertical * vertical)
 
         var xSpeed = horizontal / total * force
         var ySpeed = vertical / total * force
 
         if (total > 1)
         {
-            if (this.x < entity.x && this.y < entity.y)
-            {
-                this.pushRight(xSpeed)
-                this.pushDown(ySpeed)
-            }
-            else if (this.x > entity.x && this.y < entity.y)
-            {
-                this.pushLeft(xSpeed)
-                this.pushDown(ySpeed)
-            }
-            else if (this.x < entity.x && this.y > entity.y)
-            {
-                this.pushRight(xSpeed)
-                this.pushUp(ySpeed)
-            }
-            else if (this.x > entity.x && this.y > entity.y)
-            {
-                this.pushLeft(xSpeed)
-                this.pushUp(ySpeed)
-            }
+            this.pushHorizontal(xSpeed)
+            this.pushVertical(ySpeed)
         }
 
         return this
@@ -393,9 +368,10 @@ var Entity = function()
     {
         if (this.momentum.x !== 0) // Horizontal motion
         {
+            this.moveHorizontal(this.momentum.x)
+
             if (this.momentum.x < 0) // Moving left
             {
-                this.moveLeft(Math.abs(this.momentum.x))
                 this.momentum.x += this.friction
 
                 if (this.momentum.x > 0)
@@ -405,7 +381,6 @@ var Entity = function()
             }
             else if (this.momentum.x > 0) // Moving right
             {
-                this.moveRight(Math.abs(this.momentum.x))
                 this.momentum.x -= this.friction
 
                 if (this.momentum.x < 0)
@@ -417,9 +392,10 @@ var Entity = function()
 
         if (this.momentum.y !== 0) // Vertical motion
         {
+            this.moveVertical(this.momentum.y)
+
             if (this.momentum.y < 0) // Moving up
             {
-                this.moveUp(Math.abs(this.momentum.y))
                 this.momentum.y += this.friction
 
                 if (this.momentum.y > 0)
@@ -429,7 +405,6 @@ var Entity = function()
             }
             else if (this.momentum.y > 0) // Moving down
             {
-                this.moveDown(Math.abs(this.momentum.y))
                 this.momentum.y -= this.friction
 
                 if (this.momentum.y < 0)

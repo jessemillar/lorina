@@ -2,14 +2,12 @@ var Mouse = function()
 {
 	var self = this
 
-	document.onmouseout = function() {self.null()}
-	document.onmousemove = function() {self.moved(event)}
+	document.onmouseout = function() {self.mouseOut()}
+	document.onmousemove = function() {self.move(event)}
 	l.dom.onmousedown = function() {self.clicked(event)}
 	l.dom.onmouseup = function() {self.cancel()}
 
-	this.clicked = {x: null, y: null}
-
-	this.moved = function(event)
+	this.move = function(event)
 	{
 		if (event)
 		{
@@ -18,7 +16,7 @@ var Mouse = function()
 		}
 	}
 
-	this.null = function()
+	this.mouseOut = function()
 	{
 		this.x = null
 		this.y = null
@@ -26,16 +24,11 @@ var Mouse = function()
 
 	this.clicked = function(event)
 	{
-		if (event)
-		{
-			this.clicked.x = event.x - l.dom.offsetLeft
-			this.clicked.y = event.y - l.dom.offsetTop
-		}
+		this.click = true
 	}
 
 	this.cancel = function(event)
 	{
-		this.clicked.x = null
-		this.clicked.y = null
+		this.click = false
 	}
 }

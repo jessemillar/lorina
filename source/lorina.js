@@ -55,13 +55,6 @@ var Lorina = function()
         this.setRoomSize(l.dom.width, l.dom.height)
     }
 
-    this.makeRoomFullscreen = function()
-    {
-        this.stretch = true
-
-        return this
-    }
-
     this.makeFullscreen = function()
     {
         document.body.style.background = this.color
@@ -98,21 +91,19 @@ var Lorina = function()
             return this
         }
 
-    /*
-    this.enableGamecenter = function()
+    this.makeRoomFullscreen = function()
     {
-        this.gamecenter = true
+        this.stretch = true
 
         return this
     }
 
-    this.enableAds = function()
+    this.hideCursor = function()
     {
-        this.ads = true
+        l.dom.style.cursor = 'none'
 
         return this
     }
-    */
 
     this.start = function(room)
     {
