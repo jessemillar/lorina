@@ -3,17 +3,15 @@ var Mouse = function()
 	var self = this
 
 	document.onmouseout = function() {self.mouseOut()}
-	document.onmousemove = function() {self.move(event)}
-	l.dom.onmousedown = function() {self.clicked(event)}
+	document.onmousemove = function() {self.move()}
+	l.dom.onmousedown = function() {self.clicked()}
+	l.dom.oncontextmenu = function() {event.preventDefault()}
 	l.dom.onmouseup = function() {self.cancel()}
 
-	this.move = function(event)
+	this.move = function()
 	{
-		if (event)
-		{
-			this.x = event.clientX + l.camera.x
-			this.y = event.clientY + l.camera.y
-		}
+		this.x = event.clientX + l.camera.x
+		this.y = event.clientY + l.camera.y
 	}
 
 	this.mouseOut = function()
@@ -22,13 +20,27 @@ var Mouse = function()
 		this.y = null
 	}
 
-	this.clicked = function(event)
-	{
-		this.click = true
+	this.clicked = function()
+	{		
+		if (event.which == 1)
+		{
+			this.leftClick = true
+		}
+		else if (event.which == 2)
+		{
+			this.middleClick = true
+		}
+		else if (event.which == 3)
+		{
+			this.rightClick = true
+
+			event.preventDefault()
+		}
 	}
 
-	this.cancel = function(event)
+	this.cancel = function()
 	{
-		this.click = false
+		this.leftClick = false
+		this.rightClick = false
 	}
 }
