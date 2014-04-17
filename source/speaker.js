@@ -27,6 +27,13 @@ var Speaker = function()
     {
         this.file.play()
 
+        var self = this
+
+        this.file.onended = function()
+        {
+            self.file.currentTime = 0
+        }
+
         return this
     }
 
