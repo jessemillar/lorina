@@ -267,6 +267,55 @@ var Entity = function()
         return this
     }
 
+    this.moveToward = function(entity, speed)
+    {
+        var horizontal = entity.x - this.x
+        var vertical = entity.y - this.y
+        var total = Math.sqrt(horizontal * horizontal + vertical * vertical)
+
+        var xSpeed = horizontal / total * speed
+        var ySpeed = vertical / total * speed
+
+        if (total > 1)
+        {
+            this.moveHorizontal(xSpeed)
+            this.moveVertical(ySpeed)
+        }
+
+        return this
+    }
+
+    this.contain = function(xMin, xMax, yMin, yMax)
+    {
+        if (!xMin && !xMax && !yMin && !yMax)
+        {
+            xMin = 0
+            xMax = l.room.width
+            yMin = 0
+            yMax = l.room.height
+        }
+
+        if (this.x + this.bound.x <= xMin)
+        {
+            this.x = xMin - this.bound.x
+        }
+        else if (this.x + this.bound.x + this.bound.width >= xMax)
+        {
+            this.x = xMax - this.bound.width - this.bound.x
+        }
+
+        if (this.y + this.bound.y <= yMin)
+        {
+            this.y = yMin - this.bound.y
+        }
+        else if (this.y + this.bound.y + this.bound.height >= yMax)
+        {
+            this.y = yMax - this.bound.height - this.bound.y
+        }
+
+        return this
+    }
+
     this.setFriction = function(movement, rotation)
     {
         if (rotation)
