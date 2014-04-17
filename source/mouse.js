@@ -1,5 +1,7 @@
 var Mouse = function()
 {
+	l.mouse = this
+
 	var self = this
 
 	document.onmouseout = function() {self.mouseOut()}
@@ -10,8 +12,14 @@ var Mouse = function()
 
 	this.update = function()
 	{
-		this.x = event.clientX - l.dom.offsetLeft + l.camera.x
-		this.y = event.clientY - l.dom.offsetTop + l.camera.y
+		this.actualX = event.clientX - l.dom.offsetLeft
+		this.actualY = event.clientY - l.dom.offsetTop
+	}
+
+	this.calculate = function()
+	{
+		this.x = this.actualX + l.camera.x
+		this.y = this.actualY + l.camera.y
 	}
 
 	this.mouseOut = function()

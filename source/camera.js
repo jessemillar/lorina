@@ -70,6 +70,8 @@ var Camera = function()
 				l.camera.y = l.room.height - l.dom.height
 			}
 		}
+
+		l.mouse.calculate()
 	}
 
 	this.shake = function(shakes, severity, duration)
