@@ -42,9 +42,9 @@ var Typewriter = function()
 		return this
 	}
 
-	this.setTextMode = function(mode)
+	this.hud = function()
 	{
-		this.textMode = mode
+		this.textMode = 'hud'
 
 		return this
 	}
@@ -132,6 +132,7 @@ var Typewriter = function()
 		}
 
 		l.ctx.globalAlpha = 1
+		this.textMode = 'world'
 
 		return this
 	}
