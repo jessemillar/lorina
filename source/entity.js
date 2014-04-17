@@ -271,23 +271,21 @@ var Entity = function()
     {
         if (rotation)
         {
-            this.friction = {movement: movement, rotation: rotation}
+            this.friction = {x: 0, y: 0, movement: movement, rotation: rotation}            
         }
         else
         {
-            this.friction = {movement: movement, rotation: movement}
+            this.friction = {x: 0, y: 0, movement: movement, rotation: movement} 
         }
 
-        this.momentum = {x: 0, y: 0}
+        this.momentum = {x: 0, y: 0, rotation: 0}
 
         return this
     }
 
     this.freeze = function()
     {
-        this.momentum.x = 0
-        this.momentum.y = 0
-        this.momentum.rotation = 0
+        this.momentum = {x: 0, y: 0, rotation: 0}
 
         return this
     }
@@ -388,13 +386,13 @@ var Entity = function()
         {
             if (Math.abs(this.momentum.x) > Math.abs(this.momentum.y))
             {
-                var horizontalFriction = this.friction.motion
-                var verticalFriction = Math.abs(this.momentum.y / this.momentum.x * this.friction.motion)
+                this.friction.x = this.friction.movement
+                this.friction.y = Math.abs(this.momentum.y / this.momentum.x * this.friction.movement)
             }
             else
             {
-                var horizontalFriction = Math.abs(this.momentum.x / this.momentum.y * this.friction.motion)
-                var verticalFriction = this.friction.motion
+                this.friction.x = Math.abs(this.momentum.x / this.momentum.y * this.friction.movement)
+                this.friction.y = this.friction.movement
             }
         }
 
@@ -404,7 +402,7 @@ var Entity = function()
 
             if (this.momentum.x < 0) // Moving left
             {
-                this.momentum.x += horizontalFriction
+                this.momentum.x += this.friction.x
 
                 if (this.momentum.x > 0)
                 {
@@ -413,7 +411,7 @@ var Entity = function()
             }
             else if (this.momentum.x > 0) // Moving right
             {
-                this.momentum.x -= horizontalFriction
+                this.momentum.x -= this.friction.x
 
                 if (this.momentum.x < 0)
                 {
@@ -428,7 +426,7 @@ var Entity = function()
 
             if (this.momentum.y < 0) // Moving up
             {
-                this.momentum.y += verticalFriction
+                this.momentum.y += this.friction.y
 
                 if (this.momentum.y > 0)
                 {
@@ -437,7 +435,7 @@ var Entity = function()
             }
             else if (this.momentum.y > 0) // Moving down
             {
-                this.momentum.y -= verticalFriction
+                this.momentum.y -= this.friction.y
 
                 if (this.momentum.y < 0)
                 {
