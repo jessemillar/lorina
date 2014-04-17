@@ -3,15 +3,15 @@ var Mouse = function()
 	var self = this
 
 	document.onmouseout = function() {self.mouseOut()}
-	document.onmousemove = function() {self.move()}
+	document.onmousemove = function() {self.update()}
 	l.dom.onmousedown = function() {self.clicked()}
 	l.dom.oncontextmenu = function() {event.preventDefault()}
 	l.dom.onmouseup = function() {self.cancel()}
 
-	this.move = function()
+	this.update = function()
 	{
-		this.x = event.clientX + l.camera.x
-		this.y = event.clientY + l.camera.y
+		this.x = event.clientX - l.dom.offsetLeft + l.camera.x
+		this.y = event.clientY - l.dom.offsetTop + l.camera.y
 	}
 
 	this.mouseOut = function()

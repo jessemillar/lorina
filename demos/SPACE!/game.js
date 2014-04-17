@@ -95,22 +95,22 @@ var loading = function()
 
 var main = function()
 {
-	if (keyboard.up)
+	if (keyboard.up || keyboard.w)
 	{
-		earth.pushUp(earthSpeed)
+		earth.pushVertical(-earthSpeed)
 	}
-	else if (keyboard.down)
+	else if (keyboard.down || keyboard.s)
 	{
-		earth.pushDown(earthSpeed)
+		earth.pushVertical(earthSpeed)
 	}
 
-	if (keyboard.left)
+	if (keyboard.left || keyboard.a)
 	{
-		earth.pushLeft(earthSpeed)
+		earth.pushHorizontal(-earthSpeed)
 	}
-	else if (keyboard.right)
+	else if (keyboard.right || keyboard.d)
 	{
-		earth.pushRight(earthSpeed)
+		earth.pushHorizontal(earthSpeed)
 	}
 
 	stars.pullToward(earth, starSpeed).updatePhysics()

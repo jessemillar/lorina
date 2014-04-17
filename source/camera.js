@@ -1,5 +1,7 @@
 var Camera = function()
 {
+	l.camera = {state: 'resting', x: 0, y: 0, previous: {x: 0, y: 0}, sandbox: {width: 1, height: 1}}
+
 	this.reset = function()
 	{
 		l.camera.x = 0
