@@ -2,7 +2,7 @@ var Speaker = function()
 {
     this.file = new Audio()
 
-    this.setAudio = function(location)
+    this.setFile = function(location)
     {
         this.file.oncanplaythrough = function()
         {

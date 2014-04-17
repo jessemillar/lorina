@@ -48,7 +48,19 @@ var Mouse = function()
 
 	this.cancel = function()
 	{
-		this.leftClick = false
-		this.rightClick = false
+		if (event.which == 1)
+		{
+			this.leftClick = false
+		}
+		else if (event.which == 2)
+		{
+			this.middleClick = false
+		}
+		else if (event.which == 3)
+		{
+			this.rightClick = false
+
+			event.preventDefault()
+		}
 	}
 }
