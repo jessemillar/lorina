@@ -2,6 +2,7 @@ var Entity = function()
 {
     this.x = 0
     this.y = 0
+    this.previous = {x: 0, y: 0}
     this.width = 0
     this.height = 0
     this.degree = 0
@@ -47,6 +48,14 @@ var Entity = function()
 
         return this
     }
+
+        this.recordPosition = function()
+        {
+            this.previous.x = this.x
+            this.previous.y = this.y
+
+            return this
+        }
 
     this.setAnchor = function(x, y)
     {
@@ -268,6 +277,8 @@ var Entity = function()
 
     this.moveTowardDegree = function(degree, speed)
     {
+        this.recordPosition()
+
         this.x += Math.cos(degree * Math.PI / 180) * speed
         this.y += -Math.sin(degree * Math.PI / 180) * speed
 
@@ -276,6 +287,8 @@ var Entity = function()
 
     this.moveHorizontal = function(speed)
     {
+        this.recordPosition()
+
         this.x += speed
 
         return this
@@ -283,6 +296,8 @@ var Entity = function()
 
     this.moveVertical = function(speed)
     {
+        this.recordPosition()
+
         this.y += speed
 
         return this
@@ -292,6 +307,8 @@ var Entity = function()
     {
         if (!entity.deleted)
         {
+            this.recordPosition()
+
             var horizontal = entity.x - this.x
             var vertical = entity.y - this.y
             var total = Math.sqrt(horizontal * horizontal + vertical * vertical)
@@ -458,6 +475,8 @@ var Entity = function()
 
     this.applyPhysics = function() // Run to continuously update the friction of objects influenced by physics
     {
+        this.recordPosition()
+        
         if (this.momentum.x && this.momentum.y)
         {
             if (Math.abs(this.momentum.x) > Math.abs(this.momentum.y))
