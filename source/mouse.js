@@ -14,6 +14,8 @@ var Mouse = function()
 	{
 		this.actualX = event.clientX - l.dom.offsetLeft
 		this.actualY = event.clientY - l.dom.offsetTop
+
+		this.calculate()
 	}
 
 	this.calculate = function()

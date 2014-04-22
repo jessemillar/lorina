@@ -1,11 +1,11 @@
 var Camera = function()
 {
-	l.camera = {state: 'resting', x: 0, y: 0, previous: {x: 0, y: 0}, sandbox: {width: 1, height: 1}}
-
 	this.reset = function()
 	{
 		l.camera.x = 0
 		l.camera.y = 0
+
+		return this
 	}
 
 	this.setSandbox = function(width, height)
@@ -22,56 +22,79 @@ var Camera = function()
 		{
 			l.camera.sandbox.height = 1
 		}
+
+		return this
 	}
 
 	this.follow = function(entity)
 	{
-		if (l.camera.state == 'resting')
+		if (!entity.deleted)
 		{
-			if (l.camera.sandbox.width)
+			if (l.camera.state == 'resting')
 			{
-				if (entity.x < l.camera.x + l.dom.width / 2 - l.camera.sandbox.width / 2)
+				if (l.camera.sandbox.width)
 				{
-					l.camera.x = entity.x - l.dom.width / 2 + l.camera.sandbox.width / 2
+					if (entity.x < l.camera.x + l.dom.width / 2 - l.camera.sandbox.width / 2)
+					{
+						l.camera.x = entity.x - l.dom.width / 2 + l.camera.sandbox.width / 2
+					}
+					else if (entity.x > l.camera.x + l.dom.width / 2 + l.camera.sandbox.width / 2)
+					{
+						l.camera.x = entity.x - l.dom.width / 2 - l.camera.sandbox.width / 2
+					}
 				}
-				else if (entity.x > l.camera.x + l.dom.width / 2 + l.camera.sandbox.width / 2)
+
+				if (l.camera.sandbox.height)
 				{
-					l.camera.x = entity.x - l.dom.width / 2 - l.camera.sandbox.width / 2
+					if (entity.y < l.camera.y + l.dom.height / 2 - l.camera.sandbox.height / 2)
+					{
+						l.camera.y = entity.y - l.dom.height / 2 + l.camera.sandbox.height / 2
+					}
+					else if (entity.y > l.camera.y + l.dom.height / 2 + l.camera.sandbox.height / 2)
+					{
+						l.camera.y = entity.y - l.dom.height / 2 - l.camera.sandbox.height / 2
+					}
+				}
+
+				if (l.camera.x < 0)
+				{
+					l.camera.x = 0
+				}
+				else if (l.camera.x > l.room.width - l.dom.width)
+				{
+					l.camera.x = l.room.width - l.dom.width
+				}
+
+				if (l.camera.y < 0)
+				{
+					l.camera.y = 0
+				}
+				else if (l.camera.y > l.room.height - l.dom.height)
+				{
+					l.camera.y = l.room.height - l.dom.height
 				}
 			}
 
-			if (l.camera.sandbox.height)
+			if (l.mouse)
 			{
-				if (entity.y < l.camera.y + l.dom.height / 2 - l.camera.sandbox.height / 2)
-				{
-					l.camera.y = entity.y - l.dom.height / 2 + l.camera.sandbox.height / 2
-				}
-				else if (entity.y > l.camera.y + l.dom.height / 2 + l.camera.sandbox.height / 2)
-				{
-					l.camera.y = entity.y - l.dom.height / 2 - l.camera.sandbox.height / 2
-				}
-			}
-
-			if (l.camera.x < 0)
-			{
-				l.camera.x = 0
-			}
-			else if (l.camera.x > l.room.width - l.dom.width)
-			{
-				l.camera.x = l.room.width - l.dom.width
-			}
-
-			if (l.camera.y < 0)
-			{
-				l.camera.y = 0
-			}
-			else if (l.camera.y > l.room.height - l.dom.height)
-			{
-				l.camera.y = l.room.height - l.dom.height
+				l.mouse.calculate()
 			}
 		}
 
-		l.mouse.calculate()
+		return this
+	}
+
+	this.focusOn = function(entity)
+	{
+		l.camera.x = entity.x - l.dom.width / 2
+		l.camera.y = entity.y - l.dom.height / 2
+
+		if (l.mouse)
+		{
+			l.mouse.calculate()
+		}
+
+		return this
 	}
 
 	this.shake = function(shakes, severity, duration)
@@ -92,6 +115,8 @@ var Camera = function()
 		{
 			self.milkshake(i, timing, severity)
 		}
+
+		return this
 	}
 
 		this.milkshake = function(i, timing, severity) // Tehe.  I'm so clever.

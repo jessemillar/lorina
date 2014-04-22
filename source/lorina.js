@@ -8,6 +8,7 @@ var Lorina = function()
     l.buffer = new Array()
     l.loaded = false
     l.preloader = {total: 0, current: 0, percent: 0}
+    l.camera = {state: 'resting', x: 0, y: 0, previous: {x: 0, y: 0}, sandbox: {width: 1, height: 1}}
 
     l.preloader.add = function()
     {

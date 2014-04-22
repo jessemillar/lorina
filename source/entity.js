@@ -84,21 +84,24 @@ var Entity = function()
     {
         this.degree += amount
 
-        if (this.degree < 0)
-        {
-            this.degree += 360
-        }
-        else if (this.degree > 360)
-        {
-            this.degree -= 360
-        }
-
         return this
     }
 
     this.rotateTo = function(degree)
     {
         this.degree = degree
+
+        return this
+    }
+
+    this.steer = function()
+    {
+        this.degree = -Math.atan(this.momentum.y / this.momentum.x) * 180 / Math.PI
+
+        if (this.momentum.x < 0)
+        {
+            this.degree += 180
+        }
 
         return this
     }
@@ -287,17 +290,20 @@ var Entity = function()
 
     this.moveToward = function(entity, speed)
     {
-        var horizontal = entity.x - this.x
-        var vertical = entity.y - this.y
-        var total = Math.sqrt(horizontal * horizontal + vertical * vertical)
-
-        var xSpeed = horizontal / total * speed
-        var ySpeed = vertical / total * speed
-
-        if (total > 1)
+        if (!entity.deleted)
         {
-            this.moveHorizontal(xSpeed)
-            this.moveVertical(ySpeed)
+            var horizontal = entity.x - this.x
+            var vertical = entity.y - this.y
+            var total = Math.sqrt(horizontal * horizontal + vertical * vertical)
+
+            var xSpeed = horizontal / total * speed
+            var ySpeed = vertical / total * speed
+
+            if (total > 1)
+            {
+                this.moveHorizontal(xSpeed)
+                this.moveVertical(ySpeed)
+            }
         }
 
         return this
@@ -396,17 +402,20 @@ var Entity = function()
 
     this.pullToward = function(entity, force)
     {
-        var horizontal = entity.x - this.x
-        var vertical = entity.y - this.y
-        var total = Math.sqrt(horizontal * horizontal + vertical * vertical)
-
-        var xSpeed = horizontal / total * force
-        var ySpeed = vertical / total * force
-
-        if (total > 1)
+        if (!entity.deleted)
         {
-            this.pushHorizontal(xSpeed)
-            this.pushVertical(ySpeed)
+            var horizontal = entity.x - this.x
+            var vertical = entity.y - this.y
+            var total = Math.sqrt(horizontal * horizontal + vertical * vertical)
+
+            var xSpeed = horizontal / total * force
+            var ySpeed = vertical / total * force
+
+            if (total > 1)
+            {
+                this.pushHorizontal(xSpeed)
+                this.pushVertical(ySpeed)
+            }
         }
 
         return this
@@ -447,7 +456,7 @@ var Entity = function()
         return this
     }
 
-    this.updatePhysics = function() // Run to continuously update the friction of objects influenced by physics
+    this.applyPhysics = function() // Run to continuously update the friction of objects influenced by physics
     {
         if (this.momentum.x && this.momentum.y)
         {
