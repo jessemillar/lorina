@@ -22,10 +22,10 @@ var typewriter = new Typewriter()
 	typewriter.setFont('Wendy').setColor('#FFFFFF').setAlignment('center').setSize(35)
 
 var song = new Speaker()
-	song.setAudio('sounds/song.wav')
+	song.setFile('sounds/song.wav')
 
 var gameover = new Speaker()
-	gameover.setAudio('sounds/gameover.wav')
+	gameover.setFile('sounds/gameover.wav')
 
 var moons = new Group()
 var stars = new Group()
@@ -113,10 +113,10 @@ var main = function()
 		earth.pushHorizontal(earthSpeed)
 	}
 
-	stars.pullToward(earth, starSpeed).updatePhysics()
+	stars.pullToward(earth, starSpeed).applyPhysics()
 	// moons.pullToward(earth, starSpeed / 8).updatePhysics()
 
-	earth.bounce().updatePhysics()
+	earth.bounce().applyPhysics()
 
 	var j = game.checkCollision(earth, moons)
 
