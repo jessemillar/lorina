@@ -181,19 +181,19 @@ var Lorina = function()
         {
             if (a.previous.y + a.bound.y + a.bound.height <= i.y + i.bound.y)
             {
-                a.y = i.y + i.bound.y - a.anchor.y
+                a.y = i.y + i.bound.y - (a.bound.height + a.bound.y)
             }
             else if (a.previous.y + a.bound.y >= i.y + i.bound.y + i.bound.height)
             {
-                a.y = i.y + i.bound.y + i.bound.height + a.anchor.y
+                a.y = i.y + i.bound.y + i.bound.height - a.bound.y
             }
             else if (a.previous.x + a.bound.x + a.bound.width < i.x)
             {
-                a.x = i.x + i.bound.x - a.anchor.x
+                a.x = i.x + i.bound.x - (a.bound.width + a.bound.x)
             }
             else if (a.previous.x + a.bound.x > i.x)
             {
-                a.x = i.x + i.bound.x + i.bound.width + a.anchor.x
+                a.x = i.x + i.bound.x + i.bound.width - a.bound.x
             }
         }
 
