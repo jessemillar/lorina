@@ -51,8 +51,8 @@ var Entity = function()
 
         this.recordPosition = function()
         {
-            this.previous.x = this.x
-            this.previous.y = this.y
+            this.previous.x = parseInt(this.x)
+            this.previous.y = parseInt(this.y)
 
             return this
         }

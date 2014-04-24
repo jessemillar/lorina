@@ -173,11 +173,40 @@ var Lorina = function()
         return this
     }
 
+    this.checkSolid = function(a, b)
+    {
+        var i = this.checkCollision(a, b)
+
+        if (i)
+        {
+            a.freeze()
+
+            if (a.y < i.y + i.bound.y)
+            {
+                a.y = i.y + i.bound.y - a.anchor.y
+            }
+            else if (a.y > i.y + i.bound.y + i.bound.height)
+            {
+                a.y = i.y + i.bound.y + i.bound.height + a.anchor.y
+            }
+            else if (a.x < i.x + i.bound.x)
+            {
+                a.x = i.x + i.bound.x - a.anchor.x
+            }
+            else if (a.x > i.x + i.bound.x + i.bound.width)
+            {
+                a.x = i.x + i.bound.x + i.bound.width + a.anchor.x
+            }
+        }
+
+        return this
+    }
+
     this.checkCollision = function(a, b)
     {
         if (!a.deleted)
         {
-            if (b.database.length)
+            if (b.database)
             {
                 var i = b.database.length
 
