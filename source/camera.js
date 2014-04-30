@@ -26,33 +26,59 @@ var Camera = function()
 		return this
 	}
 
-	this.follow = function(entity)
+	this.follow = function(a, b)
 	{
-		if (!entity.deleted)
+		if (!a.deleted)
 		{
+			if (b && !b.deleted)
+			{
+				if (a.x < b.x)
+				{
+					var xFocus = (b.x - a.x) / 2 + a.x
+				}
+				else
+				{
+					var xFocus = (a.x - b.x) / 2 + b.x
+				}
+
+				if (a.y < b.y)
+				{
+					var yFocus = (b.y - a.y) / 2 + a.y
+				}
+				else
+				{
+					var yFocus = (a.y - b.y) / 2 + b.y
+				}
+			}
+			else
+			{
+				var xFocus = a.x
+				var yFocus = a.y
+			}
+
 			if (l.camera.state == 'resting')
 			{
 				if (l.camera.sandbox.width)
 				{
-					if (entity.x < l.camera.x + l.dom.width / 2 - l.camera.sandbox.width / 2)
+					if (xFocus < l.camera.x + l.dom.width / 2 - l.camera.sandbox.width / 2)
 					{
-						l.camera.x = entity.x - l.dom.width / 2 + l.camera.sandbox.width / 2
+						l.camera.x = xFocus - l.dom.width / 2 + l.camera.sandbox.width / 2
 					}
-					else if (entity.x > l.camera.x + l.dom.width / 2 + l.camera.sandbox.width / 2)
+					else if (xFocus > l.camera.x + l.dom.width / 2 + l.camera.sandbox.width / 2)
 					{
-						l.camera.x = entity.x - l.dom.width / 2 - l.camera.sandbox.width / 2
+						l.camera.x = xFocus - l.dom.width / 2 - l.camera.sandbox.width / 2
 					}
 				}
 
 				if (l.camera.sandbox.height)
 				{
-					if (entity.y < l.camera.y + l.dom.height / 2 - l.camera.sandbox.height / 2)
+					if (yFocus < l.camera.y + l.dom.height / 2 - l.camera.sandbox.height / 2)
 					{
-						l.camera.y = entity.y - l.dom.height / 2 + l.camera.sandbox.height / 2
+						l.camera.y = yFocus - l.dom.height / 2 + l.camera.sandbox.height / 2
 					}
-					else if (entity.y > l.camera.y + l.dom.height / 2 + l.camera.sandbox.height / 2)
+					else if (yFocus > l.camera.y + l.dom.height / 2 + l.camera.sandbox.height / 2)
 					{
-						l.camera.y = entity.y - l.dom.height / 2 - l.camera.sandbox.height / 2
+						l.camera.y = yFocus - l.dom.height / 2 - l.camera.sandbox.height / 2
 					}
 				}
 
@@ -84,10 +110,37 @@ var Camera = function()
 		return this
 	}
 
-	this.focusOn = function(entity)
+	this.focusOn = function(a, b)
 	{
-		l.camera.x = entity.x - l.dom.width / 2
-		l.camera.y = entity.y - l.dom.height / 2
+		// Kinda redundant since this is a copy/paste of code above, but I'm too lazy to fix it right now
+		if (b && !b.deleted)
+		{
+			if (a.x < b.x)
+			{
+				var xFocus = (b.x - a.x) / 2 + a.x
+			}
+			else
+			{
+				var xFocus = (a.x - b.x) / 2 + b.x
+			}
+
+			if (a.y < b.y)
+			{
+				var yFocus = (b.y - a.y) / 2 + a.y
+			}
+			else
+			{
+				var yFocus = (a.y - b.y) / 2 + b.y
+			}
+		}
+		else
+		{
+			var xFocus = a.x
+			var yFocus = a.y
+		}
+
+		l.camera.x = xFocus - l.dom.width / 2
+		l.camera.y = yFocus - l.dom.height / 2
 
 		if (l.mouse)
 		{

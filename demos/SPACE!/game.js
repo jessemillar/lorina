@@ -39,6 +39,11 @@ var earth = new Entity()
 		 .setBound(-125 / 2, -125 / 2, 125, 125)
 		 .setFriction(earthFriction)
 
+var earth2 = new Entity()
+	earth2.setSprite('images/earth.png')
+		  .setPosition(l.room.width / 2 + 200, l.room.height / 2 + 200)
+		  .setAnchor(125 / 2, 125 / 2)
+
 var i = moonCount
 
 while (i--)
@@ -114,12 +119,10 @@ var main = function()
 	}
 
 	stars.pullToward(earth, starSpeed).applyPhysics()
-	// moons.pullToward(earth, starSpeed / 8).updatePhysics()
 
 	earth.bounce().applyPhysics()
 
 	var j = game.checkCollision(earth, moons)
-
 	if (j)
 	{
 		j.delete()
@@ -127,17 +130,16 @@ var main = function()
 		camera.shake(2, 35, 250)
 	}
 
-	camera.follow(earth)
+	camera.follow(earth, earth2)
 
 	game.blank()
 	typewriter.setPosition(l.room.width / 2, l.room.height / 2 - 200).write('Hello, World.  Move with the arrow keys.')
 	earth.buffer()
+	earth2.buffer()
 	moons.buffer()
 	stars.buffer()
 	dusties.buffer()
 	game.draw()
-
-	// moons.debug()
 }
 
 game.start(loading) // Only call once the room functions are defined
