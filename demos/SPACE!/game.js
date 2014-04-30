@@ -8,7 +8,8 @@ var starSpeed = 0.4
 var starFriction = 0.035
 
 var game = new Lorina()
-	game.setColor('#111111')
+	game.setTitle('SPACE!')
+		.setColor('#111111')
 		.makeFullscreen()
 		.setRoomSize(l.dom.width * 2, l.dom.height * 2)
 

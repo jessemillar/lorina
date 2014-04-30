@@ -1,5 +1,6 @@
 var game = new Lorina()
-	game.setColor('#FF0000')
+	game.setTitle('Hello, World')
+		.setColor('#FF0000')
 		.makeFullscreen()
 
 var typewriter = new Typewriter()

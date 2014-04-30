@@ -28,14 +28,6 @@ var Lorina = function()
         }
     }
 
-    this.scale = function(scale)
-    {
-        l.ctx.imageSmoothingEnabled = false
-        l.ctx.scale(scale / 100, scale / 100)
-
-        return this
-    }
-
     // Put the sizing function above where we use it to set the default canvas size
     this.setRoomSize = function(width, height)
     {
@@ -62,6 +54,21 @@ var Lorina = function()
     else
     {
         this.setRoomSize(l.dom.width, l.dom.height)
+    }
+
+    this.setTitle = function(title)
+    {
+        document.title = title
+
+        return this
+    }
+
+    this.scale = function(scale)
+    {
+        l.ctx.imageSmoothingEnabled = false
+        l.ctx.scale(scale / 100, scale / 100)
+
+        return this
     }
 
     this.makeFullscreen = function()
