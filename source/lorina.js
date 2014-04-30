@@ -10,6 +10,7 @@ var Lorina = function()
     l.preloader = {total: 0, current: 0, percent: 0}
     l.camera = {state: 'resting', x: 0, y: 0, previous: {x: 0, y: 0}, sandbox: {width: 1, height: 1}}
 
+    // Throw global functions in here to have them available as soon as new Lorina() is called
     l.preloader.add = function()
     {
         l.preloader.total++
@@ -27,6 +28,14 @@ var Lorina = function()
         }
     }
 
+    this.scale = function(scale)
+    {
+        l.ctx.imageSmoothingEnabled = false
+        l.ctx.scale(scale / 100, scale / 100)
+
+        return this
+    }
+
     // Put the sizing function above where we use it to set the default canvas size
     this.setRoomSize = function(width, height)
     {
@@ -36,13 +45,13 @@ var Lorina = function()
         return this
     }
 
-        this.setDomSize = function(width, height)
-        {
-            l.dom.width = width
-            l.dom.height = height
+    this.setDomSize = function(width, height)
+    {
+        l.dom.width = width
+        l.dom.height = height
 
-            return this
-        }
+        return this
+    }
 
     // Set the default canvas size
     if (window.navigator.vendor) // Check if we're using a non-Ejecta browser
