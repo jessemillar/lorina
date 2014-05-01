@@ -23,7 +23,7 @@ var Cartographer = function()
             var x = map.layout.width
             while (x--)
             {
-                l.ctx.drawImage(map.tileset.img, map.layout.data[y * map.layout.width + x] * (map.tileset.width / map.tileset.count), 0, map.tileset.width / map.tileset.count, map.tileset.height, x * (map.tileset.width / map.tileset.count), y * map.tileset.height, map.tileset.width / map.tileset.count, map.tileset.height)
+                l.ctx.drawImage(map.tileset.img, map.layout.data[y * map.layout.width + x] * (map.tileset.width / map.tileset.count), 0, map.tileset.width / map.tileset.count, map.tileset.height, x * (map.tileset.width / map.tileset.count) - l.camera.x, y * map.tileset.height - l.camera.y, map.tileset.width / map.tileset.count, map.tileset.height)
             }
         }
 

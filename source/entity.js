@@ -123,18 +123,9 @@ var Entity = function()
         {
             self.sprite.width = this.width
             self.sprite.height = this.height
-
-            l.preloader.subtract()
-
-            if (l.preloader.current == 0)
-            {
-                l.loaded = true
-            }
         }
 
         this.sprite.img.src = location
-
-        l.preloader.add()
 
         return this
     }

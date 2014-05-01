@@ -4,15 +4,8 @@ var Speaker = function()
 
     this.setFile = function(location)
     {
-        this.file.oncanplaythrough = function()
-        {
-            l.preloader.subtract()
-        }
-
         this.file.src = location
         
-        l.preloader.add()
-
         return this
     }
 
