@@ -2,7 +2,7 @@ var Entity = function()
 {
     this.x = 0
     this.y = 0
-    this.previous = {x: 0, y: 0}
+    this.difference = {x: 0, y: 0}
     this.width = 0
     this.height = 0
     this.degree = 0
@@ -49,10 +49,16 @@ var Entity = function()
         return this
     }
 
-        this.recordPosition = function()
+        this.recordDifference = function(orientation, value)
         {
-            this.previous.x = parseInt(this.x)
-            this.previous.y = parseInt(this.y)
+            if (orientation == 'horizontal')
+            {
+                this.difference.x = value
+            }
+            else if (orientation == 'vertical')
+            {
+                this.difference.y = value
+            }
 
             return this
         }
@@ -105,9 +111,9 @@ var Entity = function()
 
     this.steer = function()
     {
-        this.degree = -Math.atan(this.momentum.y / this.momentum.x) * 180 / Math.PI
+        this.degree = -Math.atan(this.difference.y / this.difference.x) * 180 / Math.PI
 
-        if (this.momentum.x < 0)
+        if (this.difference.x < 0)
         {
             this.degree += 180
         }
@@ -266,19 +272,9 @@ var Entity = function()
         return this
     }
 
-    this.moveTowardDegree = function(degree, speed)
-    {
-        this.recordPosition()
-
-        this.x += Math.cos(degree * Math.PI / 180) * speed
-        this.y += -Math.sin(degree * Math.PI / 180) * speed
-
-        return this
-    }
-
     this.moveHorizontal = function(speed)
     {
-        this.recordPosition()
+        this.recordDifference('horizontal', speed)
 
         this.x += speed
 
@@ -287,9 +283,27 @@ var Entity = function()
 
     this.moveVertical = function(speed)
     {
-        this.recordPosition()
+        this.recordDifference('vertical', speed)
 
         this.y += speed
+
+        return this
+    }
+
+    this.moveTo = function(x, y, speed)
+    {
+        var horizontal = x - this.x
+        var vertical = y - this.y
+        var total = Math.sqrt(horizontal * horizontal + vertical * vertical)
+
+        var xSpeed = horizontal / total * speed
+        var ySpeed = vertical / total * speed
+
+        if (total > 1)
+        {
+            this.moveHorizontal(xSpeed)
+            this.moveVertical(ySpeed)
+        }
 
         return this
     }
@@ -298,8 +312,6 @@ var Entity = function()
     {
         if (!entity.deleted)
         {
-            this.recordPosition()
-
             var horizontal = entity.x - this.x
             var vertical = entity.y - this.y
             var total = Math.sqrt(horizontal * horizontal + vertical * vertical)
@@ -313,6 +325,14 @@ var Entity = function()
                 this.moveVertical(ySpeed)
             }
         }
+
+        return this
+    }
+
+    this.moveTowardDegree = function(degree, speed)
+    {
+        this.moveHorizontal(Math.cos(degree * Math.PI / 180) * speed)
+        this.moveVertical(-Math.sin(degree * Math.PI / 180) * speed)
 
         return this
     }
@@ -408,10 +428,28 @@ var Entity = function()
         return this
     }
 
+    this.pullTo = function(x, y, force)
+    {
+        var horizontal = x - this.x
+        var vertical = y - this.y
+        var total = Math.sqrt(horizontal * horizontal + vertical * vertical)
+
+        var xSpeed = horizontal / total * force
+        var ySpeed = vertical / total * force
+
+        if (total > 1)
+        {
+            this.pushHorizontal(xSpeed)
+            this.pushVertical(ySpeed)
+        }
+
+        return this
+    }
+
     this.pullToward = function(entity, force)
     {
         if (!entity.deleted)
-        {
+        {            
             var horizontal = entity.x - this.x
             var vertical = entity.y - this.y
             var total = Math.sqrt(horizontal * horizontal + vertical * vertical)
@@ -465,9 +503,7 @@ var Entity = function()
     }
 
     this.applyPhysics = function() // Run to continuously update the friction of objects influenced by physics
-    {
-        this.recordPosition()
-        
+    {        
         if (this.momentum.x && this.momentum.y)
         {
             if (Math.abs(this.momentum.x) > Math.abs(this.momentum.y))

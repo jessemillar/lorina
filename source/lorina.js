@@ -25,16 +25,16 @@ var Lorina = function()
         return this
     }
 
-    // Set the default canvas size
-    if (window.navigator.vendor) // Check if we're using a non-Ejecta browser
-    {
-        this.setRoomSize(256, 224) // I'm so clever for using the SNES's resolution as the default canvas size
-            this.setDomSize(l.room.width, l.room.height)
-    }
-    else
-    {
-        this.setRoomSize(l.dom.width, l.dom.height)
-    }
+        // Set the default canvas size
+        if (window.navigator.vendor) // Check if we're using a non-Ejecta browser
+        {
+            this.setRoomSize(256, 224) // I'm so clever for using the SNES's resolution as the default canvas size
+                this.setDomSize(l.room.width, l.room.height)
+        }
+        else
+        {
+            this.setRoomSize(l.dom.width, l.dom.height)
+        }
 
     this.setTitle = function(title)
     {
