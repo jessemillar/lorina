@@ -20,17 +20,6 @@ var Group = function()
         }
     }
 
-    this.copy = function(entity)
-    {
-        var i = this.database.length
-        while (i--)
-        {
-            this.database[i].copy(entity)
-        }
-
-        return this
-    }
-
     this.debug = function(color)
     {
         var i = this.database.length
