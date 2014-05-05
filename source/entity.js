@@ -98,6 +98,7 @@ var Entity = function()
     this.rotate = function(amount)
     {
         this.degree += amount
+        this.fixRotation()
 
         return this
     }
@@ -105,9 +106,24 @@ var Entity = function()
     this.rotateTo = function(degree)
     {
         this.degree = degree
+        this.fixRotation()
 
         return this
     }
+
+        this.fixRotation = function()
+        {
+            if (this.degree < 0)
+            {
+                this.degree += 360
+            }
+            else if (this.degree > 360)
+            {
+                this.degree -= 360
+            }
+
+            return this
+        }
 
     this.steer = function()
     {

@@ -71,10 +71,12 @@ var Typewriter = function()
 		if (this.size)
 		{
 			var size = this.size
+			this.y += this.size
 		}
 		else
 		{
-			var size = ''
+			var size = 10
+			this.y += 10
 		}
 
 		if (this.font)
@@ -83,12 +85,10 @@ var Typewriter = function()
 		}
 		else
 		{
-			var font = ''
+			var font = 'sans-serif'
 		}
 
-
-		l.ctx.font = style + ' ' +  size + 'px ' + font
-
+		l.ctx.font = style + ' ' + size + 'px ' + font
 
 		if (this.color)
 		{
@@ -106,15 +106,6 @@ var Typewriter = function()
 		else
 		{
 			l.ctx.textAlign = 'left'
-		}
-
-		if (this.size)
-		{
-			this.y += this.size
-		}
-		else
-		{
-			this.y += 10
 		}
 
 		if (this.opacity)
