@@ -113,18 +113,52 @@ var Typewriter = function()
 			l.ctx.globalAlpha = this.opacity
 		}
 
-		if (this.textMode == 'hud')
-		{
-			l.ctx.fillText(string, this.x, this.y)
-		}
-		else
-		{
-			l.ctx.fillText(string, this.x - l.camera.x, this.y - l.camera.y)
-		}
+		this.print(string)
 
 		l.ctx.globalAlpha = 1
-		this.textMode = 'world'
 
 		return this
 	}
+
+		this.print = function(string)
+		{
+			if (this.textMode == 'hud')
+			{
+				l.ctx.fillText(string, this.x, this.y)
+			}
+			else
+			{
+				l.ctx.fillText(string, this.x - l.camera.x, this.y - l.camera.y)
+			}
+
+			this.textMode = 'world'
+		}
+
+	var typingStringLoaded = false
+	var typingPosition = 0
+	var stringToType = ''
+
+	this.type = function(string, timing)
+	{
+		if (!typingStringLoaded)
+		{
+			this.key(string, timing)
+			typingStringLoaded = true
+		}
+
+		this.write(string.substr(0, typingPosition))
+
+		return this
+	}
+
+		this.key = function(string, timing)
+		{
+			for (var i = 0; i < string.length; i++)
+			{
+				setTimeout(function()
+				{
+					typingPosition++
+				}, timing * i)
+			}
+		}
 }
