@@ -48,6 +48,45 @@ var Mouse = function()
 		}
 	}
 
+		this.checkLeftClicked = function(entity)
+		{
+			if (this.leftClick && this.x < entity.bound.x + entity.bound.width && this.x > entity.bound.x &&
+			this.y < entity.bound.y + entity.bound.height && this.y > entity.bound.y)
+			{
+				return true
+			}
+			else
+			{
+				return false
+			}
+		}
+
+		this.checkMiddleClicked = function(entity)
+		{
+			if (this.middleClick && this.x < entity.bound.x + entity.bound.width && this.x > entity.bound.x &&
+			this.y < entity.bound.y + entity.bound.height && this.y > entity.bound.y)
+			{
+				return true
+			}
+			else
+			{
+				return false
+			}
+		}
+
+		this.checkRightClicked = function(entity)
+		{
+			if (this.rightClick && this.x < entity.bound.x + entity.bound.width && this.x > entity.bound.x &&
+			this.y < entity.bound.y + entity.bound.height && this.y > entity.bound.y)
+			{
+				return true
+			}
+			else
+			{
+				return false
+			}
+		}
+
 	this.cancel = function()
 	{
 		if (event.which == 1)
