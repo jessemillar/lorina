@@ -89,16 +89,6 @@ while (i--)
 }
 
 // I would recommend that you keep the data for your room functions in an external file and reference it here
-var loading = function()
-{
-	if (l.loaded)
-	{
-		game.setRoom(main)
-	}
-
-	game.blank('#FF0000')
-}
-
 var main = function()
 {
 	if (keyboard.up || keyboard.w)
@@ -131,16 +121,16 @@ var main = function()
 		camera.shake(2, 35, 250)
 	}
 
-	camera.follow(earth, earth2)
+	camera.follow(earth)
 
 	game.blank()
 	typewriter.setPosition(l.room.width / 2, l.room.height / 2 - 200).write('Hello, World.  Move with the arrow keys.')
 	earth.buffer()
-	earth2.buffer()
+	// earth2.buffer()
 	moons.buffer()
 	stars.buffer()
 	dusties.buffer()
 	game.draw()
 }
 
-game.start(loading) // Only call once the room functions are defined
+game.start(main) // Only call once the room functions are defined

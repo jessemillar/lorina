@@ -25,6 +25,14 @@ var Lorina = function()
         return this
     }
 
+    this.setDomPosition = function(x, y)
+    {
+        l.dom.style.left = x + 'px'
+        l.dom.style.top = y + 'px'
+
+        return this
+    }
+
         // Set the default canvas size
         if (window.navigator.vendor) // Check if we're using a non-Ejecta browser
         {
@@ -117,12 +125,9 @@ var Lorina = function()
 
     this.setRoom = function(room)
     {
-        if (this.loop)
-        {
-            clearInterval(this.loop)
-        }
+        l.room.current = room
 
-        this.loop = setInterval(room, 1000 / 60)
+        window.requestAnimationFrame(room)
 
         return this
     }
@@ -165,6 +170,8 @@ var Lorina = function()
         {
             l.buffer[i].draw()
         }
+
+        window.requestAnimationFrame(l.room.current)
 
         return this
     }
