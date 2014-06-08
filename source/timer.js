@@ -7,17 +7,31 @@ var Timer = function()
 		return this
 	}
 
+	this.check = function(timer)
+	{
+		var now = new Date()
+
+		return now.getTime() - timer.time.getTime()
+	}
+
 	this.compareTo = function(other)
 	{
-		if (Date.parse(this.time) > Date.parse(other.time))
+		if (other.time)
 		{
-			var difference = Date.parse(this.time) - Date.parse(other.time)
+			if (this.time.getTime() > other.time.getTime())
+			{
+				var difference = this.time.getTime() - other.time.getTime()
+			}
+			else
+			{
+				var difference = other.time.getTime() - this.time.getTime()
+			}
+
+			return difference
 		}
 		else
 		{
-			var difference = Date.parse(other.time) - Date.parse(this.time)
+			return 0
 		}
-
-		return difference / 1000
 	}
 }
