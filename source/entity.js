@@ -202,6 +202,38 @@ var Entity = function()
         return this
     }
 
+        this.unflip = function(direction)
+        {
+            if (this.flipped == 'horizontal')
+            {
+                if (this.flipped == 'both')
+                {
+                    this.flipped = 'vertical'
+                }
+                else
+                {
+                    delete this.flipped
+                }
+            }
+            else if (this.flipped == 'vertical')
+            {
+                if (this.flipped == 'both')
+                {
+                    this.flipped = 'vertical'
+                }
+                else
+                {
+                    delete this.flipped
+                }
+            }
+            else if (this.flipped == 'both')
+            {
+                delete this.flipped
+            }
+
+            return this
+        }
+
     this.hud = function()
     {
         this.drawMode = 'hud'
@@ -228,7 +260,7 @@ var Entity = function()
             {
                 l.ctx.save()
 
-                if (this.flipped)
+                if (this.flipped !== 'undefined')
                 {
                     if (this.flipped == 'horizontal')
                     {
