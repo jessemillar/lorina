@@ -185,6 +185,13 @@ var Entity = function()
         return this
     }
 
+    this.setOpacity = function(opacity)
+    {
+        this.opacity = opacity
+
+        return this
+    }
+
     this.buffer = function()
     {
         if (!this.deleted)
@@ -256,6 +263,11 @@ var Entity = function()
 
         if (!this.deleted)
         {
+            if (this.opacity)
+            {
+                l.ctx.globalAlpha = this.opacity
+            }
+
             if (this.flipped || this.degree)
             {
                 l.ctx.save()
@@ -307,6 +319,11 @@ var Entity = function()
                     l.ctx.drawImage(this.sprite.img, Math.round(this.x - this.anchor.x - this.cameraX), Math.round(this.y - this.anchor.y - this.cameraY))
                 }
             }
+        }
+
+        if (this.opacity)
+        {
+            l.ctx.globalAlpha = 1 // Reset the global opacity before returning
         }
 
         return this
