@@ -88,6 +88,13 @@ var Entity = function()
         return this
     }
 
+    this.setStretch = function(width, height)
+    {
+        this.stretch = {width: width, height: height}
+
+        return this
+    }
+
     this.setBound = function(x, y, width, height)
     {
         this.bound = {x: x, y: y, width: width, height: height}
@@ -297,26 +304,54 @@ var Entity = function()
                     l.ctx.rotate(this.degree * Math.PI / 180 * -1)
                 }
 
-                if (this.sprite.count)
+                if (this.stretch)
                 {
-                    l.ctx.drawImage(this.sprite.img, this.sprite.frame * (this.sprite.width / this.sprite.count), 0, this.sprite.width / this.sprite.count, this.sprite.height, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y), this.sprite.width / this.sprite.count, this.sprite.height)
+                    if (this.sprite.count)
+                    {
+                        l.ctx.drawImage(this.sprite.img, this.sprite.frame * (this.sprite.width / this.sprite.count), 0, this.sprite.width / this.sprite.count, this.sprite.height, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y), this.sprite.width / this.sprite.count, this.sprite.height, this.stretch.width, this.stretch.height)
+                    }
+                    else
+                    {
+                        l.ctx.drawImage(this.sprite.img, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y), this.stretch.width, this.stretch.height)
+                    }
                 }
                 else
                 {
-                    l.ctx.drawImage(this.sprite.img, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y))
+                    if (this.sprite.count)
+                    {
+                        l.ctx.drawImage(this.sprite.img, this.sprite.frame * (this.sprite.width / this.sprite.count), 0, this.sprite.width / this.sprite.count, this.sprite.height, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y), this.sprite.width / this.sprite.count, this.sprite.height)
+                    }
+                    else
+                    {
+                        l.ctx.drawImage(this.sprite.img, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y))
+                    }
                 }
 
                 l.ctx.restore()
             }
             else
             {
-                if (this.sprite.count)
+                if (this.stretch)
                 {
-                    l.ctx.drawImage(this.sprite.img, this.sprite.frame * (this.sprite.width / this.sprite.count), 0, this.sprite.width / this.sprite.count, this.sprite.height, Math.round(this.x - this.anchor.x - this.cameraX), Math.round(this.y - this.anchor.y - this.cameraY), this.sprite.width / this.sprite.count, this.sprite.height)
+                    if (this.sprite.count)
+                    {
+                        l.ctx.drawImage(this.sprite.img, this.sprite.frame * (this.sprite.width / this.sprite.count), 0, this.sprite.width / this.sprite.count, this.sprite.height, Math.round(this.x - this.anchor.x - this.cameraX), Math.round(this.y - this.anchor.y - this.cameraY), this.sprite.width / this.sprite.count, this.sprite.height, this.stretch.width, this.stretch.height)
+                    }
+                    else
+                    {
+                        l.ctx.drawImage(this.sprite.img, Math.round(this.x - this.anchor.x - this.cameraX), Math.round(this.y - this.anchor.y - this.cameraY), this.stretch.width, this.stretch.height)
+                    }
                 }
                 else
                 {
-                    l.ctx.drawImage(this.sprite.img, Math.round(this.x - this.anchor.x - this.cameraX), Math.round(this.y - this.anchor.y - this.cameraY))
+                    if (this.sprite.count)
+                    {
+                        l.ctx.drawImage(this.sprite.img, this.sprite.frame * (this.sprite.width / this.sprite.count), 0, this.sprite.width / this.sprite.count, this.sprite.height, Math.round(this.x - this.anchor.x - this.cameraX), Math.round(this.y - this.anchor.y - this.cameraY), this.sprite.width / this.sprite.count, this.sprite.height)
+                    }
+                    else
+                    {
+                        l.ctx.drawImage(this.sprite.img, Math.round(this.x - this.anchor.x - this.cameraX), Math.round(this.y - this.anchor.y - this.cameraY))
+                    }
                 }
             }
         }
