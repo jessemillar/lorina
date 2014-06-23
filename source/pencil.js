@@ -30,6 +30,13 @@ var Pencil = function()
 		return this
 	}
 
+	this.setOpacity = function(opacity)
+	{
+		this.opacity = opacity
+
+		return this
+	}
+
 	this.setStroke = function(width)
 	{
 		this.stroke = width
@@ -52,7 +59,15 @@ var Pencil = function()
 
 		l.ctx.beginPath()
 		l.ctx.arc(Math.round(this.x), Math.round(this.y), this.radius, 0, 2 * Math.PI)
+		
+		if (this.opacity)
+		{
+			l.ctx.globalAlpha = this.opacity
+		}
+
 		l.ctx.stroke()
+		this.opacity = 1
+		l.ctx.globalAlpha = 1
 
 		return this
 	}
@@ -63,7 +78,18 @@ var Pencil = function()
 
 		l.ctx.beginPath()
 		l.ctx.arc(Math.round(this.x), Math.round(this.y), this.radius, 0, 2 * Math.PI)
+		
+		if (this.opacity)
+		{
+			l.ctx.globalAlpha = this.opacity
+		}
+
 		l.ctx.fill()
+
+		if (this.opacity)
+		{
+			l.ctx.globalAlpha = 1
+		}
 
 		return this
 	}
@@ -75,7 +101,18 @@ var Pencil = function()
 
 		l.ctx.beginPath()
 		l.ctx.arc(Math.round(this.x), Math.round(this.y), this.radius, this.start * Math.PI / 180, this.stop * Math.PI / 180)
+		
+		if (this.opacity)
+		{
+			l.ctx.globalAlpha = this.opacity
+		}
+
 		l.ctx.stroke()
+
+		if (this.opacity)
+		{
+			l.ctx.globalAlpha = 1
+		}
 
 		return this
 	}
@@ -86,7 +123,18 @@ var Pencil = function()
 
 		l.ctx.beginPath()
 		l.ctx.arc(Math.round(this.x), Math.round(this.y), this.radius, this.start * Math.PI / 180, this.stop * Math.PI / 180)
+		
+		if (this.opacity)
+		{
+			l.ctx.globalAlpha = this.opacity
+		}
+
 		l.ctx.fill()
+
+		if (this.opacity)
+		{
+			l.ctx.globalAlpha = 1
+		}
 
 		return this
 	}
@@ -98,7 +146,18 @@ var Pencil = function()
 
 		l.ctx.beginPath()
 		l.ctx.rect(Math.round(this.x), Math.round(this.y), Math.round(this.width), Math.round(this.height))
+		
+		if (this.opacity)
+		{
+			l.ctx.globalAlpha = this.opacity
+		}
+
 		l.ctx.stroke()
+
+		if (this.opacity)
+		{
+			l.ctx.globalAlpha = 1
+		}
 
 		return this
 	}
@@ -109,7 +168,18 @@ var Pencil = function()
 
 		l.ctx.beginPath()
 		l.ctx.rect(Math.round(this.x), Math.round(this.y), Math.round(this.width), Math.round(this.height))
+		
+		if (this.opacity)
+		{
+			l.ctx.globalAlpha = this.opacity
+		}
+
 		l.ctx.fill()
+
+		if (this.opacity)
+		{
+			l.ctx.globalAlpha = 1
+		}
 
 		return this
 	}
@@ -131,7 +201,18 @@ var Pencil = function()
 			l.ctx.moveTo(Math.round(this.x), Math.round(this.y))
 			l.ctx.arc(Math.round(this.x), Math.round(this.y), this.radius, 270 * Math.PI / 180, degree * Math.PI / 180)
 			l.ctx.lineTo(Math.round(this.x), Math.round(this.y))
+
+			if (this.opacity)
+			{
+				l.ctx.globalAlpha = this.opacity
+			}
+
 			l.ctx.fill()
+
+			if (this.opacity)
+			{
+				l.ctx.globalAlpha = 1
+			}
 		}
 		else
 		{
