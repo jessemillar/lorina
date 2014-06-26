@@ -111,6 +111,7 @@ var Typewriter = function()
 		if (this.opacity)
 		{
 			l.ctx.globalAlpha = this.opacity
+			this.opacity = 1
 		}
 
 		this.print(string)
