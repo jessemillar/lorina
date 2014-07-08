@@ -99,6 +99,7 @@ var Pencil = function()
 
 		l.ctx.stroke()
 
+		this.opacity = 1
 		l.ctx.globalAlpha = 1
 
 		return this
@@ -118,6 +119,7 @@ var Pencil = function()
 
 		l.ctx.fill()
 
+		this.opacity = 1
 		l.ctx.globalAlpha = 1
 
 		return this
@@ -138,6 +140,7 @@ var Pencil = function()
 
 		l.ctx.stroke()
 
+		this.opacity = 1
 		l.ctx.globalAlpha = 1
 
 		return this
@@ -157,6 +160,7 @@ var Pencil = function()
 
 		l.ctx.fill()
 
+		this.opacity = 1
 		l.ctx.globalAlpha = 1
 
 		return this
@@ -177,6 +181,7 @@ var Pencil = function()
 
 		l.ctx.stroke()
 
+		this.opacity = 1
 		l.ctx.globalAlpha = 1
 
 		return this
@@ -196,6 +201,7 @@ var Pencil = function()
 
 		l.ctx.fill()
 
+		this.opacity = 1
 		l.ctx.globalAlpha = 1
 
 		return this
@@ -226,10 +232,8 @@ var Pencil = function()
 
 			l.ctx.fill()
 
-			if (this.opacity)
-			{
-				l.ctx.globalAlpha = 1
-			}
+			this.opacity = 1
+			l.ctx.globalAlpha = 1
 		}
 		else
 		{
