@@ -8,6 +8,14 @@ var Pencil = function()
 		return this
 	}
 
+	this.setEndPosition = function(x, y)
+	{
+		this.endX = x
+		this.endY = y
+
+		return this
+	}
+
 	this.setSize = function(width, height)
 	{
 		this.width = width
@@ -52,6 +60,30 @@ var Pencil = function()
 		return this
 	}
 
+	this.strokeLine = function()
+	{
+		l.ctx.strokeStyle = this.color
+		l.ctx.lineWidth = this.stroke
+
+		l.ctx.beginPath()
+
+		// Use a little hackery to allow 1px lines
+		l.ctx.moveTo(Math.round(this.x) + 0.5, Math.round(this.y) + 0.5)
+		l.ctx.lineTo(Math.round(this.endX) + 0.5, Math.round(this.endY) + 0.5)
+
+		if (this.opacity)
+		{
+			l.ctx.globalAlpha = this.opacity
+		}
+
+		l.ctx.stroke()
+
+		this.opacity = 1
+		l.ctx.globalAlpha = 1
+
+		return this
+	}
+
 	this.strokeCircle = function()
 	{
 		l.ctx.strokeStyle = this.color
@@ -66,7 +98,7 @@ var Pencil = function()
 		}
 
 		l.ctx.stroke()
-		this.opacity = 1
+
 		l.ctx.globalAlpha = 1
 
 		return this
@@ -86,10 +118,7 @@ var Pencil = function()
 
 		l.ctx.fill()
 
-		if (this.opacity)
-		{
-			l.ctx.globalAlpha = 1
-		}
+		l.ctx.globalAlpha = 1
 
 		return this
 	}
@@ -109,10 +138,7 @@ var Pencil = function()
 
 		l.ctx.stroke()
 
-		if (this.opacity)
-		{
-			l.ctx.globalAlpha = 1
-		}
+		l.ctx.globalAlpha = 1
 
 		return this
 	}
@@ -131,10 +157,7 @@ var Pencil = function()
 
 		l.ctx.fill()
 
-		if (this.opacity)
-		{
-			l.ctx.globalAlpha = 1
-		}
+		l.ctx.globalAlpha = 1
 
 		return this
 	}
@@ -154,10 +177,7 @@ var Pencil = function()
 
 		l.ctx.stroke()
 
-		if (this.opacity)
-		{
-			l.ctx.globalAlpha = 1
-		}
+		l.ctx.globalAlpha = 1
 
 		return this
 	}
@@ -176,10 +196,7 @@ var Pencil = function()
 
 		l.ctx.fill()
 
-		if (this.opacity)
-		{
-			l.ctx.globalAlpha = 1
-		}
+		l.ctx.globalAlpha = 1
 
 		return this
 	}
