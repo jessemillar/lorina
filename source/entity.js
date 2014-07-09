@@ -199,6 +199,34 @@ var Entity = function()
         return this
     }
 
+    this.fadeOut = function(increment)
+    {
+        if (this.opacity > 0)
+        {
+            this.opacity -= increment
+        }
+        else
+        {
+            this.opacity = 0
+        }
+
+        return this
+    }
+
+    this.fadeIn = function(increment)
+    {
+        if (this.opacity < 1)
+        {
+            this.opacity += increment
+        }
+        else
+        {
+            this.opacity = 1
+        }
+
+        return this
+    }
+
     this.buffer = function()
     {
         if (!this.deleted)
