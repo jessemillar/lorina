@@ -169,7 +169,7 @@ var Pencil = function()
 	this.strokeRectangle = function()
 	{
 		l.ctx.strokeStyle = this.color
-		l.ctx.lineWidth = this.stroke * 2
+		l.ctx.lineWidth = this.stroke
 
 		l.ctx.beginPath()
 		l.ctx.rect(Math.round(this.x), Math.round(this.y), Math.round(this.width), Math.round(this.height))

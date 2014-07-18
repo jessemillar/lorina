@@ -50,8 +50,8 @@ var Mouse = function()
 
 		this.checkLeftClicked = function(entity)
 		{
-			if (this.leftClick && this.x < entity.bound.x + entity.bound.width && this.x > entity.bound.x &&
-			this.y < entity.bound.y + entity.bound.height && this.y > entity.bound.y)
+			if (this.leftClick && this.x < entity.x + entity.bound.x + entity.bound.width && this.x > entity.x + entity.bound.x &&
+			this.y < entity.y + entity.bound.y + entity.bound.height && this.y > entity.y + entity.bound.y)
 			{
 				return true
 			}
@@ -63,8 +63,8 @@ var Mouse = function()
 
 		this.checkMiddleClicked = function(entity)
 		{
-			if (this.middleClick && this.x < entity.bound.x + entity.bound.width && this.x > entity.bound.x &&
-			this.y < entity.bound.y + entity.bound.height && this.y > entity.bound.y)
+			if (this.middleClick && this.x < entity.x + entity.bound.x + entity.bound.width && this.x > entity.x + entity.bound.x &&
+			this.y < entity.y + entity.bound.y + entity.bound.height && this.y > entity.y + entity.bound.y)
 			{
 				return true
 			}
@@ -76,8 +76,8 @@ var Mouse = function()
 
 		this.checkRightClicked = function(entity)
 		{
-			if (this.rightClick && this.x < entity.bound.x + entity.bound.width && this.x > entity.bound.x &&
-			this.y < entity.bound.y + entity.bound.height && this.y > entity.bound.y)
+			if (this.rightClick && this.x < entity.x + entity.bound.x + entity.bound.width && this.x > entity.x + entity.bound.x &&
+			this.y < entity.y + entity.bound.y + entity.bound.height && this.y > entity.y + entity.bound.y)
 			{
 				return true
 			}
