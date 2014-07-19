@@ -84,6 +84,10 @@ var Entity = function()
         {
             this.setBound(0 - this.anchor.x, 0 - this.anchor.y, this.width, this.height)
         }
+        else
+        {
+            this.setBound(this.x, this.y, this.width, this.height)
+        }
 
         return this
     }
