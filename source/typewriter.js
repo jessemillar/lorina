@@ -118,6 +118,8 @@ var Typewriter = function()
 
 		l.ctx.globalAlpha = 1
 
+		this.alignment = 'left'
+
 		return this
 	}
 
