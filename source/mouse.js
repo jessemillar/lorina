@@ -61,6 +61,41 @@ var Mouse = function()
 			}
 		}
 
+			var xDifference = undefined
+			var yDifference = undefined
+			var dragging = false
+
+			this.checkDrag = function(entity) // Only works with left click for now
+			{
+				if (this.checkLeftClicked(entity))
+				{
+					dragging = true
+				}
+				else if (!mouse.leftClick)
+				{
+					xDifference = undefined
+					yDifference = undefined
+					dragging = false
+				}
+
+				if (dragging)
+				{
+					if (xDifference && yDifference)
+					{
+						entity.x = mouse.x - xDifference
+						entity.y = mouse.y - yDifference
+					}
+
+					if (!xDifference && !yDifference)
+					{
+						xDifference = mouse.x - entity.x
+						yDifference = mouse.y - entity.y
+					}
+				}
+
+				return this
+			}
+
 		this.checkMiddleClicked = function(entity)
 		{
 			if (this.middleClick && this.x < entity.x + entity.bound.x + entity.bound.width && this.x > entity.x + entity.bound.x &&

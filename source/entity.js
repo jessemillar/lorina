@@ -164,7 +164,7 @@ var Entity = function()
 
             if (applyBound)
             {
-                self.setBound(self.x, self.y, this.width, this.height)
+                self.setBound(0, 0, this.width, this.height)
             }
         }
 

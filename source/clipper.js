@@ -1,6 +1,6 @@
 var Clipper = function()
 {
-    this.start = function(x, y, width, height)
+    this.mark = function(x, y, width, height)
     {
         l.ctx.save()
         l.ctx.beginPath()
@@ -12,7 +12,7 @@ var Clipper = function()
         return this
     }
 
-    this.end = function()
+    this.clip = function()
     {
         l.ctx.restore()
 
