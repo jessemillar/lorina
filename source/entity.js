@@ -36,7 +36,7 @@ var Entity = function()
 
     this.delete = function()
     {
-        this.deleted = true
+        this.deleted = true // Super ghetto
 
         return this
     }
@@ -148,7 +148,7 @@ var Entity = function()
         return this
     }
 
-    this.setSprite = function(location)
+    this.setSprite = function(location, applySize, applyBound)
     {
         var self = this
 
@@ -156,6 +156,16 @@ var Entity = function()
         {
             self.sprite.width = this.width
             self.sprite.height = this.height
+
+            if (applySize)
+            {
+                self.setSize(this.width, this.height)
+            }
+
+            if (applyBound)
+            {
+                self.setBound(self.x, self.y, this.width, this.height)
+            }
         }
 
         this.sprite.img.src = location

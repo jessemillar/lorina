@@ -152,7 +152,7 @@ var Lorina = function()
 
         l.ctx.fillRect(0, 0, l.dom.width, l.dom.height)
 
-        l.buffer.length = 0 // Wipe the buffer for the next pass
+        l.buffer.length = 0 // Wipe the z-buffer for the next pass
 
         return this
     }
