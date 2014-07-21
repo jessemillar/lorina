@@ -100,11 +100,6 @@ var Camera = function()
 					l.camera.y = l.room.height - l.dom.height
 				}
 			}
-
-			if (l.mouse)
-			{
-				l.mouse.calculate()
-			}
 		}
 
 		return this

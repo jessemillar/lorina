@@ -75,16 +75,12 @@ var Entity = function()
         return this
     }
 
-    this.setSize = function(width, height)
+    this.setSize = function(width, height, applyBound)
     {
         this.width = width
         this.height = height
 
-        if (this.anchor.x && this.anchor.y)
-        {
-            this.setBound(0 - this.anchor.x, 0 - this.anchor.y, this.width, this.height)
-        }
-        else
+        if (applyBound)
         {
             this.setBound(this.x, this.y, this.width, this.height)
         }
