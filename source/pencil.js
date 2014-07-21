@@ -8,7 +8,7 @@ var Pencil = function()
 		return this
 	}
 
-	this.setEndPosition = function(x, y)
+	this.setEndPosition = function(x, y) // For drawing lines
 	{
 		this.endX = x
 		this.endY = y

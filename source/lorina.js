@@ -5,7 +5,7 @@ var Lorina = function()
     l.dom = document.getElementById('canvas')
     l.ctx = document.getElementById('canvas').getContext('2d')
     l.room = new Object()
-    l.buffer = new Array()
+    l.buffer = new Array() // For z-sorting
     l.camera = {state: 'resting', x: 0, y: 0, previous: {x: 0, y: 0}, sandbox: {width: 1, height: 1}}
 
     // Put the sizing function above where we use it to set the default canvas size
@@ -33,16 +33,8 @@ var Lorina = function()
         return this
     }
 
-        // Set the default canvas size
-        if (window.navigator.vendor) // Check if we're using a non-Ejecta browser
-        {
-            this.setRoomSize(256, 224) // I'm so clever for using the SNES's resolution as the default canvas size
-                this.setDomSize(l.room.width, l.room.height)
-        }
-        else
-        {
-            this.setRoomSize(l.dom.width, l.dom.height)
-        }
+        this.setRoomSize(256, 224) // I'm so clever for using the SNES's resolution as the default canvas size
+        this.setDomSize(256, 224)
 
     this.setTitle = function(title)
     {
@@ -61,7 +53,7 @@ var Lorina = function()
 
     this.makeFullscreen = function()
     {
-        document.body.style.background = this.color
+        document.body.style.background = this.color // Helps with some refresh problems caused by scaling the window
 
         var self = this
 
@@ -78,7 +70,7 @@ var Lorina = function()
         return this
     }
 
-        this.setFullscreen = function()
+        this.setFullscreen = function() // Engine only
         {
             l.dom.style.position = 'absolute'
             l.dom.style.left = '0px'
@@ -132,7 +124,7 @@ var Lorina = function()
         return this
     }
 
-    this.setColor = function(color)
+    this.setColor = function(color) // I find that I don't use this very often
     {
         this.color = color
 
@@ -174,71 +166,5 @@ var Lorina = function()
         window.requestAnimationFrame(l.room.current)
 
         return this
-    }
-
-    this.checkSolid = function(a, b)
-    {
-        var i = this.checkCollision(a, b)
-
-        if (i)
-        {
-            if (a.previous.y + a.bound.y + a.bound.height <= i.y + i.bound.y)
-            {
-                a.y = i.y + i.bound.y - (a.bound.height + a.bound.y)
-            }
-            else if (a.previous.y + a.bound.y >= i.y + i.bound.y + i.bound.height)
-            {
-                a.y = i.y + i.bound.y + i.bound.height - a.bound.y
-            }
-            else if (a.previous.x + a.bound.x + a.bound.width < i.x)
-            {
-                a.x = i.x + i.bound.x - (a.bound.width + a.bound.x)
-            }
-            else if (a.previous.x + a.bound.x > i.x)
-            {
-                a.x = i.x + i.bound.x + i.bound.width - a.bound.x
-            }
-        }
-
-        return this
-    }
-
-    this.checkCollision = function(a, b)
-    {
-        if (!a.deleted)
-        {
-            if (b.database)
-            {
-                var i = b.database.length
-
-                while (i--)
-                {
-                    if (!b.database[i].deleted)
-                    {
-                        if (a.x + a.bound.x < b.database[i].x + b.database[i].bound.x + b.database[i].bound.width && a.x + a.bound.x + a.bound.width > b.database[i].x + b.database[i].bound.x && a.y + a.bound.y < b.database[i].y + b.database[i].bound.y + b.database[i].bound.height && a.y + a.bound.y + a.bound.height > b.database[i].y + b.database[i].bound.y)
-                        {
-                            return b.database[i]
-                        }
-                    }
-                }
-
-                return false
-            }
-            else
-            {
-                if (a.x + a.bound.x < b.x + b.bound.x + b.bound.width && a.x + a.bound.x + a.bound.width > b.x + b.bound.x && a.y + a.bound.y < b.y + b.bound.y + b.bound.height && a.y + a.bound.y + a.bound.height > b.y + b.bound.y)
-                {
-                    return b
-                }
-                else
-                {
-                    return false
-                }
-            }
-        }
-        else
-        {
-            return false
-        }
     }
 }
