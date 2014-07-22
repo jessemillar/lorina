@@ -1,4 +1,4 @@
-var Clipper = function()
+var Scissors = function()
 {
     this.mark = function(x, y, width, height)
     {
@@ -12,7 +12,7 @@ var Clipper = function()
         return this
     }
 
-    this.clip = function()
+    this.cut = function()
     {
         l.ctx.restore()
 
