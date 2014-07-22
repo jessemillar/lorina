@@ -9,6 +9,7 @@ var Entity = function()
     this.anchor = {x: 0, y: 0}
     this.bound = {x: 0, y: 0, width: 0, height: 0}
     this.sprite = {img: new Image()}
+    this.opacity = 1
 
     this.debug = function(color)
     {
@@ -318,10 +319,7 @@ var Entity = function()
 
         if (!this.deleted)
         {
-            if (this.opacity)
-            {
-                l.ctx.globalAlpha = this.opacity
-            }
+        	l.ctx.globalAlpha = this.opacity // 1 is the default opacity
 
             if (this.flipped || this.degree)
             {
@@ -404,10 +402,7 @@ var Entity = function()
             }
         }
 
-        if (this.opacity)
-        {
-            l.ctx.globalAlpha = 1 // Reset the global opacity before returning
-        }
+        l.ctx.globalAlpha = 1 // Reset the global opacity before returning
 
         return this
     }
