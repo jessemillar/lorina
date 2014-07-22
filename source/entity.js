@@ -88,9 +88,19 @@ var Entity = function()
         return this
     }
 
-    this.setStretch = function(width, height)
+    this.setStretch = function(width, height, applySize, applyBound)
     {
         this.stretch = {width: width, height: height}
+
+        if (applySize)
+        {
+            this.setSize(width, height)
+        }
+
+        if (applyBound)
+        {
+            this.setBound(0, 0, width, height)
+        }
 
         return this
     }
