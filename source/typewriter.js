@@ -1,5 +1,7 @@
 var Typewriter = function()
 {
+	l.ctx.textBaseline = 'alphabetic'
+
 	this.setOpacity = function(opacity)
 	{
 		this.opacity = opacity
@@ -68,6 +70,7 @@ var Typewriter = function()
 			var style = ''
 		}
 
+		/*
 		if (this.size)
 		{
 			var size = this.size
@@ -78,6 +81,7 @@ var Typewriter = function()
 			var size = 10
 			this.y += 10
 		}
+		*/
 
 		if (this.font)
 		{
@@ -88,7 +92,7 @@ var Typewriter = function()
 			var font = 'sans-serif'
 		}
 
-		l.ctx.font = style + ' ' + size + 'px ' + font
+		l.ctx.font = style + ' ' + this.size + 'px ' + font
 
 		if (this.color)
 		{
