@@ -1,6 +1,18 @@
 var Typewriter = function()
 {
-	l.ctx.textBaseline = 'alphabetic'
+	this.reset = function()
+	{
+		this.alignment = undefined
+		this.baseline = undefined
+		this.opacity = undefined
+		this.style = undefined
+		this.font = undefined
+		this.size = undefined
+		this.color = undefined
+		this.textMode = undefined
+
+		return this
+	}
 
 	this.setOpacity = function(opacity)
 	{
@@ -33,6 +45,13 @@ var Typewriter = function()
 	this.setAlignment = function(alignment)
 	{
 		this.alignment = alignment
+
+		return this
+	}
+
+	this.setBaseline = function(baseline)
+	{
+		this.baseline = baseline
 
 		return this
 	}
@@ -70,19 +89,6 @@ var Typewriter = function()
 			var style = ''
 		}
 
-		/*
-		if (this.size)
-		{
-			var size = this.size
-			this.y += this.size
-		}
-		else
-		{
-			var size = 10
-			this.y += 10
-		}
-		*/
-
 		if (this.font)
 		{
 			var font = this.font
@@ -112,6 +118,23 @@ var Typewriter = function()
 			l.ctx.textAlign = 'left'
 		}
 
+		if (this.baseline == 'top')
+		{
+			l.ctx.textBaseline = 'hanging'
+		}
+		else if (this.baseline == 'middle')
+		{
+			l.ctx.textBaseline = 'middle'
+		}
+		else if (this.baseline == 'bottom')
+		{
+			l.ctx.textBaseline = 'alphabetic'
+		}
+		else
+		{
+			l.ctx.textBaseline = 'hanging'
+		}
+
 		if (this.opacity)
 		{
 			l.ctx.globalAlpha = this.opacity
@@ -121,8 +144,6 @@ var Typewriter = function()
 		this.print(string)
 
 		l.ctx.globalAlpha = 1
-
-		this.alignment = 'left'
 
 		return this
 	}
@@ -137,8 +158,6 @@ var Typewriter = function()
 			{
 				l.ctx.fillText(string, this.x - l.camera.x, this.y - l.camera.y)
 			}
-
-			this.textMode = 'world'
 		}
 
 	var typingStringLoaded = false
