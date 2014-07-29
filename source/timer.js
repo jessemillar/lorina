@@ -1,17 +1,31 @@
 var Timer = function()
 {
-	this.log = function()
+	this.start = function()
 	{
 		this.time = new Date()
 
 		return this
 	}
 
-	this.check = function(timer)
+	this.clear = function()
 	{
-		var now = new Date()
+		this.time = undefined
 
-		return now.getTime() - timer.time.getTime()
+		return this
+	}
+
+	this.check = function()
+	{
+		if (this.time)
+		{
+			var now = new Date()
+
+			return now.getTime() - this.time.getTime()
+		}
+		else
+		{
+			return 0
+		}
 	}
 
 	this.compareTo = function(other)
