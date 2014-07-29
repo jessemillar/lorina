@@ -86,4 +86,20 @@ var Cupboard = function()
 			}
 		}
 	}
+
+	this.clear = function(temp)
+	{
+		if (temp)
+		{
+			sessionStorage.clear()
+
+			return true
+		}
+		else
+		{
+			localStorage.clear()
+
+			return true
+		}
+	}
 }
