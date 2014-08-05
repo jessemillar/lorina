@@ -4,15 +4,13 @@ var Lorina = function()
 {
 	var self = this
 	
-	l.dom = document.getElementById('canvas')
-	l.ctx = l.dom.getContext('2d')
+	l.dom = document.createElement('canvas')
 	l.room = new Object()
 	l.buffer = new Array() // For z-sorting
 	l.camera = {state: 'resting', x: 0, y: 0, previous: {x: 0, y: 0}, sandbox: {width: 1, height: 1}}
 
 	l.retina = window.devicePixelRatio // 1 if not retina and 2 if yes
 
-	// Put the sizing function above where we use it to set the default canvas size
 	this.setRoomSize = function(width, height)
 	{
 		l.room.width = width
@@ -38,9 +36,6 @@ var Lorina = function()
 		return this
 	}
 
-		this.setRoomSize(256, 224) // I'm so clever for using the SNES's resolution as the default canvas size
-		this.setDomSize(256, 224)
-
 	this.setTitle = function(title)
 	{
 		document.title = title
@@ -60,12 +55,10 @@ var Lorina = function()
 	{	
 		document.body.style.background = this.color // Helps with some refresh problems caused by scaling the window
 
-		/*
 		window.onresize = function()
 		{
 			self.setFullscreen()
 		}
-		*/
 
 		this.setFullscreen()
 
@@ -78,6 +71,12 @@ var Lorina = function()
 			self.setDomSize(window.innerWidth, window.innerHeight)
 			self.setRoomSize(l.dom.width, l.dom.height)
 		}
+
+	this.appendCanvas = function()
+	{
+		document.body.appendChild(l.dom)
+		l.ctx = l.dom.getContext('2d')
+	}
 
 	this.hideCursor = function()
 	{
