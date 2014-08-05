@@ -2,7 +2,7 @@ var Cupboard = function()
 {
 	if (typeof(Storage) == 'undefined')
 	{
-		console.log('This browser does not support localStorage')
+		console.error('This browser does not support localStorage')
 	}
 
 	this.save = function(key, value, temp)
