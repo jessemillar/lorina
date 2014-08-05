@@ -1,30 +1,31 @@
 var Finger = function()
 {
+	this.touching = false
 	this.x = undefined
 	this.y = undefined
 	this.database = new Array() // Keep track of where we're touching on the screen
 
 	var self = this
 
-	l.dom.addEventListener('touchstart', self.touches, false)
-	l.dom.addEventListener('touchmove', self.touches, false)
-	l.dom.addEventListener('touchend', self.touches, false)
-	l.dom.addEventListener('touchcancel', self.touches, false)
+	l.dom.addEventListener('touchstart', function(event) { self.touches(event) }, false)
+	l.dom.addEventListener('touchmove', function(event) { self.touches(event) }, false)
+	l.dom.addEventListener('touchend', function() { self.clearTouches() }, false)
+	l.dom.addEventListener('touchcancel', function() { self.clearTouches() }, false)
 
 	this.touches = function(event)
 	{
-		if (event)
-		{
-			this.x = event.touches[0].clientX
-			this.y = event.touches[0].clientY
-			this.database = event.touches
-		}
-		else
-		{
-			this.x = undefined
-			this.y = undefined
-			this.database.length = 0
-		}
+		this.touching = true
+		this.x = event.touches[0].clientX
+		this.y = event.touches[0].clientY
+		this.database = event.touches
+	}
+
+	this.clearTouches = function()
+	{
+		this.touching = false
+		this.x = undefined
+		this.y = undefined
+		this.database.length = 0
 	}
 
 	this.checkTouched = function(entity)
@@ -35,11 +36,9 @@ var Finger = function()
 
 			while (i--)
 			{
-				if (this.database[i].pageX < entity.bound.x + entity.bound.width && this.database[i].pageX > entity.bound.x &&
-				this.database[i].pageY < entity.bound.y + entity.bound.height && this.database[i].pageY > entity.bound.y)
+				if (this.x < entity.x + entity.bound.x + entity.bound.width && this.x > entity.x + entity.bound.x && this.y < entity.y + entity.bound.y + entity.bound.height && this.y > entity.y + entity.bound.y)
 				{
 					return true
-					break
 				}
 				else
 				{

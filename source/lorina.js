@@ -2,6 +2,8 @@ var l = new Object()
 
 var Lorina = function()
 {
+	var self = this
+	
 	l.dom = document.getElementById('canvas')
 	l.ctx = l.dom.getContext('2d')
 	l.room = new Object()
@@ -55,29 +57,26 @@ var Lorina = function()
 	}
 
 	this.makeFullscreen = function()
-	{
-		var self = this
-		
+	{	
 		document.body.style.background = this.color // Helps with some refresh problems caused by scaling the window
 
+		/*
 		window.onresize = function()
 		{
-			console.log('resizing')
 			self.setFullscreen()
 		}
+		*/
 
 		this.setFullscreen()
-
-		console.log(l.dom.width, l.dom.height)
 
 		return this
 	}
 
 		this.setFullscreen = function() // Engine only
 		{
-			this.setDomPosition(0, 0)
-			this.setDomSize(window.innerWidth, window.innerHeight)
-			this.setRoomSize(l.dom.width, l.dom.height)
+			self.setDomPosition(0, 0)
+			self.setDomSize(window.innerWidth, window.innerHeight)
+			self.setRoomSize(l.dom.width, l.dom.height)
 		}
 
 	this.hideCursor = function()

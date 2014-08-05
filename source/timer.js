@@ -5,8 +5,6 @@ var Timer = function()
 		var date = new Date()
 		this.time = Date.parse(date)
 
-		console.log(this.time)
-
 		return this
 	}
 
