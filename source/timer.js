@@ -2,7 +2,10 @@ var Timer = function()
 {
 	this.start = function()
 	{
-		this.time = new Date()
+		var date = new Date()
+		this.time = Date.parse(date)
+
+		console.log(this.time)
 
 		return this
 	}
@@ -18,9 +21,10 @@ var Timer = function()
 	{
 		if (this.time)
 		{
-			var now = new Date()
+			var date = new Date()
+			var now = Date.parse(date)
 
-			return now.getTime() - this.time.getTime()
+			return now - this.time
 		}
 		else
 		{
@@ -32,13 +36,13 @@ var Timer = function()
 	{
 		if (other.time)
 		{
-			if (this.time.getTime() > other.time.getTime())
+			if (this.time > other.time)
 			{
-				var difference = this.time.getTime() - other.time.getTime()
+				var difference = this.time - other.time
 			}
 			else
 			{
-				var difference = other.time.getTime() - this.time.getTime()
+				var difference = other.time - this.time
 			}
 
 			return difference

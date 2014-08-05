@@ -1,22 +1,28 @@
 var Finger = function()
 {
+	this.x = undefined
+	this.y = undefined
 	this.database = new Array() // Keep track of where we're touching on the screen
 
 	var self = this
 
-	document.touchstart = function(event) {self.touches(event)}
-	document.touchmove = function(event) {self.touches(event)}
-	document.touchend = function(event) {self.touches(event)}
-	document.touchcancel = function(event) {self.touches(event)}
+	l.dom.addEventListener('touchstart', self.touches, false)
+	l.dom.addEventListener('touchmove', self.touches, false)
+	l.dom.addEventListener('touchend', self.touches, false)
+	l.dom.addEventListener('touchcancel', self.touches, false)
 
 	this.touches = function(event)
 	{
 		if (event)
 		{
+			this.x = event.touches[0].clientX
+			this.y = event.touches[0].clientY
 			this.database = event.touches
 		}
 		else
 		{
+			this.x = undefined
+			this.y = undefined
 			this.database.length = 0
 		}
 	}

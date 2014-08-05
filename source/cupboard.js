@@ -5,7 +5,7 @@ var Cupboard = function()
 		console.log('This browser does not support localStorage')
 	}
 
-	this.set = function(key, value, temp)
+	this.save = function(key, value, temp)
 	{
 		var tempValue
 
@@ -36,7 +36,14 @@ var Cupboard = function()
 		{
 			if (sessionStorage.getItem(key))
 			{
-				return JSON.parse(sessionStorage.getItem(key))
+				try
+				{
+					return JSON.parse(sessionStorage.getItem(key))
+				}
+				catch(err)
+				{
+					return sessionStorage.getItem(key)
+				}
 			}
 			else
 			{
@@ -47,15 +54,36 @@ var Cupboard = function()
 		{
 			if (localStorage.getItem(key))
 			{
-				return JSON.parse(localStorage.getItem(key))
+				try
+				{
+					return JSON.parse(localStorage.getItem(key))
+				}
+				catch(err)
+				{
+					return localStorage.getItem(key)
+				}
 			}
 			else
 			{
 				return undefined
 			}
-		}
-		
+		}	
 	}
+
+		this.load = function(key, global, temp)
+		{
+			if (this.get(key, temp))
+			{
+				if (global)
+				{
+					global[key] = this.get(key, temp)
+				}
+				else
+				{
+					window[key] = this.get(key, temp)
+				}
+			}
+		}
 
 	this.delete = function(key, temp)
 	{

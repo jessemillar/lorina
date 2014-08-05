@@ -8,6 +8,17 @@ var Lorina = function()
     l.buffer = new Array() // For z-sorting
     l.camera = {state: 'resting', x: 0, y: 0, previous: {x: 0, y: 0}, sandbox: {width: 1, height: 1}}
 
+    if (window.devicePixelRatio > 1)
+    {
+        l.retina = true
+    }
+    else
+    {
+        l.retina = false
+    }
+
+    l.retina = 
+
     // Put the sizing function above where we use it to set the default canvas size
     this.setRoomSize = function(width, height)
     {
