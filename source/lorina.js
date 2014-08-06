@@ -140,9 +140,7 @@ var Lorina = function()
 			return a.y - b.y
 		})
 
-		var i = l.buffer.length
-
-		while (i--)
+		for (var i = 0; i < l.buffer.length; i++)
 		{
 			l.buffer[i].draw()
 		}

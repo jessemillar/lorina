@@ -197,12 +197,19 @@ var Group = function()
 		return this
 	}
 
-	this.draw = function()
+	this.draw = function() // Draw everything in the group while removing deleted objects so the garbage collector can work
 	{
 		var i = this.database.length
 		while (i--)
 		{
-			this.database[i].draw()
+			if (!this.database[i].deleted)
+			{
+				this.database[i].draw()
+			}
+			else
+			{
+				this.database.splice(i, 1)
+			}
 		}
 
 		return this

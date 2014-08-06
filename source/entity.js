@@ -46,11 +46,14 @@ var Entity = function()
 		return this
 	}
 
-		this.banish = function()
+		this.banish = function(padding)
 		{
 			if (!this.deleted)
 			{
-				var padding = 300 // Super ghetto again...
+				if (!padding)
+				{
+					var padding = 300 // Super ghetto again...
+				}
 
 				if (this.x < -padding || this.x > l.room.width + padding || this.y < -padding || this.y > l.room.height + padding)
 				{

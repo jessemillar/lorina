@@ -1,10 +1,10 @@
-var Accelerometer = function()
+var Geolocator = function()
 {
     var self = this
 
-    this.x = 0
-    this.y = 0
-    this.z = 0
+    this.latitude = 0
+    this.longitude = 0
+    this.compass = 0
 
     window.addEventListener('deviceorientation', function(event)
     {
