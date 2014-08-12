@@ -285,7 +285,7 @@ var Entity = function()
 	{
 		if (!this.deleted)
 		{
-			l.buffer.push(this)            
+			l.zBuffer.push(this)            
 		}
 
 		return this

@@ -6,9 +6,8 @@ var Lorina = function()
 	
 	l.dom = document.createElement('canvas')
 	l.room = new Object()
-	l.buffer = new Array() // For z-sorting
+	l.zBuffer = new Array() // For z-sorting
 	l.camera = {state: 'resting', x: 0, y: 0, previous: {x: 0, y: 0}, sandbox: {width: 1, height: 1}}
-
 	l.retina = window.devicePixelRatio // 1 if not retina and 2 if yes
 
 	this.setRoomSize = function(width, height)
@@ -85,20 +84,6 @@ var Lorina = function()
 		return this
 	}
 
-	this.start = function(room)
-	{
-		this.setRoom(room)
-
-		return this
-	}
-
-	this.stop = function()
-	{
-		clearInterval(this.loop)
-
-		return this
-	}
-
 	this.setRoom = function(room)
 	{
 		l.room.current = room
@@ -107,6 +92,13 @@ var Lorina = function()
 
 		return this
 	}
+
+		this.start = function(room)
+		{
+			this.setRoom(room)
+
+			return this
+		}
 
 	this.setColor = function(color) // I find that I don't use this very often
 	{
@@ -128,21 +120,21 @@ var Lorina = function()
 
 		l.ctx.fillRect(0, 0, l.dom.width, l.dom.height)
 
-		l.buffer.length = 0 // Wipe the z-buffer for the next pass
+		l.zBuffer.length = 0 // Wipe the z-buffer for the next pass
 
 		return this
 	}
 
 	this.draw = function()
 	{
-		l.buffer.sort(function(a, b)
+		l.zBuffer.sort(function(a, b)
 		{
 			return a.y - b.y
 		})
 
-		for (var i = 0; i < l.buffer.length; i++)
+		for (var i = 0; i < l.zBuffer.length; i++)
 		{
-			l.buffer[i].draw()
+			l.zBuffer[i].draw()
 		}
 
 		window.requestAnimationFrame(l.room.current)
