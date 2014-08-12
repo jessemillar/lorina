@@ -1,28 +1,28 @@
 var Speaker = function()
 {
-    this.file = new Audio()
+    var file = new Audio()
 
     this.setFile = function(location)
     {
-        this.file.src = location
+        file.src = location
         
         return this
     }
 
     this.pause = function()
     {
-        this.file.pause()
+        file.pause()
 
         return this
     }
 
     this.play = function()
     {
-        this.file.play()
+        file.play()
 
         var self = this
 
-        this.file.onended = function()
+        file.onended = function()
         {
             self.file.currentTime = 0
         }
@@ -32,8 +32,8 @@ var Speaker = function()
 
     this.loop = function()
     {
-        this.file.loop = true
-        this.file.play()
+        file.loop = true
+        file.play()
 
         return this
     }

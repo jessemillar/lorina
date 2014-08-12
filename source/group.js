@@ -31,6 +31,28 @@ var Group = function()
 		return this
 	}
 
+	this.setTrait = function(name, value)
+	{
+		var i = this.database.length
+		while (i--)
+		{
+			this.database[i].setTrait(name, value)
+		}
+
+		return this
+	}
+
+	this.deleteTrait = function(name)
+	{
+		var i = this.database.length
+		while (i--)
+		{
+			this.database[i].deleteTrait(name)
+		}
+
+		return this
+	}
+
 	this.delete = function()
 	{
 		var i = this.database.length
@@ -64,23 +86,34 @@ var Group = function()
 		return this
 	}
 
-	this.setSize = function(width, height)
-	{
-		var i = this.database.length
-		while (i--)
-		{
-			this.database[i].setSize(width, height)
-		}
-
-		return this
-	}
-
 	this.setAnchor = function(x, y)
 	{
 		var i = this.database.length
 		while (i--)
 		{
 			this.database[i].setAnchor(x, y)
+		}
+
+		return this
+	}
+
+	this.setSize = function(width, height, applyBound)
+	{
+		var i = this.database.length
+		while (i--)
+		{
+			this.database[i].setSize(width, height, applyBound)
+		}
+
+		return this
+	}
+
+	this.setStretch = function(width, height, applySize, applyBound)
+	{
+		var i = this.database.length
+		while (i--)
+		{
+			this.database[i].setStretch(width, height, applySize, applyBound)
 		}
 
 		return this
@@ -130,7 +163,6 @@ var Group = function()
 		return this
 	}
 
-	// Throw the preloader counting in here
 	this.setSprite = function(location)
 	{
 		var i = this.database.length

@@ -1,15 +1,12 @@
 var Entity = function()
 {
-	this.x = 0
-	this.y = 0
-	this.difference = {x: 0, y: 0}
-	this.width = 0
-	this.height = 0
-	this.degree = 0
+	this.rotation = 0 // Need to instantiate here for the rotate() function to be able to work
+
+	// Engine values (you'll be better off if you only use engine functions to mess with these)
+	this.sprite = {img: new Image()}
+	this.previous = {x: 0, y: 0}
 	this.anchor = {x: 0, y: 0}
 	this.bound = {x: 0, y: 0, width: 0, height: 0}
-	this.sprite = {img: new Image()}
-	this.opacity = 1
 
 	this.debug = function(color)
 	{
@@ -64,6 +61,20 @@ var Entity = function()
 			return this
 		}
 
+	this.setTrait = function(name, value)
+	{
+		this[name] = value
+
+		return this
+	}
+
+	this.deleteTrait = function(name)
+	{
+		delete this[name]
+
+		return this
+	}
+
 	this.setPosition = function(x, y)
 	{
 		this.x = x
@@ -76,11 +87,11 @@ var Entity = function()
 		{
 			if (orientation == 'horizontal')
 			{
-				this.difference.x = value
+				this.previous.x = value
 			}
 			else if (orientation == 'vertical')
 			{
-				this.difference.y = value
+				this.previous.y = value
 			}
 
 			return this
@@ -137,7 +148,7 @@ var Entity = function()
 
 	this.rotate = function(amount)
 	{
-		this.degree += amount
+		this.rotation += amount
 		this.fixRotation()
 
 		return this
@@ -145,7 +156,7 @@ var Entity = function()
 
 	this.rotateTo = function(degree)
 	{
-		this.degree = degree
+		this.rotation = degree
 		this.fixRotation()
 
 		return this
@@ -153,13 +164,13 @@ var Entity = function()
 
 		this.fixRotation = function()
 		{
-			if (this.degree < 0)
+			if (this.rotation < 0)
 			{
-				this.degree += 360
+				this.rotation += 360
 			}
-			else if (this.degree > 360)
+			else if (this.rotation > 360)
 			{
-				this.degree -= 360
+				this.rotation -= 360
 			}
 
 			return this
@@ -167,11 +178,11 @@ var Entity = function()
 
 	this.steer = function()
 	{
-		this.degree = -Math.atan(this.difference.y / this.difference.x) * 180 / Math.PI
+		this.rotation = -Math.atan(this.previous.y / this.previous.x) * 180 / Math.PI
 
-		if (this.difference.x < 0)
+		if (this.previous.x < 0)
 		{
-			this.degree += 180
+			this.rotation += 180
 		}
 
 		return this
@@ -343,7 +354,7 @@ var Entity = function()
 		{
 			l.ctx.globalAlpha = this.opacity // 1 is the default opacity
 
-			if (this.flipped || this.degree)
+			if (this.flipped || this.rotation)
 			{
 				l.ctx.save()
 
@@ -366,10 +377,10 @@ var Entity = function()
 					}
 				}
 
-				if (this.degree)
+				if (this.rotation)
 				{
 					l.ctx.translate(Math.round(this.x - this.cameraX), Math.round(this.y - this.cameraY))
-					l.ctx.rotate(this.degree * Math.PI / 180 * -1)
+					l.ctx.rotate(this.rotation * Math.PI / 180 * -1)
 				}
 
 				if (this.stretch)
@@ -669,7 +680,7 @@ var Entity = function()
 	}
 
 	this.applyPhysics = function() // Run to continuously update the friction of objects influenced by physics
-	{        
+	{
 		if (this.momentum.x && this.momentum.y)
 		{
 			if (Math.abs(this.momentum.x) > Math.abs(this.momentum.y))
@@ -734,7 +745,7 @@ var Entity = function()
 
 		if (this.momentum.rotation !== 0)
 		{
-			this.degree += this.momentum.rotation
+			this.rotation += this.momentum.rotation
 
 			if (this.momentum.rotation < 0)
 			{
