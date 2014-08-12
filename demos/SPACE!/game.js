@@ -12,6 +12,7 @@ var game = new Lorina()
 		.setColor('#111111')
 		.makeFullscreen()
 		.setRoomSize(l.dom.width * 2, l.dom.height * 2)
+		.appendCanvas()
 
 var camera = new Camera()
 
@@ -113,7 +114,7 @@ var main = function()
 
 	earth.bounce().applyPhysics()
 
-	var j = game.checkCollision(earth, moons)
+	var j = tool.checkCollision(earth, moons)
 	if (j)
 	{
 		j.delete()

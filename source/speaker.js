@@ -20,13 +20,6 @@ var Speaker = function()
     {
         file.play()
 
-        var self = this
-
-        file.onended = function()
-        {
-            self.file.currentTime = 0
-        }
-
         return this
     }
 

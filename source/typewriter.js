@@ -63,13 +63,6 @@ var Typewriter = function()
 		return this
 	}
 
-	this.hud = function()
-	{
-		this.textMode = 'hud'
-
-		return this
-	}
-
 	this.setPosition = function(x, y)
 	{
 		this.x = x
@@ -78,7 +71,7 @@ var Typewriter = function()
 		return this
 	}
 
-	this.write = function(string)
+	this.write = function(string, hud)
 	{
 		if (this.style)
 		{
@@ -141,24 +134,19 @@ var Typewriter = function()
 			this.opacity = 1
 		}
 
-		this.print(string)
+		if (hud)
+		{
+			l.ctx.fillText(string, this.x, this.y)
+		}
+		else
+		{
+			l.ctx.fillText(string, this.x - l.camera.x, this.y - l.camera.y)
+		}
 
 		l.ctx.globalAlpha = 1
 
 		return this
 	}
-
-		this.print = function(string)
-		{
-			if (this.textMode == 'hud')
-			{
-				l.ctx.fillText(string, this.x, this.y)
-			}
-			else
-			{
-				l.ctx.fillText(string, this.x - l.camera.x, this.y - l.camera.y)
-			}
-		}
 
 	var typingStringLoaded = false
 	var typingPosition = 0

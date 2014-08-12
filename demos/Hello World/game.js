@@ -2,6 +2,7 @@ var game = new Lorina()
 	game.setTitle('Hello, World')
 		.setColor('#FF0000')
 		.makeFullscreen()
+		.appendCanvas() // Actually add the canvas to the page after setting its values
 
 var typewriter = new Typewriter()
 	typewriter.setFont('Helvetica')
@@ -9,10 +10,10 @@ var typewriter = new Typewriter()
 			  .setSize(30)
 			  .setColor('#FFFFFF')
 
-var main = function() // This is our 'game' screen that's run by the preloader
+var main = function()
 {
 	game.blank() // Blank the screen with the color set in l.game.setup before drawing
-	typewriter.setPosition(l.room.width / 2, l.room.height / 2).write('Hello, World') // Write 'Hello, World' to the screen
+	typewriter.setPosition(l.room.width / 2, l.room.height / 2).write('Hello, World') // Write 'Hello, World' in the middle of the screen
 }
 
 game.start(main)
