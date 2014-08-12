@@ -298,37 +298,37 @@ var Entity = function()
 		return this
 	}
 
-		this.unflip = function(direction)
+	this.unflip = function()
+	{
+		if (this.flipped == 'horizontal')
 		{
-			if (this.flipped == 'horizontal')
+			if (this.flipped == 'both')
 			{
-				if (this.flipped == 'both')
-				{
-					this.flipped = 'vertical'
-				}
-				else
-				{
-					delete this.flipped
-				}
+				this.flipped = 'vertical'
 			}
-			else if (this.flipped == 'vertical')
-			{
-				if (this.flipped == 'both')
-				{
-					this.flipped = 'vertical'
-				}
-				else
-				{
-					delete this.flipped
-				}
-			}
-			else if (this.flipped == 'both')
+			else
 			{
 				delete this.flipped
 			}
-
-			return this
 		}
+		else if (this.flipped == 'vertical')
+		{
+			if (this.flipped == 'both')
+			{
+				this.flipped = 'vertical'
+			}
+			else
+			{
+				delete this.flipped
+			}
+		}
+		else if (this.flipped == 'both')
+		{
+			delete this.flipped
+		}
+
+		return this
+	}
 
 	this.hud = function()
 	{

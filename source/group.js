@@ -31,28 +31,6 @@ var Group = function()
 		return this
 	}
 
-	this.setTrait = function(name, value)
-	{
-		var i = this.database.length
-		while (i--)
-		{
-			this.database[i].setTrait(name, value)
-		}
-
-		return this
-	}
-
-	this.deleteTrait = function(name)
-	{
-		var i = this.database.length
-		while (i--)
-		{
-			this.database[i].deleteTrait(name)
-		}
-
-		return this
-	}
-
 	this.delete = function()
 	{
 		var i = this.database.length
@@ -74,6 +52,28 @@ var Group = function()
 
 			return this
 		}
+
+	this.setTrait = function(name, value)
+	{
+		var i = this.database.length
+		while (i--)
+		{
+			this.database[i].setTrait(name, value)
+		}
+
+		return this
+	}
+
+	this.deleteTrait = function(name)
+	{
+		var i = this.database.length
+		while (i--)
+		{
+			this.database[i].deleteTrait(name)
+		}
+
+		return this
+	}
 
 	this.setPosition = function(x, y)
 	{
@@ -163,12 +163,12 @@ var Group = function()
 		return this
 	}
 
-	this.setSprite = function(location)
+	this.setSprite = function(location, applySize, applyBound)
 	{
 		var i = this.database.length
 		while (i--)
 		{
-			this.database[i].setSprite(location)
+			this.database[i].setSprite(location, applySize, applyBound)
 		}
 
 		return this
@@ -196,6 +196,39 @@ var Group = function()
 		return this
 	}
 
+	this.setOpacity = function(opacity)
+	{
+		var i = this.database.length
+		while (i--)
+		{
+			this.database[i].setOpacity(opacity)
+		}
+
+		return this
+	}
+
+	this.fadeOut = function(increment)
+	{
+		var i = this.database.length
+		while (i--)
+		{
+			this.database[i].fadeOut(increment)
+		}
+
+		return this
+	}
+
+	this.fadeIn = function(increment)
+	{
+		var i = this.database.length
+		while (i--)
+		{
+			this.database[i].fadeIn(increment)
+		}
+
+		return this
+	}
+
 	this.buffer = function()
 	{
 		var i = this.database.length
@@ -213,6 +246,17 @@ var Group = function()
 		while (i--)
 		{
 			this.database[i].flip(direction)
+		}
+
+		return this
+	}
+
+	this.unflip = function()
+	{
+		var i = this.database.length
+		while (i--)
+		{
+			this.database[i].unflip()
 		}
 
 		return this

@@ -1,6 +1,6 @@
 var Cartographer = function()
 {
-    this.loadMap = function(map)
+    this.setMap = function(map)
     {
         map.tileset.img = new Image()
 
@@ -15,7 +15,7 @@ var Cartographer = function()
         return this
     }
 
-    this.drawMap = function(map)
+    this.draw = function(map)
     {
         var y = map.layout.tiles.length / map.layout.width
         while (y--)
@@ -29,13 +29,6 @@ var Cartographer = function()
                 }
             }
         }
-
-        return this
-    }
-
-    this.populateMap = function(map)
-    {
-        
 
         return this
     }
