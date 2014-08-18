@@ -175,4 +175,11 @@ var Typewriter = function()
 				}, timing * i)
 			}
 		}
+
+	this.pulse = function(amount, duration)
+	{
+		
+		
+		return this
+	}
 }

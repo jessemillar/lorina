@@ -1,32 +1,44 @@
 var Speaker = function()
 {
-    var file = new Audio()
+    var database = new Array()
 
-    this.setFile = function(location)
+    this.load = function(name, location)
     {
-        file.src = location
+        var file = new Audio()
+            file.name = name
+            file.src = location
+
+        database.push(file)
         
         return this
     }
 
-    this.pause = function()
+    this.pause = function(name)
     {
-        file.pause()
+        var i = database.length
+        while (i--)
+        {
+            if (database[i].name == name)
+            {
+                database[i].pause()
+                break
+            }
+        }
 
         return this
     }
 
-    this.play = function()
+    this.play = function(name)
     {
-        file.play()
-
-        return this
-    }
-
-    this.loop = function()
-    {
-        file.loop = true
-        file.play()
+        var i = database.length
+        while (i--)
+        {
+            if (database[i].name == name)
+            {
+                database[i].play()
+                break
+            }
+        }
 
         return this
     }
