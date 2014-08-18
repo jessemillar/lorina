@@ -197,14 +197,14 @@ var Entity = function()
 			self.sprite.width = this.width
 			self.sprite.height = this.height
 
-			if (applySize)
+			if (applySize || applySize == undefined)
 			{
 				self.setSize(this.width, this.height)
 			}
 
-			if (applyBound)
+			if (applyBound || applyBound == undefined)
 			{
-				self.setBound(0, 0, this.width, this.height)
+				self.setBound(0 - self.anchor.x, 0 - self.anchor.y, this.width, this.height)
 			}
 		}
 
@@ -362,17 +362,17 @@ var Entity = function()
 				{
 					if (this.flipped == 'horizontal')
 					{
-						l.ctx.translate(Math.round(this.x + this.width - (this.anchor.x * 2) - this.cameraX), Math.round(this.y - this.cameraY))
+						l.ctx.translate(Math.round(this.x - this.anchor.x * 2 + this.width - this.cameraX), Math.round(this.y - this.cameraY))
 						l.ctx.scale(-1, 1)
 					}
 					else if (this.flipped == 'vertical')
 					{
-						l.ctx.translate(Math.round(this.x - this.cameraX), Math.round(this.y + this.height - (this.anchor.y * 2) - this.cameraY))
+						l.ctx.translate(Math.round(this.x - this.cameraX), Math.round(this.y - this.anchor.y * 2 + this.height - this.cameraY))
 						l.ctx.scale(1, -1)
 					}
 					else if (this.flipped == 'both')
 					{
-						l.ctx.translate(Math.round(this.x + this.width - (this.anchor.x * 2) - this.cameraX), Math.round(this.y + this.height - (this.anchor.y * 2) - this.cameraY))
+						l.ctx.translate(Math.round(this.x - this.anchor.x * 2 + this.width - this.cameraX), Math.round(this.y - this.anchor.y * 2 + this.height - this.cameraY))
 						l.ctx.scale(-1, -1)
 					}
 				}
