@@ -1,6 +1,7 @@
 var Speaker = function()
 {
     var database = new Array()
+    var stack = new Array() // For stacking sound effects
 
     this.load = function(name, location)
     {
@@ -35,7 +36,14 @@ var Speaker = function()
         {
             if (database[i].name == name)
             {
-                database[i].play()
+                // Push to and play from stack
+                var file = new Audio()
+                    file.name = database[i].name
+                    file.src = database[i].src
+
+                stack.push(file)
+                stack[stack.length - 1].play()
+
                 break
             }
         }
