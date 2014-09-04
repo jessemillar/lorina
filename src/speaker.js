@@ -9,7 +9,7 @@ var Speaker = function()
 		{
 			var self = this
 
-			var file = new Media(location)
+			var file = new Media(location, this.release())
 				file.name = name
 
 			this.cordovaLoad(file)
@@ -58,21 +58,26 @@ var Speaker = function()
 		{
 			if (database[i].name == name)
 			{
-				console.log(database[i])
-
 				if (window.cordova)
 				{
 					var temp = new Media(database[i].src)
 						temp.name = database[i].name
 
 					stack.push(temp)
+
+					stack[stack.length - 1].play({playAudioWhenScreenIsLocked: false})
 				}
 				else
 				{
-					stack.push(database[i].cloneNode())	
-				}
+					stack.push(database[i].cloneNode())
 
-				stack[stack.length - 1].play()
+					stack[stack.length - 1].play()
+
+					var self = this
+					var index = stack.length - 1
+
+					stack[stack.length - 1].addEventListener('ended', self.removeAudio(index)) // Remove the file upon successful play
+				}
 
 				break
 			}
@@ -80,4 +85,9 @@ var Speaker = function()
 
 		return this
 	}
+
+		this.removeAudio = function(index)
+		{
+			stack.splice(index, 1)
+		}
 }
