@@ -9,7 +9,7 @@ var Speaker = function()
 		{
 			var self = this
 
-			var file = new Media(location, this.release())
+			var file = new Media(location)
 				file.name = name
 
 			this.cordovaLoad(file)
