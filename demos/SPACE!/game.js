@@ -7,27 +7,19 @@ var earthFriction = earthSpeed / 15
 var starSpeed = 0.4
 var starFriction = 0.035
 
-var game = new Lorina()
-	game.setTitle('SPACE!')
-		.setColor('#111111')
-		.makeFullscreen()
-		.setRoomSize(l.dom.width * 2, l.dom.height * 2)
-		.appendCanvas()
+lorina.setTitle('SPACE!')
+	  .setColor('#111111')
+	  .makeFullscreen()
+	  .setRoomSize(l.dom.width * 2, l.dom.height * 2)
+	  .appendCanvas()
 
-var camera = new Camera()
-
-var keyboard = new Keyboard()
-var mouse = new Mouse()
-
-var tool = new Tool()
-var typewriter = new Typewriter()
-	typewriter.setFont('Wendy').setColor('#FFFFFF').setAlignment('center').setSize(35)
+typewriter.setFont('Wendy').setColor('#FFFFFF').setAlignment('center').setSize(35)
 
 var song = new Speaker()
-	song.setFile('sounds/song.wav')
+	song.load('sounds/song.wav')
 
-var gameover = new Speaker()
-	gameover.setFile('sounds/gameover.wav')
+var lorinaover = new Speaker()
+	lorinaover.load('sounds/gameover.wav')
 
 var moons = new Group()
 var stars = new Group()
@@ -54,11 +46,11 @@ while (i--)
 
 	var moon = new Entity()
 		moon.setSprite('images/moon.png')
-			 .setPosition(tool.random(0, l.room.width), tool.random(0, l.room.height))
-			 .setSize(100, 100)
-			 .setAnchor(100 / 2, 100 / 2)
-			 .setBound(-100 / 2, -100 / 2, 100, 100)
-			 .setFriction(starFriction)
+			.setPosition(tool.random(0, l.room.width), tool.random(0, l.room.height))
+			.setSize(100, 100)
+			.setAnchor(100 / 2, 100 / 2)
+			.setBound(-100 / 2, -100 / 2, 100, 100)
+			.setFriction(starFriction)
 		moons.add(moon)
 }
 
@@ -118,20 +110,20 @@ var main = function()
 	if (j)
 	{
 		j.delete()
-		gameover.play()
+		lorinaover.play()
 		camera.shake(2, 35, 250)
 	}
 
 	camera.follow(earth)
 
-	game.blank()
+	lorina.blank()
 	typewriter.setPosition(l.room.width / 2, l.room.height / 2 - 200).write('Hello, World.  Move with the arrow keys.')
 	earth.buffer()
 	// earth2.buffer()
 	moons.buffer()
 	stars.buffer()
 	dusties.buffer()
-	game.draw()
+	lorina.draw()
 }
 
-game.start(main) // Only call once the room functions are defined
+lorina.start(main) // Only call once the room functions are defined

@@ -1,5 +1,4 @@
-var Scissors = function()
-{
+var scissors = new function() {
     this.mark = function(x, y, width, height)
     {
         l.ctx.save()

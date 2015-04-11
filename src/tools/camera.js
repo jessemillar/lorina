@@ -1,5 +1,4 @@
-var Camera = function()
-{
+var camera = new function() {
 	this.reset = function()
 	{
 		l.camera.x = 0

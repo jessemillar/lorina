@@ -1,5 +1,4 @@
-var Cupboard = function()
-{
+var cupboard = new function() {
 	this.save = function(key, value, temp)
 	{
 		var tempValue

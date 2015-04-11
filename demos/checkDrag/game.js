@@ -1,10 +1,7 @@
-var game = new Lorina()
-	game.setTitle('checkDrag')
-		.setColor('#dddddd')
-		.makeFullscreen()
-		.appendCanvas()
-
-var mouse = new Mouse()
+lorina.setTitle('checkDrag')
+	  .setColor('#dddddd')
+	  .makeFullscreen()
+	  .appendCanvas()
 
 var thingy = new Entity()
 	thingy.setSprite('test.png', true, true)
@@ -14,11 +11,11 @@ var main = function()
 {
 	mouse.checkDrag(thingy)
 
-	game.blank()
+	lorina.blank()
 
-	thingy.draw().debug()
+	thingy.draw()
 
-	game.draw()
+	lorina.draw()
 }
 
-game.start(main)
+lorina.start(main)
