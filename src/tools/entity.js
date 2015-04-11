@@ -1,4 +1,4 @@
-var entity = new function() {
+var Entity = function() {
 	this.rotation = 0 // Need to instantiate here for the rotate() function to be able to work
 
 	// Engine values (you'll be better off if you only use engine functions to mess with these)

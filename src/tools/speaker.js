@@ -1,4 +1,4 @@
-var speaker = new function() {
+var Speaker = function() {
 	var database = new Array()
 	var stack = new Array() // For stacking sound effects
 
@@ -25,15 +25,6 @@ var speaker = new function() {
 		
 		return this
 	}
-
-		this.cordovaLoad = function(file) // Play and stop a file to kill initial latency problems
-		{
-			// Gross, ghetto code to make up for HTML5 shortcomings
-			file.setVolume(0)
-			file.play()
-			file.stop()
-			file.setVolume(1)
-		}
 
 	this.pause = function(name)
 	{

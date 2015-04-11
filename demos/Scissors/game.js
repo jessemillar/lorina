@@ -1,23 +1,20 @@
-var game = new Lorina()
-	game.setTitle('Clipper')
-		.setColor('#dddddd')
-		.appendCanvas()
-
-var scissors = new Scissors()
+lorina.setTitle('Clipper')
+	  .setColor('#dddddd')
+	  .appendCanvas()
 
 var map = new Entity()
 	map.setSprite('terrain.png', true, true)
-		.setPosition(0, 0)
+	   .setPosition(0, 0)
 
 var main = function()
 {
-	game.blank()
+	lorina.blank()
 
 	scissors.mark(50, 50, 100, 50)
 	map.draw()
 	scissors.cut()
 
-	game.draw()
+	lorina.draw()
 }
 
-game.start(main)
+lorina.start(main)

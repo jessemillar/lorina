@@ -1,15 +1,12 @@
 var butterflyCount = 250
 var butterflyForce = 2
 
-var game = new Lorina()
-	game.setTitle('Catterfly')
-		.setColor('#7FDBFF')
-		.makeFullscreen()
-		.appendCanvas()
+lorina.setTitle('Catterfly')
+	  .setColor('#7FDBFF')
+	  .makeFullscreen()
+	  .appendCanvas()
 
-var tool = new Tool()
-var typewriter = new Typewriter()
-	typewriter.setSize(20).setFont('Helvetica').setColor('#111111').setStyle('bold italic')
+typewriter.setSize(20).setFont('Helvetica').setColor('#111111').setStyle('bold italic')
 
 var butterflies = new Group()
 
@@ -34,9 +31,9 @@ var main = function()
 {
 	butterflies.steer().bounce().applyPhysics()
 
-	game.blank()
-	butterflies.buffer()
-	game.draw()
+	lorina.blank()
+	butterflies.buffer()//.debug()
+	lorina.draw()
 }
 
-game.start(main)
+lorina.start(main)

@@ -1,4 +1,4 @@
-var timer = new function() {
+var Timer = function() {
 	this.start = function()
 	{
 		var date = new Date()
