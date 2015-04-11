@@ -1,5 +1,4 @@
-var Cartographer = function()
-{
+var cartographer = new function() {
     this.setMap = function(map)
     {
         map.tileset.img = new Image()

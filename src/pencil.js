@@ -1,5 +1,4 @@
-var Pencil = function()
-{
+var pencil = new function() {
 	this.setPosition = function(x, y)
 	{
 		this.x = x

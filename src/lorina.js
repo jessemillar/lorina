@@ -1,7 +1,6 @@
 var l = new Object()
 
-var Lorina = function()
-{
+var lorina = new function() {
 	var self = this
 	
 	l.dom = document.createElement('canvas')

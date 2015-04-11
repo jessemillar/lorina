@@ -1,5 +1,4 @@
-var Finger = function()
-{
+var finger = new function() {
 	this.touching = false
 	this.x = undefined
 	this.y = undefined

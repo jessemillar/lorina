@@ -1,5 +1,4 @@
-var Speaker = function()
-{
+var speaker = new function() {
 	var database = new Array()
 	var stack = new Array() // For stacking sound effects
 

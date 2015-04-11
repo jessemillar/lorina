@@ -1,5 +1,4 @@
-var Keyboard = function()
-{
+var keyboard = new function() {
     var self = this
 
     window.onkeydown = function()

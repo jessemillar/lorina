@@ -1,5 +1,4 @@
-var Gamepad = function()
-{
+var gamepad = new function() {
     this.deadzone = 0
 
     this.update = function()

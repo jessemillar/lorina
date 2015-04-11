@@ -1,5 +1,4 @@
-var Accelerometer = function()
-{
+var accelerometer = new function() {
 	var self = this
 
 	this.x = 0

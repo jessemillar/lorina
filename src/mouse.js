@@ -1,5 +1,4 @@
-var Mouse = function()
-{
+var mouse = new function() {
 	var self = this
 
 	document.onmouseout = function() {self.mouseOut()}

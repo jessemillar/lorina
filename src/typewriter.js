@@ -1,5 +1,4 @@
-var Typewriter = function()
-{
+var typewriter = new function() {
 	this.reset = function()
 	{
 		this.alignment = undefined

@@ -1,5 +1,4 @@
-var Group = function()
-{
+var group = new function() {
 	this.database = new Array()
 
 	this.add = function(entity)
