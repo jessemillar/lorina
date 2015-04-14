@@ -1,129 +1,118 @@
-var moonCount = 10
-var starCount = 2000
-var dustCount = 1000
+var moonCount = 10;
+var starCount = 2000;
+var dustCount = 1000;
 
-var earthSpeed = 0.5
-var earthFriction = earthSpeed / 15
-var starSpeed = 0.4
-var starFriction = 0.035
+var earthSpeed = 0.5;
+var earthFriction = earthSpeed / 15;
+var starSpeed = 0.4;
+var starFriction = 0.035;
 
+var lorina = new l.lorina();
 lorina.setTitle('SPACE!')
-	  .setColor('#111111')
-	  .makeFullscreen()
-	  .setRoomSize(l.dom.width * 2, l.dom.height * 2)
-	  .appendCanvas()
+    .setColor('#111111')
+    .makeFullscreen()
+    .setRoomSize(l.globals.dom.width * 2, l.globals.dom.height * 2)
+    .appendCanvas();
 
-typewriter.setFont('Wendy').setColor('#FFFFFF').setAlignment('center').setSize(35)
+var typewriter = new l.typewriter();
+typewriter.setFont('Wendy').setColor('#FFFFFF').setAlignment('center').setSize(35);
 
-var song = new Speaker()
-	song.load('sounds/song.wav')
+var moons = new l.group();
+var stars = new l.group();
+var dusties = new l.group();
 
-var lorinaover = new Speaker()
-	lorinaover.load('sounds/gameover.wav')
+var earth = new l.entity();
+earth.setSprite('images/earth.png')
+    .setPosition(l.globals.room.width / 2, l.globals.room.height / 2)
+    .setSize(125, 125)
+    .setAnchor(125 / 2, 125 / 2)
+    .setBound(-125 / 2, -125 / 2, 125, 125)
+    .setFriction(earthFriction);
 
-var moons = new Group()
-var stars = new Group()
-var dusties = new Group()
+var earth2 = new l.entity();
+earth2.setSprite('images/earth.png')
+    .setPosition(l.globals.room.width / 2 + 200, l.globals.room.height / 2 + 200)
+    .setAnchor(125 / 2, 125 / 2);
 
-var earth = new Entity()
-	earth.setSprite('images/earth.png')
-		 .setPosition(l.room.width / 2, l.room.height / 2)
-		 .setSize(125, 125)
-		 .setAnchor(125 / 2, 125 / 2)
-		 .setBound(-125 / 2, -125 / 2, 125, 125)
-		 .setFriction(earthFriction)
+var tool = new l.tool();
 
-var earth2 = new Entity()
-	earth2.setSprite('images/earth.png')
-		  .setPosition(l.room.width / 2 + 200, l.room.height / 2 + 200)
-		  .setAnchor(125 / 2, 125 / 2)
+var i = moonCount;
 
-var i = moonCount
+while (i--) {
+    var entity = 'moon' + i;
 
-while (i--)
-{
-	var entity = 'moon' + i
-
-	var moon = new Entity()
-		moon.setSprite('images/moon.png')
-			.setPosition(tool.random(0, l.room.width), tool.random(0, l.room.height))
-			.setSize(100, 100)
-			.setAnchor(100 / 2, 100 / 2)
-			.setBound(-100 / 2, -100 / 2, 100, 100)
-			.setFriction(starFriction)
-		moons.add(moon)
+    var moon = new l.entity();
+    moon.setSprite('images/moon.png')
+        .setPosition(tool.random(0, l.globals.room.width), tool.random(0, l.globals.room.height))
+        .setSize(100, 100)
+        .setAnchor(100 / 2, 100 / 2)
+        .setBound(-100 / 2, -100 / 2, 100, 100)
+        .setFriction(starFriction);
+    moons.add(moon);
 }
 
-var i = starCount
+var i = starCount;
 
-while (i--)
-{
-	var entity = 'star' + i
+while (i--) {
+    var entity = 'star' + i;
 
-	var entity = new Entity()
-		entity.setSprite('images/star.png')
-			  .setAnchor(4, 4)
-			  .setPosition(tool.random(0, l.room.width), tool.random(0, l.room.height))
-			  .setFriction(starFriction)
-		stars.add(entity)
+    var entity = new l.entity();
+    entity.setSprite('images/star.png')
+        .setAnchor(4, 4)
+        .setPosition(tool.random(0, l.globals.room.width), tool.random(0, l.globals.room.height))
+        .setFriction(starFriction);
+    stars.add(entity);
 }
 
-var i = dustCount
+var i = dustCount;
 
-while (i--)
-{
-	var entity = 'dust' + i
+while (i--) {
+    var entity = 'dust' + i;
 
-	var entity = new Entity()
-		entity.setSprite('images/dust.png')
-			  .setAnchor(2, 2)
-			  .setPosition(tool.random(0, l.room.width), tool.random(0, l.room.height))
-		dusties.add(entity)
+    var entity = new l.entity();
+    entity.setSprite('images/dust.png')
+        .setAnchor(2, 2)
+        .setPosition(tool.random(0, l.globals.room.width), tool.random(0, l.globals.room.height));
+    dusties.add(entity);
 }
+
+var keyboard = new l.keyboard();
+var camera = new l.camera();
 
 // I would recommend that you keep the data for your room functions in an external file and reference it here
-var main = function()
-{
-	if (keyboard.up || keyboard.w)
-	{
-		earth.pushVertical(-earthSpeed)
-	}
-	else if (keyboard.down || keyboard.s)
-	{
-		earth.pushVertical(earthSpeed)
-	}
+var main = function() {
+    if (keyboard.up || keyboard.w) {
+        earth.pushVertical(-earthSpeed);
+    } else if (keyboard.down || keyboard.s) {
+        earth.pushVertical(earthSpeed);
+    }
 
-	if (keyboard.left || keyboard.a)
-	{
-		earth.pushHorizontal(-earthSpeed)
-	}
-	else if (keyboard.right || keyboard.d)
-	{
-		earth.pushHorizontal(earthSpeed)
-	}
+    if (keyboard.left || keyboard.a) {
+        earth.pushHorizontal(-earthSpeed);
+    } else if (keyboard.right || keyboard.d) {
+        earth.pushHorizontal(earthSpeed);
+    }
 
-	stars.pullToward(earth, starSpeed).applyPhysics()
+    stars.pullToward(earth, starSpeed).applyPhysics();
 
-	earth.bounce().applyPhysics()
+    earth.bounce().applyPhysics();
 
-	var j = tool.checkCollision(earth, moons)
-	if (j)
-	{
-		j.delete()
-		lorinaover.play()
-		camera.shake(2, 35, 250)
-	}
+    var j = tool.checkCollision(earth, moons);
+    if (j) {
+        j.delete();
+        camera.shake(2, 35, 250);
+    }
 
-	camera.follow(earth)
+    camera.follow(earth);
 
-	lorina.blank()
-	typewriter.setPosition(l.room.width / 2, l.room.height / 2 - 200).write('Hello, World.  Move with the arrow keys.')
-	earth.buffer()
-	// earth2.buffer()
-	moons.buffer()
-	stars.buffer()
-	dusties.buffer()
-	lorina.draw()
-}
+    lorina.blank();
+    typewriter.setPosition(l.globals.room.width / 2, l.globals.room.height / 2 - 200).write('Hello, World.  Move with the arrow keys.');
+    earth.buffer();
+    // earth2.buffer()
+    moons.buffer();
+    stars.buffer();
+    dusties.buffer();
+    lorina.draw();
+};
 
-lorina.start(main) // Only call once the room functions are defined
+lorina.start(main); // Only call once the room functions are defined

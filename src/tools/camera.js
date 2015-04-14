@@ -1,208 +1,161 @@
-var camera = new function() {
-	this.reset = function()
-	{
-		l.camera.x = 0
-		l.camera.y = 0
+l.camera = function() {
+    this.reset = function() {
+        l.globals.camera.x = 0;
+        l.globals.camera.y = 0;
 
-		return this
-	}
+        return this;
+    };
 
-	this.setSandbox = function(width, height)
-	{
-		l.camera.sandbox.width = width
-		l.camera.sandbox.height = height
+    this.setSandbox = function(width, height) {
+        l.globals.camera.sandbox.width = width;
+        l.globals.camera.sandbox.height = height;
 
-		if (l.camera.sandbox.width <= 0)
-		{
-			l.camera.sandbox.width = 1
-		}
+        if (l.globals.camera.sandbox.width <= 0) {
+            l.globals.camera.sandbox.width = 1;
+        }
 
-		if (l.camera.sandbox.height <= 0)
-		{
-			l.camera.sandbox.height = 1
-		}
+        if (l.globals.camera.sandbox.height <= 0) {
+            l.globals.camera.sandbox.height = 1;
+        }
 
-		return this
-	}
+        return this;
+    };
 
-	this.follow = function(a, b)
-	{
-		if (!a.deleted)
-		{
-			if (b && !b.deleted)
-			{
-				if (a.x < b.x)
-				{
-					var xFocus = (b.x - a.x) / 2 + a.x
-				}
-				else
-				{
-					var xFocus = (a.x - b.x) / 2 + b.x
-				}
+    this.follow = function(a, b) {
+    	var xFocus,
+    		yFocus;
 
-				if (a.y < b.y)
-				{
-					var yFocus = (b.y - a.y) / 2 + a.y
-				}
-				else
-				{
-					var yFocus = (a.y - b.y) / 2 + b.y
-				}
-			}
-			else
-			{
-				var xFocus = a.x
-				var yFocus = a.y
-			}
+        if (!a.deleted) {
+            if (b && !b.deleted) {
+                if (a.x < b.x) {
+                    xFocus = (b.x - a.x) / 2 + a.x;
+                } else {
+                    xFocus = (a.x - b.x) / 2 + b.x;
+                }
 
-			if (l.camera.state == 'resting')
-			{
-				if (l.camera.sandbox.width)
-				{
-					if (xFocus < l.camera.x + l.dom.width / 2 - l.camera.sandbox.width / 2)
-					{
-						l.camera.x = xFocus - l.dom.width / 2 + l.camera.sandbox.width / 2
-					}
-					else if (xFocus > l.camera.x + l.dom.width / 2 + l.camera.sandbox.width / 2)
-					{
-						l.camera.x = xFocus - l.dom.width / 2 - l.camera.sandbox.width / 2
-					}
-				}
+                if (a.y < b.y) {
+                    yFocus = (b.y - a.y) / 2 + a.y;
+                } else {
+                    yFocus = (a.y - b.y) / 2 + b.y;
+                }
+            } else {
+                xFocus = a.x;
+                yFocus = a.y;
+            }
 
-				if (l.camera.sandbox.height)
-				{
-					if (yFocus < l.camera.y + l.dom.height / 2 - l.camera.sandbox.height / 2)
-					{
-						l.camera.y = yFocus - l.dom.height / 2 + l.camera.sandbox.height / 2
-					}
-					else if (yFocus > l.camera.y + l.dom.height / 2 + l.camera.sandbox.height / 2)
-					{
-						l.camera.y = yFocus - l.dom.height / 2 - l.camera.sandbox.height / 2
-					}
-				}
+            if (l.globals.camera.state == 'resting') {
+                if (l.globals.camera.sandbox.width) {
+                    if (xFocus < l.globals.camera.x + l.globals.dom.width / 2 - l.globals.camera.sandbox.width / 2) {
+                        l.globals.camera.x = xFocus - l.globals.dom.width / 2 + l.globals.camera.sandbox.width / 2;
+                    } else if (xFocus > l.globals.camera.x + l.globals.dom.width / 2 + l.globals.camera.sandbox.width / 2) {
+                        l.globals.camera.x = xFocus - l.globals.dom.width / 2 - l.globals.camera.sandbox.width / 2;
+                    }
+                }
 
-				if (l.camera.x < 0)
-				{
-					l.camera.x = 0
-				}
-				else if (l.camera.x > l.room.width - l.dom.width)
-				{
-					l.camera.x = l.room.width - l.dom.width
-				}
+                if (l.globals.camera.sandbox.height) {
+                    if (yFocus < l.globals.camera.y + l.globals.dom.height / 2 - l.globals.camera.sandbox.height / 2) {
+                        l.globals.camera.y = yFocus - l.globals.dom.height / 2 + l.globals.camera.sandbox.height / 2;
+                    } else if (yFocus > l.globals.camera.y + l.globals.dom.height / 2 + l.globals.camera.sandbox.height / 2) {
+                        l.globals.camera.y = yFocus - l.globals.dom.height / 2 - l.globals.camera.sandbox.height / 2;
+                    }
+                }
 
-				if (l.camera.y < 0)
-				{
-					l.camera.y = 0
-				}
-				else if (l.camera.y > l.room.height - l.dom.height)
-				{
-					l.camera.y = l.room.height - l.dom.height
-				}
-			}
-		}
+                if (l.globals.camera.x < 0) {
+                    l.globals.camera.x = 0;
+                } else if (l.globals.camera.x > l.globals.room.width - l.globals.dom.width) {
+                    l.globals.camera.x = l.globals.room.width - l.globals.dom.width;
+                }
 
-		return this
-	}
+                if (l.globals.camera.y < 0) {
+                    l.globals.camera.y = 0;
+                } else if (l.globals.camera.y > l.globals.room.height - l.globals.dom.height) {
+                    l.globals.camera.y = l.globals.room.height - l.globals.dom.height;
+                }
+            }
+        }
 
-	this.focusOn = function(a, b)
-	{
-		// Kinda redundant since this is a copy/paste of code above, but I'm too lazy to fix it right now
-		if (b && !b.deleted)
-		{
-			if (a.x < b.x)
-			{
-				var xFocus = (b.x - a.x) / 2 + a.x
-			}
-			else
-			{
-				var xFocus = (a.x - b.x) / 2 + b.x
-			}
+        return this;
+    };
 
-			if (a.y < b.y)
-			{
-				var yFocus = (b.y - a.y) / 2 + a.y
-			}
-			else
-			{
-				var yFocus = (a.y - b.y) / 2 + b.y
-			}
-		}
-		else
-		{
-			var xFocus = a.x
-			var yFocus = a.y
-		}
+    this.focusOn = function(a, b) { // Kinda redundant since this is a copy/paste of code above, but I'm too lazy to fix it right now
+    	var xFocus,
+    		yFocus;
 
-		l.camera.x = xFocus - l.dom.width / 2
-		l.camera.y = yFocus - l.dom.height / 2
+        if (b && !b.deleted) {
+            if (a.x < b.x) {
+                xFocus = (b.x - a.x) / 2 + a.x;
+            } else {
+                xFocus = (a.x - b.x) / 2 + b.x;
+            }
 
-		if (l.mouse)
-		{
-			l.mouse.calculate()
-		}
+            if (a.y < b.y) {
+                yFocus = (b.y - a.y) / 2 + a.y;
+            } else {
+                yFocus = (a.y - b.y) / 2 + b.y;
+            }
+        } else {
+            xFocus = a.x;
+            yFocus = a.y;
+        }
 
-		return this
-	}
+        l.globals.camera.x = xFocus - l.globals.dom.width / 2;
+        l.globals.camera.y = yFocus - l.globals.dom.height / 2;
 
-	this.shake = function(shakes, severity, duration)
-	{
-		if (l.camera.state == 'resting')
-		{
-			l.camera.previous.x = l.camera.x
-			l.camera.previous.y = l.camera.y
-		}
+        if (l.mouse) {
+            l.mouse.calculate();
+        }
 
-		l.camera.state = 'shaking'
-		
-		var self = this
+        return this;
+    };
 
-		var timing = duration / (shakes * 2)
+    this.shake = function(shakes, severity, duration) {
+        if (l.globals.camera.state == 'resting') {
+            l.globals.camera.previous.x = l.globals.camera.x;
+            l.globals.camera.previous.y = l.globals.camera.y;
+        }
 
-		for (var i = 0; i < shakes * 2; i++)
-		{
-			self.milkshake(i, timing, severity)
-		}
+        l.globals.camera.state = 'shaking';
 
-		return this
-	}
+        var self = this;
 
-		this.milkshake = function(i, timing, severity) // Tehe.  I'm so clever.
-		{
-			setTimeout(function()
-			{
-				l.camera.state = 'shaking'
+        var timing = duration / (shakes * 2);
 
-				var min = 0 - severity / 2
-				var max = severity / 2
+        for (var i = 0; i < shakes * 2; i++) {
+            self.milkshake(i, timing, severity);
+        }
 
-				var xShake = Math.random() * (max - min) + min
-				var yShake = Math.random() * (max - min) + min
+        return this;
+    };
 
-				if (xShake > 0)
-				{
-					l.camera.x += xShake
-				}
-				else
-				{
-					l.camera.x -= Math.abs(xShake)
-				}
+    this.milkshake = function(i, timing, severity) // Tehe.  I'm so clever.
+    {
+        setTimeout(function() {
+            l.globals.camera.state = 'shaking';
 
-				if (yShake > 0)
-				{
-					l.camera.y += yShake
-				}
-				else
-				{
-					l.camera.y -= Math.abs(yShake)
-				}
-			}, i * timing)
+            var min = 0 - severity / 2;
+            var max = severity / 2;
 
-			setTimeout(function()
-			{
-				l.camera.state = 'resting'
+            var xShake = Math.random() * (max - min) + min;
+            var yShake = Math.random() * (max - min) + min;
 
-				l.camera.x = l.camera.previous.x
-				l.camera.y = l.camera.previous.y
-			}, i * timing + timing / 2)
-		}
-}
+            if (xShake > 0) {
+                l.globals.camera.x += xShake;
+            } else {
+                l.globals.camera.x -= Math.abs(xShake);
+            }
+
+            if (yShake > 0) {
+                l.globals.camera.y += yShake;
+            } else {
+                l.globals.camera.y -= Math.abs(yShake);
+            }
+        }, i * timing);
+
+        setTimeout(function() {
+            l.globals.camera.state = 'resting';
+
+            l.globals.camera.x = l.globals.camera.previous.x;
+            l.globals.camera.y = l.globals.camera.previous.y;
+        }, i * timing + timing / 2);
+    };
+};

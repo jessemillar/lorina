@@ -1,20 +1,18 @@
-var scissors = new function() {
-    this.mark = function(x, y, width, height)
-    {
-        l.ctx.save()
-        l.ctx.beginPath()
+l.scissors = function() {
+    this.mark = function(x, y, width, height) {
+        l.globals.ctx.save();
+        l.globals.ctx.beginPath();
 
-        l.ctx.rect(x, y, width, height)
+        l.globals.ctx.rect(x, y, width, height);
 
-        l.ctx.clip()
+        l.globals.ctx.clip();
 
-        return this
-    }
+        return this;
+    };
 
-    this.cut = function()
-    {
-        l.ctx.restore()
+    this.cut = function() {
+        l.globals.ctx.restore();
 
-        return this
-    }
-}
+        return this;
+    };
+};

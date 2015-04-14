@@ -1,143 +1,138 @@
-var l = {}
-
-var lorina = new function() {
-	var self = this
-	
-	l.dom = document.createElement('canvas')
-	l.room = {}
-	l.zBuffer = [] // For z-sorting
-	l.camera = {state: 'resting', x: 0, y: 0, previous: {x: 0, y: 0}, sandbox: {width: 1, height: 1}}
-	l.retina = window.devicePixelRatio // 1 if not retina and 2 if yes
-
-	this.setRoomSize = function(width, height)
-	{
-		l.room.width = width
-		l.room.height = height
-		
-		return this
+var l = {
+	globals: {
+		dom: document.createElement('canvas'),
+	    room: {},
+	    zBuffer: [], // For z-sorting
+	    camera: {
+	        state: 'resting',
+	        x: 0,
+	        y: 0,
+	        previous: {
+	            x: 0,
+	            y: 0
+	        },
+	        sandbox: {
+	            width: 1,
+	            height: 1
+	        }
+	    }
 	}
+};
 
-	this.setDomSize = function(width, height)
-	{
-		l.dom.width = width
-		l.dom.height = height
+l.lorina = function() {
+    var self = this;
 
-		return this
-	}
+    this.setRoomSize = function(width, height) {
+        l.globals.room.width = width;
+        l.globals.room.height = height;
 
-	this.setDomPosition = function(x, y)
-	{
-		l.dom.style.position = 'absolute'
-		l.dom.style.left = x + 'px'
-		l.dom.style.top = y + 'px'
+        return this;
+    };
 
-		return this
-	}
+    this.setDomSize = function(width, height) {
+        l.globals.dom.width = width;
+        l.globals.dom.height = height;
 
-	this.setTitle = function(title)
-	{
-		document.title = title
+        return this;
+    };
 
-		return this
-	}
+    this.setDomPosition = function(x, y) {
+        l.globals.dom.style.position = 'absolute';
+        l.globals.dom.style.left = x + 'px';
+        l.globals.dom.style.top = y + 'px';
 
-	this.scale = function(scale)
-	{
-		l.ctx.imageSmoothingEnabled = false
-		l.ctx.scale(scale / 100, scale / 100)
+        return this;
+    };
 
-		return this
-	}
+    this.setTitle = function(title) {
+        document.title = title;
 
-	this.makeFullscreen = function()
-	{	
-		document.body.style.background = this.color // Helps with some refresh problems caused by scaling the window
+        return this;
+    };
 
-		window.onresize = function()
-		{
-			self.setFullscreen()
-		}
+    this.scale = function(scale) {
+        l.globals.ctx.imageSmoothingEnabled = false;
+        l.globals.ctx.scale(scale / 100, scale / 100);
 
-		this.setFullscreen()
+        return this;
+    };
 
-		return this
-	}
+    this.makeFullscreen = function() {
+        document.body.style.background = this.color; // Helps with some refresh problems caused by scaling the window
 
-		this.setFullscreen = function() // Engine only
-		{
-			self.setDomPosition(0, 0)
-			self.setDomSize(window.innerWidth, window.innerHeight)
-			self.setRoomSize(l.dom.width, l.dom.height)
-		}
+        window.onresize = function() {
+            self.setFullscreen();
+        };
 
-	this.appendCanvas = function()
-	{
-		document.body.appendChild(l.dom)
-		l.ctx = l.dom.getContext('2d')
-	}
+        this.setFullscreen();
 
-	this.hideCursor = function()
-	{
-		l.dom.style.cursor = 'none'
+        return this;
+    };
 
-		return this
-	}
+    this.setFullscreen = function() // Engine only
+    {
+        self.setDomPosition(0, 0);
+        self.setDomSize(window.innerWidth, window.innerHeight);
+        self.setRoomSize(l.globals.dom.width, l.globals.dom.height);
+    };
 
-	this.setRoom = function(room)
-	{
-		l.room.current = room
+    this.appendCanvas = function() {
+        document.body.appendChild(l.globals.dom);
+        l.globals.ctx = l.globals.dom.getContext('2d');
+    };
 
-		window.requestAnimationFrame(room)
+    this.hideCursor = function() {
+        l.globals.dom.style.cursor = 'none';
 
-		return this
-	}
+        return this;
+    };
 
-		this.start = function(room)
-		{
-			this.setRoom(room)
+    this.setRoom = function(room) {
+        l.globals.room.current = room;
 
-			return this
-		}
+        window.requestAnimationFrame(room);
 
-	this.setColor = function(color) // I find that I don't use this very often
-	{
-		this.color = color
+        return this;
+    };
 
-		return this
-	}
+    this.start = function(room) {
+        this.setRoom(room);
 
-	this.blank = function(color)
-	{
-		if (color)
-		{
-			l.ctx.fillStyle = color
-		}
-		else
-		{
-			l.ctx.fillStyle = this.color
-		}
+        return this;
+    };
 
-		l.ctx.fillRect(0, 0, l.dom.width, l.dom.height)
+    this.setColor = function(color) // I find that I don't use this very often
+    {
+        this.color = color;
 
-		l.zBuffer.length = 0 // Wipe the z-buffer for the next pass
+        return this;
+    };
 
-		return this
-	}
+    this.blank = function(color) {
+        if (color) {
+            l.globals.ctx.fillStyle = color;
+        } else {
+            l.globals.ctx.fillStyle = this.color;
+        }
 
-	this.draw = function()
-	{
-		l.zBuffer.sort(function(a, b)
-		{
-			return a.y - b.y
-		})
+        l.globals.ctx.fillRect(0, 0, l.globals.dom.width, l.globals.dom.height);
 
-		for (var i = 0; i < l.zBuffer.length; i++)
-		{
-			l.zBuffer[i].draw()
-		}
+        l.globals.zBuffer.length = 0; // Wipe the z-buffer for the next pass
 
-		window.requestAnimationFrame(l.room.current)
+        return this;
+    };
 
-		return this
-	}
-}
+    this.draw = function() {
+        l.globals.zBuffer.sort(function(a, b) {
+            return a.y - b.y;
+        });
+
+        for (var i = 0; i < l.globals.zBuffer.length; i++) {
+            l.globals.zBuffer[i].draw();
+        }
+
+        window.requestAnimationFrame(l.globals.room.current);
+
+        return this;
+    };
+};

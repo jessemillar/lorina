@@ -1,244 +1,217 @@
-var pencil = new function() {
-	this.setPosition = function(x, y)
-	{
-		this.x = x
-		this.y = y
+l.pencil = function() {
+    this.setPosition = function(x, y) {
+        this.x = x;
+        this.y = y;
 
-		return this
-	}
+        return this;
+    };
 
-	this.setEndPosition = function(x, y) // For drawing lines
-	{
-		this.endX = x
-		this.endY = y
+    this.setEndPosition = function(x, y) // For drawing lines
+    {
+        this.endX = x;
+        this.endY = y;
 
-		return this
-	}
+        return this;
+    };
 
-	this.setSize = function(width, height)
-	{
-		this.width = width
-		this.height = height
+    this.setSize = function(width, height) {
+        this.width = width;
+        this.height = height;
 
-		return this
-	}
+        return this;
+    };
 
-	this.setRadius = function(radius)
-	{
-		this.radius = radius
+    this.setRadius = function(radius) {
+        this.radius = radius;
 
-		return this
-	}
+        return this;
+    };
 
-	this.setColor = function(color)
-	{
-		this.color = color
+    this.setColor = function(color) {
+        this.color = color;
 
-		return this
-	}
+        return this;
+    };
 
-	this.setOpacity = function(opacity)
-	{
-		this.opacity = opacity
+    this.setOpacity = function(opacity) {
+        this.opacity = opacity;
 
-		return this
-	}
+        return this;
+    };
 
-	this.setStroke = function(width)
-	{
-		this.stroke = width
+    this.setStroke = function(width) {
+        this.stroke = width;
 
-		return this
-	}
+        return this;
+    };
 
-	this.setArc = function(start, stop)
-	{
-		this.start = start
-		this.stop = stop
+    this.setArc = function(start, stop) {
+        this.start = start;
+        this.stop = stop;
 
-		return this
-	}
+        return this;
+    };
 
-	this.strokeLine = function()
-	{
-		l.ctx.strokeStyle = this.color
-		l.ctx.lineWidth = this.stroke
+    this.strokeLine = function() {
+        l.globals.ctx.strokeStyle = this.color;
+        l.globals.ctx.lineWidth = this.stroke;
 
-		l.ctx.beginPath()
+        l.globals.ctx.beginPath();
 
-		// Use a little hackery to allow 1px lines
-		l.ctx.moveTo(Math.round(this.x) + 0.5, Math.round(this.y) + 0.5)
-		l.ctx.lineTo(Math.round(this.endX) + 0.5, Math.round(this.endY) + 0.5)
+        // Use a little hackery to allow 1px lines
+        l.globals.ctx.moveTo(Math.round(this.x) + 0.5, Math.round(this.y) + 0.5);
+        l.globals.ctx.lineTo(Math.round(this.endX) + 0.5, Math.round(this.endY) + 0.5);
 
-		if (this.opacity)
-		{
-			l.ctx.globalAlpha = this.opacity
-		}
+        if (this.opacity) {
+            l.globals.ctx.globalAlpha = this.opacity;
+        }
 
-		l.ctx.stroke()
+        l.globals.ctx.stroke();
 
-		this.opacity = 1
-		l.ctx.globalAlpha = 1
+        this.opacity = 1;
+        l.globals.ctx.globalAlpha = 1;
 
-		return this
-	}
+        return this;
+    };
 
-	this.strokeCircle = function()
-	{
-		l.ctx.strokeStyle = this.color
-		l.ctx.lineWidth = this.stroke
+    this.strokeCircle = function() {
+        l.globals.ctx.strokeStyle = this.color;
+        l.globals.ctx.lineWidth = this.stroke;
 
-		l.ctx.beginPath()
-		l.ctx.arc(Math.round(this.x), Math.round(this.y), this.radius, 0, 2 * Math.PI)
-		
-		if (this.opacity)
-		{
-			l.ctx.globalAlpha = this.opacity
-		}
+        l.globals.ctx.beginPath();
+        l.globals.ctx.arc(Math.round(this.x), Math.round(this.y), this.radius, 0, 2 * Math.PI);
 
-		l.ctx.stroke()
+        if (this.opacity) {
+            l.globals.ctx.globalAlpha = this.opacity;
+        }
 
-		this.opacity = 1
-		l.ctx.globalAlpha = 1
+        l.globals.ctx.stroke();
 
-		return this
-	}
+        this.opacity = 1;
+        l.globals.ctx.globalAlpha = 1;
 
-	this.fillCircle = function()
-	{
-		l.ctx.fillStyle = this.color
+        return this;
+    };
 
-		l.ctx.beginPath()
-		l.ctx.arc(Math.round(this.x), Math.round(this.y), this.radius, 0, 2 * Math.PI)
-		
-		if (this.opacity)
-		{
-			l.ctx.globalAlpha = this.opacity
-		}
+    this.fillCircle = function() {
+        l.globals.ctx.fillStyle = this.color;
 
-		l.ctx.fill()
+        l.globals.ctx.beginPath();
+        l.globals.ctx.arc(Math.round(this.x), Math.round(this.y), this.radius, 0, 2 * Math.PI);
 
-		this.opacity = 1
-		l.ctx.globalAlpha = 1
+        if (this.opacity) {
+            l.globals.ctx.globalAlpha = this.opacity;
+        }
 
-		return this
-	}
+        l.globals.ctx.fill();
 
-	this.strokeArc = function()
-	{
-		l.ctx.strokeStyle = this.color
-		l.ctx.lineWidth = this.stroke
+        this.opacity = 1;
+        l.globals.ctx.globalAlpha = 1;
 
-		l.ctx.beginPath()
-		l.ctx.arc(Math.round(this.x), Math.round(this.y), this.radius, this.start * Math.PI / 180, this.stop * Math.PI / 180)
-		
-		if (this.opacity)
-		{
-			l.ctx.globalAlpha = this.opacity
-		}
+        return this;
+    };
 
-		l.ctx.stroke()
+    this.strokeArc = function() {
+        l.globals.ctx.strokeStyle = this.color;
+        l.globals.ctx.lineWidth = this.stroke;
 
-		this.opacity = 1
-		l.ctx.globalAlpha = 1
+        l.globals.ctx.beginPath();
+        l.globals.ctx.arc(Math.round(this.x), Math.round(this.y), this.radius, this.start * Math.PI / 180, this.stop * Math.PI / 180);
 
-		return this
-	}
+        if (this.opacity) {
+            l.globals.ctx.globalAlpha = this.opacity;
+        }
 
-	this.fillArc = function()
-	{
-		l.ctx.fillStyle = this.color
+        l.globals.ctx.stroke();
 
-		l.ctx.beginPath()
-		l.ctx.arc(Math.round(this.x), Math.round(this.y), this.radius, this.start * Math.PI / 180, this.stop * Math.PI / 180)
-		
-		if (this.opacity)
-		{
-			l.ctx.globalAlpha = this.opacity
-		}
+        this.opacity = 1;
+        l.globals.ctx.globalAlpha = 1;
 
-		l.ctx.fill()
+        return this;
+    };
 
-		this.opacity = 1
-		l.ctx.globalAlpha = 1
+    this.fillArc = function() {
+        l.globals.ctx.fillStyle = this.color;
 
-		return this
-	}
+        l.globals.ctx.beginPath();
+        l.globals.ctx.arc(Math.round(this.x), Math.round(this.y), this.radius, this.start * Math.PI / 180, this.stop * Math.PI / 180);
 
-	this.strokeRectangle = function()
-	{
-		l.ctx.strokeStyle = this.color
-		l.ctx.lineWidth = this.stroke
+        if (this.opacity) {
+            l.globals.ctx.globalAlpha = this.opacity;
+        }
 
-		l.ctx.beginPath()
-		l.ctx.rect(Math.round(this.x), Math.round(this.y), Math.round(this.width), Math.round(this.height))
-		
-		if (this.opacity)
-		{
-			l.ctx.globalAlpha = this.opacity
-		}
+        l.globals.ctx.fill();
 
-		l.ctx.stroke()
+        this.opacity = 1;
+        l.globals.ctx.globalAlpha = 1;
 
-		this.opacity = 1
-		l.ctx.globalAlpha = 1
+        return this;
+    };
 
-		return this
-	}
+    this.strokeRectangle = function() {
+        l.globals.ctx.strokeStyle = this.color;
+        l.globals.ctx.lineWidth = this.stroke;
 
-	this.fillRectangle = function()
-	{
-		l.ctx.fillStyle = this.color
+        l.globals.ctx.beginPath();
+        l.globals.ctx.rect(Math.round(this.x), Math.round(this.y), Math.round(this.width), Math.round(this.height));
 
-		l.ctx.beginPath()
-		l.ctx.rect(Math.round(this.x), Math.round(this.y), Math.round(this.width), Math.round(this.height))
-		
-		if (this.opacity)
-		{
-			l.ctx.globalAlpha = this.opacity
-		}
+        if (this.opacity) {
+            l.globals.ctx.globalAlpha = this.opacity;
+        }
 
-		l.ctx.fill()
+        l.globals.ctx.stroke();
 
-		this.opacity = 1
-		l.ctx.globalAlpha = 1
+        this.opacity = 1;
+        l.globals.ctx.globalAlpha = 1;
 
-		return this
-	}
+        return this;
+    };
 
-	this.fillPie = function(percent)
-	{
-		if (Math.round(percent) < 100)
-		{
-			var degree = 270 + (360 / 100 * percent)
+    this.fillRectangle = function() {
+        l.globals.ctx.fillStyle = this.color;
 
-			if (degree > 360)
-			{
-				degree -= 360
-			}
+        l.globals.ctx.beginPath();
+        l.globals.ctx.rect(Math.round(this.x), Math.round(this.y), Math.round(this.width), Math.round(this.height));
 
-			l.ctx.fillStyle = this.color
+        if (this.opacity) {
+            l.globals.ctx.globalAlpha = this.opacity;
+        }
 
-			l.ctx.beginPath()
-			l.ctx.moveTo(Math.round(this.x), Math.round(this.y))
-			l.ctx.arc(Math.round(this.x), Math.round(this.y), this.radius, 270 * Math.PI / 180, degree * Math.PI / 180)
-			l.ctx.lineTo(Math.round(this.x), Math.round(this.y))
+        l.globals.ctx.fill();
 
-			if (this.opacity)
-			{
-				l.ctx.globalAlpha = this.opacity
-			}
+        this.opacity = 1;
+        l.globals.ctx.globalAlpha = 1;
 
-			l.ctx.fill()
+        return this;
+    };
 
-			this.opacity = 1
-			l.ctx.globalAlpha = 1
-		}
-		else
-		{
-			this.fillCircle()
-		}
+    this.fillPie = function(percent) {
+        if (Math.round(percent) < 100) {
+            var degree = 270 + (360 / 100 * percent);
 
-		return this
-	}
-}
+            if (degree > 360) {
+                degree -= 360;
+            }
+
+            l.globals.ctx.fillStyle = this.color;
+
+            l.globals.ctx.beginPath();
+            l.globals.ctx.moveTo(Math.round(this.x), Math.round(this.y));
+            l.globals.ctx.arc(Math.round(this.x), Math.round(this.y), this.radius, 270 * Math.PI / 180, degree * Math.PI / 180);
+            l.globals.ctx.lineTo(Math.round(this.x), Math.round(this.y));
+
+            if (this.opacity) {
+                l.globals.ctx.globalAlpha = this.opacity;
+            }
+
+            l.globals.ctx.fill();
+
+            this.opacity = 1;
+            l.globals.ctx.globalAlpha = 1;
+        } else {
+            this.fillCircle();
+        }
+
+        return this;
+    };
+};

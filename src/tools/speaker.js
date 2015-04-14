@@ -1,83 +1,73 @@
-var Speaker = function() {
-	var database = []
-	var stack = [] // For stacking sound effects
+l.speaker = function() {
+    var database = [];
+    var stack = []; // For stacking sound effects
 
-	this.load = function(name, location)
-	{
-		if (window.cordova)
-		{
-			var self = this
+    this.load = function(name, location) {
+    	var file;
 
-			var file = new Media(location)
-				file.name = name
+        if (window.cordova) {
+            var self = this;
 
-			this.cordovaLoad(file)
-		}
-		else
-		{
-			var file = new Audio()
-				file.name = name
-				file.src = location
-				file.preload = 'auto'
-		}
+            file = new Media(location);
+            file.name = name;
 
-		database.push(file)
-		
-		return this
-	}
+            this.cordovaLoad(file);
+        } else {
+            file = new Audio();
+            file.name = name;
+            file.src = location;
+            file.preload = 'auto';
+        }
 
-	this.pause = function(name)
-	{
-		var i = database.length
-		while (i--)
-		{
-			if (database[i].name == name)
-			{
-				database[i].pause()
-				break
-			}
-		}
+        database.push(file);
 
-		return this
-	}
+        return this;
+    };
 
-	this.play = function(name)
-	{
-		var i = database.length
-		while (i--)
-		{
-			if (database[i].name == name)
-			{
-				if (window.cordova)
-				{
-					var temp = new Media(database[i].src)
-						temp.name = database[i].name
+    this.pause = function(name) {
+        var i = database.length;
+        while (i--) {
+            if (database[i].name == name) {
+                database[i].pause();
+                break;
+            }
+        }
 
-					stack.push(temp)
+        return this;
+    };
 
-					stack[stack.length - 1].play({playAudioWhenScreenIsLocked: false})
-				}
-				else
-				{
-					stack.push(database[i].cloneNode())
+    this.play = function(name) {
+        var i = database.length;
+        while (i--) {
+            if (database[i].name == name) {
+                if (window.cordova) {
+                    var temp = new Media(database[i].src);
+                    temp.name = database[i].name;
 
-					stack[stack.length - 1].play()
+                    stack.push(temp);
 
-					var self = this
-					var index = stack.length - 1
+                    stack[stack.length - 1].play({
+                        playAudioWhenScreenIsLocked: false
+                    });
+                } else {
+                    stack.push(database[i].cloneNode());
 
-					stack[stack.length - 1].addEventListener('ended', self.removeAudio(index)) // Remove the file upon successful play
-				}
+                    stack[stack.length - 1].play();
 
-				break
-			}
-		}
+                    var self = this;
+                    var index = stack.length - 1;
 
-		return this
-	}
+                    stack[stack.length - 1].addEventListener('ended', self.removeAudio(index)); // Remove the file upon successful play
+                }
 
-		this.removeAudio = function(index)
-		{
-			stack.splice(index, 1)
-		}
-}
+                break;
+            }
+        }
+
+        return this;
+    };
+
+    this.removeAudio = function(index) {
+        stack.splice(index, 1);
+    };
+};

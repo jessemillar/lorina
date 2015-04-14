@@ -1,52 +1,41 @@
-var Timer = function() {
-	this.start = function()
-	{
-		var date = new Date()
-		this.time = Date.parse(date)
+l.timer = function() {
+    this.start = function() {
+        var date = new Date();
+        this.time = Date.parse(date);
 
-		return this
-	}
+        return this;
+    };
 
-	this.clear = function()
-	{
-		this.time = undefined
+    this.clear = function() {
+        this.time = undefined;
 
-		return this
-	}
+        return this;
+    };
 
-	this.check = function()
-	{
-		if (this.time)
-		{
-			var date = new Date()
-			var now = Date.parse(date)
+    this.check = function() {
+        if (this.time) {
+            var date = new Date();
+            var now = Date.parse(date);
 
-			return now - this.time
-		}
-		else
-		{
-			return 0
-		}
-	}
+            return now - this.time;
+        } else {
+            return 0;
+        }
+    };
 
-	this.compareTo = function(other)
-	{
-		if (other.time)
-		{
-			if (this.time > other.time)
-			{
-				var difference = this.time - other.time
-			}
-			else
-			{
-				var difference = other.time - this.time
-			}
+    this.compareTo = function(other) {
+    	var difference;
 
-			return difference
-		}
-		else
-		{
-			return 0
-		}
-	}
-}
+        if (other.time) {
+            if (this.time > other.time) {
+                difference = this.time - other.time;
+            } else {
+                difference = other.time - this.time;
+            }
+
+            return difference;
+        } else {
+            return 0;
+        }
+    };
+};

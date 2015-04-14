@@ -1,184 +1,142 @@
-var typewriter = new function() {
-	this.reset = function()
-	{
-		this.alignment = undefined
-		this.baseline = undefined
-		this.opacity = undefined
-		this.style = undefined
-		this.font = undefined
-		this.size = undefined
-		this.color = undefined
-		this.textMode = undefined
+l.typewriter = function() {
+    this.reset = function() {
+        this.alignment = undefined;
+        this.baseline = undefined;
+        this.opacity = undefined;
+        this.style = undefined;
+        this.font = undefined;
+        this.size = undefined;
+        this.color = undefined;
+        this.textMode = undefined;
 
-		return this
-	}
+        return this;
+    };
 
-	this.setOpacity = function(opacity)
-	{
-		this.opacity = opacity
+    this.setOpacity = function(opacity) {
+        this.opacity = opacity;
 
-		return this
-	}
+        return this;
+    };
 
-	this.setStyle = function(style)
-	{
-		this.style = style
+    this.setStyle = function(style) {
+        this.style = style;
 
-		return this
-	}
+        return this;
+    };
 
-	this.setFont = function(font)
-	{
-		this.font = font
+    this.setFont = function(font) {
+        this.font = font;
 
-		return this
-	}
+        return this;
+    };
 
-	this.setSize = function(size)
-	{
-		this.size = size
+    this.setSize = function(size) {
+        this.size = size;
 
-		return this
-	}
+        return this;
+    };
 
-	this.setAlignment = function(alignment)
-	{
-		this.alignment = alignment
+    this.setAlignment = function(alignment) {
+        this.alignment = alignment;
 
-		return this
-	}
+        return this;
+    };
 
-	this.setBaseline = function(baseline)
-	{
-		this.baseline = baseline
+    this.setBaseline = function(baseline) {
+        this.baseline = baseline;
 
-		return this
-	}
+        return this;
+    };
 
-	this.setColor = function(color)
-	{
-		this.color = color
+    this.setColor = function(color) {
+        this.color = color;
 
-		return this
-	}
+        return this;
+    };
 
-	this.setPosition = function(x, y)
-	{
-		this.x = x
-		this.y = y
+    this.setPosition = function(x, y) {
+        this.x = x;
+        this.y = y;
 
-		return this
-	}
+        return this;
+    };
 
-	this.write = function(string, hud)
-	{
-		if (this.style)
-		{
-			var style = this.style
-		}
-		else
-		{
-			var style = ''
-		}
+    this.write = function(string, hud) {
+    	var style;
+    	var font;
 
-		if (this.font)
-		{
-			var font = this.font
-		}
-		else
-		{
-			var font = 'sans-serif'
-		}
+        if (this.style) {
+            style = this.style;
+        } else {
+            style = '';
+        }
 
-		l.ctx.font = style + ' ' + this.size + 'px ' + font
+        if (this.font) {
+            font = this.font;
+        } else {
+            font = 'sans-serif';
+        }
 
-		if (this.color)
-		{
-			l.ctx.fillStyle = this.color
-		}
-		else
-		{
-			l.ctx.fillStyle = '#000000'
-		}
+        l.globals.ctx.font = style + ' ' + this.size + 'px ' + font;
 
-		if (this.alignment)
-		{
-			l.ctx.textAlign = this.alignment
-		}
-		else
-		{
-			l.ctx.textAlign = 'left'
-		}
+        if (this.color) {
+            l.globals.ctx.fillStyle = this.color;
+        } else {
+            l.globals.ctx.fillStyle = '#000000';
+        }
 
-		if (this.baseline == 'top')
-		{
-			l.ctx.textBaseline = 'hanging'
-		}
-		else if (this.baseline == 'middle')
-		{
-			l.ctx.textBaseline = 'middle'
-		}
-		else if (this.baseline == 'bottom')
-		{
-			l.ctx.textBaseline = 'alphabetic'
-		}
-		else
-		{
-			l.ctx.textBaseline = 'hanging'
-		}
+        if (this.alignment) {
+            l.globals.ctx.textAlign = this.alignment;
+        } else {
+            l.globals.ctx.textAlign = 'left';
+        }
 
-		if (this.opacity)
-		{
-			l.ctx.globalAlpha = this.opacity
-			this.opacity = 1
-		}
+        if (this.baseline == 'top') {
+            l.globals.ctx.textBaseline = 'hanging';
+        } else if (this.baseline == 'middle') {
+            l.globals.ctx.textBaseline = 'middle';
+        } else if (this.baseline == 'bottom') {
+            l.globals.ctx.textBaseline = 'alphabetic';
+        } else {
+            l.globals.ctx.textBaseline = 'hanging';
+        }
 
-		if (hud)
-		{
-			l.ctx.fillText(string, this.x, this.y)
-		}
-		else
-		{
-			l.ctx.fillText(string, this.x - l.camera.x, this.y - l.camera.y)
-		}
+        if (this.opacity) {
+            l.globals.ctx.globalAlpha = this.opacity;
+            this.opacity = 1;
+        }
 
-		l.ctx.globalAlpha = 1
+        if (hud) {
+            l.globals.ctx.fillText(string, this.x, this.y);
+        } else {
+            l.globals.ctx.fillText(string, this.x - l.globals.camera.x, this.y - l.globals.camera.y);
+        }
 
-		return this
-	}
+        l.globals.ctx.globalAlpha = 1;
 
-	var typingStringLoaded = false
-	var typingPosition = 0
-	var stringToType = ''
+        return this;
+    };
 
-	this.type = function(string, timing)
-	{
-		if (!typingStringLoaded)
-		{
-			this.key(string, timing)
-			typingStringLoaded = true
-		}
+    var typingStringLoaded = false;
+    var typingPosition = 0;
+    var stringToType = '';
 
-		this.write(string.substr(0, typingPosition))
+    this.type = function(string, timing) {
+        if (!typingStringLoaded) {
+            this.key(string, timing);
+            typingStringLoaded = true;
+        }
 
-		return this
-	}
+        this.write(string.substr(0, typingPosition));
 
-		this.key = function(string, timing)
-		{
-			for (var i = 0; i < string.length; i++)
-			{
-				setTimeout(function()
-				{
-					typingPosition++
-				}, timing * i)
-			}
-		}
+        return this;
+    };
 
-	this.pulse = function(amount, duration)
-	{
-		
-		
-		return this
-	}
-}
+    this.key = function(string, timing) {
+        for (var i = 0; i < string.length; i++) {
+            setTimeout(function() {
+                typingPosition++;
+            }, timing * i);
+        }
+    };
+};
