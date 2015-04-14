@@ -1,6 +1,6 @@
 var Speaker = function() {
-	var database = new Array()
-	var stack = new Array() // For stacking sound effects
+	var database = []
+	var stack = [] // For stacking sound effects
 
 	this.load = function(name, location)
 	{

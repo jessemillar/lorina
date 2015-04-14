@@ -2,7 +2,7 @@ var finger = new function() {
 	this.touching = false
 	this.x = undefined
 	this.y = undefined
-	this.database = new Array() // Keep track of where we're touching on the screen
+	this.database = [] // Keep track of where we're touching on the screen
 
 	var self = this
 

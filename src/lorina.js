@@ -1,11 +1,11 @@
-var l = new Object()
+var l = {}
 
 var lorina = new function() {
 	var self = this
 	
 	l.dom = document.createElement('canvas')
-	l.room = new Object()
-	l.zBuffer = new Array() // For z-sorting
+	l.room = {}
+	l.zBuffer = [] // For z-sorting
 	l.camera = {state: 'resting', x: 0, y: 0, previous: {x: 0, y: 0}, sandbox: {width: 1, height: 1}}
 	l.retina = window.devicePixelRatio // 1 if not retina and 2 if yes
 
