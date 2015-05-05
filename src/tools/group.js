@@ -87,15 +87,6 @@ l.group = function() {
         return this;
     };
 
-    this.setStretch = function(width, height, applySize, applyBound) {
-        var i = this.database.length;
-        while (i--) {
-            this.database[i].setStretch(width, height, applySize, applyBound);
-        }
-
-        return this;
-    };
-
     this.setBound = function(x, y, width, height) {
         var i = this.database.length;
         while (i--) {
@@ -303,6 +294,15 @@ l.group = function() {
         var i = this.database.length;
         while (i--) {
             this.database[i].setFriction(friction);
+        }
+
+        return this;
+    };
+
+    this.setGravity = function(gravity) {
+        var i = this.database.length;
+        while (i--) {
+            this.database[i].setGravity(gravity);
         }
 
         return this;

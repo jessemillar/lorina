@@ -2,6 +2,7 @@ var gravity = 0.25;
 var jetpackPower = 0.6;
 var horizontalMovement = jetpackPower / 3;
 var friction = 0.1;
+var firePower = 10;
 
 var lorina = new l.lorina();
 lorina.setTitle('Jetpackin\'')
@@ -13,10 +14,13 @@ lorina.setTitle('Jetpackin\'')
 var keyboard = new l.keyboard();
 
 var foxy = new l.entity();
-foxy.setSprite('images/foxy.png', true, true, 2, 50)
+foxy.setSprite('images/foxy.png', true, true, 2, 75)
     .setPosition(20, 20)
     .setAnchor(12, 12)
-    .setFriction(friction);
+    .setFriction(friction)
+    .setGravity(gravity);
+
+var plungers = new l.group();
 
 var main = function() {
     if (keyboard.w) {
@@ -24,19 +28,27 @@ var main = function() {
     }
 
     if (keyboard.a) {
-        foxy.unflip().pushHorizontal(-horizontalMovement);
+        foxy.flip('horizontal').pushHorizontal(-horizontalMovement);
     } else if (keyboard.d) {
-        foxy.flip('horizontal').pushHorizontal(horizontalMovement);
+        foxy.unflip().pushHorizontal(horizontalMovement);
     }
 
-    if (foxy.anchor.y < l.globals.room.height - 12) { // Ghetto gravity
-        foxy.pushVertical(gravity);
+    if (keyboard.space) {
+        var plunger = new l.entity();
+        plunger.setSprite('images/plunger.png', true, true)
+            .setPosition(foxy.x, foxy.y - 2)
+            .setAnchor(4, 4)
+            .setFriction(friction)
+            .pushHorizontal(firePower)
+            .setGravity(gravity);
+        plungers.add(plunger);
     }
 
     foxy.bounce().applyPhysics();
 
     lorina.blank();
-    foxy.buffer();//.debug()
+    foxy.buffer(); //.debug()
+    plungers.steer().bounce().applyPhysics().buffer().banish();
     lorina.draw();
 };
 

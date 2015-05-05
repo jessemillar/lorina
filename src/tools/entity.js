@@ -19,6 +19,17 @@ l.entity = function() {
         width: 0,
         height: 0
     };
+    this.friction = {
+        x: 0,
+        y: 0,
+        movement: 0,
+        rotation: 0
+    };
+    this.momentum = {
+        x: 0,
+        y: 0,
+        rotation: 0
+    };
 
     this.debug = function(color) { // Show visual bounding boxes
         if (!this.deleted) {
@@ -436,11 +447,11 @@ l.entity = function() {
             };
         }
 
-        this.momentum = {
-            x: 0,
-            y: 0,
-            rotation: 0
-        };
+        return this;
+    };
+
+    this.setGravity = function(amount) {
+        this.gravity = amount;
 
         return this;
     };
@@ -619,6 +630,10 @@ l.entity = function() {
                         this.momentum.rotation = 0;
                     }
                 }
+            }
+
+            if (this.y < l.globals.room.height) { // Ghetto gravity
+                this.pushVertical(this.gravity);
             }
 
             return this;
