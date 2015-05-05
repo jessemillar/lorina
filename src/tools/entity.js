@@ -20,7 +20,7 @@ l.entity = function() {
         height: 0
     };
 
-    this.debug = function(color) {
+    this.debug = function(color) { // Show visual bounding boxes
         if (!this.deleted) {
             if (color) {
                 l.globals.ctx.fillStyle = color;
@@ -39,7 +39,7 @@ l.entity = function() {
         return this;
     };
 
-    this.delete = function() {
+    this.delete = function() { // Doesn't actually delete, but sets a trigger that disables displaying objects and running calculations
         if (!this.deleted) {
             this.deleted = true; // Super ghetto
             this.freeze();
@@ -48,7 +48,7 @@ l.entity = function() {
         return this;
     };
 
-    this.banish = function(padding) {
+    this.banish = function(padding) { // Delete if we're outside of the screen by a defined amount
         if (!this.deleted) {
             if (!padding) {
                 padding = 300; // Super ghetto again...
@@ -62,13 +62,13 @@ l.entity = function() {
         return this;
     };
 
-    this.setTrait = function(name, value) {
+    this.setTrait = function(name, value) { // Sets a non-engine value (such as health or ammo)
         this[name] = value;
 
         return this;
     };
 
-    this.deleteTrait = function(name) {
+    this.deleteTrait = function(name) { // Deletes a non-engine value
         delete this[name];
 
         return this;
@@ -115,23 +115,6 @@ l.entity = function() {
         return this;
     };
 
-    this.setStretch = function(width, height, applySize, applyBound) {
-        this.stretch = {
-            width: width,
-            height: height
-        };
-
-        if (applySize) {
-            this.setSize(width, height);
-        }
-
-        if (applyBound) {
-            this.setBound(0, 0, width, height);
-        }
-
-        return this;
-    };
-
     this.setBound = function(x, y, width, height) {
         this.bound = {
             x: x,
@@ -157,7 +140,7 @@ l.entity = function() {
         return this;
     };
 
-    this.fixRotation = function() {
+    this.fixRotation = function() { // Compensate for when we have rotational values less than 0 degrees or greater than 360 degrees
         if (this.rotation < 0) {
             this.rotation += 360;
         } else if (this.rotation > 360) {
@@ -167,7 +150,7 @@ l.entity = function() {
         return this;
     };
 
-    this.steer = function() {
+    this.steer = function() { // Rotate to face in the direction the entity is traveling in
         this.rotation = -Math.atan(this.previous.y / this.previous.x) * 180 / Math.PI;
 
         if (this.previous.x < 0) {
@@ -177,41 +160,46 @@ l.entity = function() {
         return this;
     };
 
-    this.setSprite = function(location, applySize, applyBound) {
+    this.setSprite = function(fileLocation, applySize, applyBound, frameCount, timeBetweenFrames) {
         var self = this;
 
-        this.sprite.img.onload = function() {
+        this.sprite.img.onload = function() { // Do the entity manipulation after the image file loads into memory
+            // Save the size of the loaded image for use later
             self.sprite.width = this.width;
             self.sprite.height = this.height;
 
-            if (applySize || applySize == undefined) {
-                self.setSize(this.width, this.height);
+            if (applySize || applySize === undefined) {
+                if (frameCount) {
+                    self.setSize(this.width / frameCount, this.height);
+                } else {
+                    self.setSize(this.width, this.height);
+                }
             }
 
-            if (applyBound || applyBound == undefined) {
-                self.setBound(0 - self.anchor.x, 0 - self.anchor.y, this.width, this.height);
+            if (applyBound || applyBound === undefined) {
+                if (frameCount) {
+                    self.setBound(0 - self.anchor.x, 0 - self.anchor.y, this.width / frameCount, this.height);
+                } else {
+                    self.setBound(0 - self.anchor.x, 0 - self.anchor.y, this.width, this.height);
+                }
+            }
+
+            if (frameCount && timeBetweenFrames) {
+                self.sprite.currentFrame = 0;
+                self.sprite.frameCount = frameCount;
+                self.sprite.timeBetweenFrames = Math.round(timeBetweenFrames);
+
+                self.animation = setInterval(function() {
+                    if (self.sprite.currentFrame < self.sprite.frameCount - 1) {
+                        self.sprite.currentFrame += 1;
+                    } else {
+                        self.sprite.currentFrame = 0;
+                    }
+                }, self.sprite.timeBetweenFrames);
             }
         };
 
-        this.sprite.img.src = location;
-
-        return this;
-    };
-
-    this.setAnimation = function(count, timer) {
-        this.sprite.frame = 0;
-        this.sprite.count = count;
-        this.sprite.timer = Math.round(timer);
-
-        var self = this;
-
-        this.animation = setInterval(function() {
-            if (self.sprite.frame < self.sprite.count - 1) {
-                self.sprite.frame += 1;
-            } else {
-                self.sprite.frame = 0;
-            }
-        }, self.sprite.timer);
+        this.sprite.img.src = fileLocation;
 
         return this;
     };
@@ -250,7 +238,7 @@ l.entity = function() {
         return this;
     };
 
-    this.buffer = function() {
+    this.buffer = function() { // Add to the buffer to be drawn later
         if (!this.deleted) {
             l.globals.zBuffer.push(this);
         }
@@ -323,34 +311,18 @@ l.entity = function() {
                     l.globals.ctx.rotate(this.rotation * Math.PI / 180 * -1);
                 }
 
-                if (this.stretch) {
-                    if (this.sprite.count) {
-                        l.globals.ctx.drawImage(this.sprite.img, this.sprite.frame * (this.sprite.width / this.sprite.count), 0, this.sprite.width / this.sprite.count, this.sprite.height, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y), this.sprite.width / this.sprite.count, this.sprite.height, this.stretch.width, this.stretch.height);
-                    } else {
-                        l.globals.ctx.drawImage(this.sprite.img, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y), this.stretch.width, this.stretch.height);
-                    }
+                if (this.sprite.frameCount) {
+                    l.globals.ctx.drawImage(this.sprite.img, this.sprite.currentFrame * (this.sprite.width / this.sprite.frameCount), 0, this.sprite.width / this.sprite.frameCount, this.sprite.height, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y), this.sprite.width / this.sprite.frameCount, this.sprite.height);
                 } else {
-                    if (this.sprite.count) {
-                        l.globals.ctx.drawImage(this.sprite.img, this.sprite.frame * (this.sprite.width / this.sprite.count), 0, this.sprite.width / this.sprite.count, this.sprite.height, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y), this.sprite.width / this.sprite.count, this.sprite.height);
-                    } else {
-                        l.globals.ctx.drawImage(this.sprite.img, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y));
-                    }
+                    l.globals.ctx.drawImage(this.sprite.img, Math.round(0 - this.anchor.x), Math.round(0 - this.anchor.y));
                 }
 
                 l.globals.ctx.restore();
             } else {
-                if (this.stretch) {
-                    if (this.sprite.count) {
-                        l.globals.ctx.drawImage(this.sprite.img, this.sprite.frame * (this.sprite.width / this.sprite.count), 0, this.sprite.width / this.sprite.count, this.sprite.height, Math.round(this.x - this.anchor.x - this.cameraX), Math.round(this.y - this.anchor.y - this.cameraY), this.sprite.width / this.sprite.count, this.sprite.height, this.stretch.width, this.stretch.height);
-                    } else {
-                        l.globals.ctx.drawImage(this.sprite.img, Math.round(this.x - this.anchor.x - this.cameraX), Math.round(this.y - this.anchor.y - this.cameraY), this.stretch.width, this.stretch.height);
-                    }
+                if (this.sprite.frameCount) {
+                    l.globals.ctx.drawImage(this.sprite.img, this.sprite.currentFrame * (this.sprite.width / this.sprite.frameCount), 0, this.sprite.width / this.sprite.frameCount, this.sprite.height, Math.round(this.x - this.anchor.x - this.cameraX), Math.round(this.y - this.anchor.y - this.cameraY), this.sprite.width / this.sprite.frameCount, this.sprite.height);
                 } else {
-                    if (this.sprite.count) {
-                        l.globals.ctx.drawImage(this.sprite.img, this.sprite.frame * (this.sprite.width / this.sprite.count), 0, this.sprite.width / this.sprite.count, this.sprite.height, Math.round(this.x - this.anchor.x - this.cameraX), Math.round(this.y - this.anchor.y - this.cameraY), this.sprite.width / this.sprite.count, this.sprite.height);
-                    } else {
-                        l.globals.ctx.drawImage(this.sprite.img, Math.round(this.x - this.anchor.x - this.cameraX), Math.round(this.y - this.anchor.y - this.cameraY));
-                    }
+                    l.globals.ctx.drawImage(this.sprite.img, Math.round(this.x - this.anchor.x - this.cameraX), Math.round(this.y - this.anchor.y - this.cameraY));
                 }
             }
         }
@@ -473,7 +445,7 @@ l.entity = function() {
         return this;
     };
 
-    this.freeze = function() {
+    this.freeze = function() { // Instantly kill all momentum and rotation
         this.momentum = {
             x: 0,
             y: 0,
@@ -484,7 +456,7 @@ l.entity = function() {
         return this;
     };
 
-    this.spin = function(force) {
+    this.spin = function(force) { // Spins the entity with provided force (useful for contant rotation like a windmill)
         this.momentum.rotation = force;
 
         return this;
@@ -550,7 +522,7 @@ l.entity = function() {
         return this;
     };
 
-    this.bounce = function(xMin, xMax, yMin, yMax) {
+    this.bounce = function(xMin, xMax, yMin, yMax) { // Bounce off supplied boundaries (or the room edges if nothing is supplied)
         if (!xMin && !xMax && !yMin && !yMax) {
             xMin = 0;
             xMax = l.globals.room.width;
@@ -578,77 +550,77 @@ l.entity = function() {
     };
 
     this.applyPhysics = function() // Run to continuously update the friction of objects influenced by physics
-    {
-        if (this.momentum.x && this.momentum.y) {
-            if (Math.abs(this.momentum.x) > Math.abs(this.momentum.y)) {
-                this.friction.x = this.friction.movement;
-                this.friction.y = Math.abs(this.momentum.y / this.momentum.x * this.friction.movement);
-            } else {
-                this.friction.x = Math.abs(this.momentum.x / this.momentum.y * this.friction.movement);
-                this.friction.y = this.friction.movement;
-            }
-        }
-
-        if (this.momentum.x !== 0) // Horizontal motion
         {
-            this.moveHorizontal(this.momentum.x);
-
-            if (this.momentum.x < 0) // Moving left
-            {
-                this.momentum.x += this.friction.x;
-
-                if (this.momentum.x > 0) {
-                    this.momentum.x = 0;
-                }
-            } else if (this.momentum.x > 0) // Moving right
-            {
-                this.momentum.x -= this.friction.x;
-
-                if (this.momentum.x < 0) {
-                    this.momentum.x = 0;
+            if (this.momentum.x || this.momentum.y) {
+                if (Math.abs(this.momentum.x) > Math.abs(this.momentum.y)) { // Enable natural slowdown so horizontal movement doesn't stop before vertical
+                    this.friction.x = this.friction.movement;
+                    this.friction.y = Math.abs(this.momentum.y / this.momentum.x * this.friction.movement);
+                } else {
+                    this.friction.x = Math.abs(this.momentum.x / this.momentum.y * this.friction.movement);
+                    this.friction.y = this.friction.movement;
                 }
             }
-        }
 
-        if (this.momentum.y !== 0) // Vertical motion
-        {
-            this.moveVertical(this.momentum.y);
-
-            if (this.momentum.y < 0) // Moving up
+            if (this.momentum.x !== 0) // Horizontal motion
             {
-                this.momentum.y += this.friction.y;
+                this.moveHorizontal(this.momentum.x);
 
-                if (this.momentum.y > 0) {
-                    this.momentum.y = 0;
-                }
-            } else if (this.momentum.y > 0) // Moving down
-            {
-                this.momentum.y -= this.friction.y;
+                if (this.momentum.x < 0) // Moving left
+                {
+                    this.momentum.x += this.friction.x;
 
-                if (this.momentum.y < 0) {
-                    this.momentum.y = 0;
+                    if (this.momentum.x > 0) {
+                        this.momentum.x = 0;
+                    }
+                } else if (this.momentum.x > 0) // Moving right
+                {
+                    this.momentum.x -= this.friction.x;
+
+                    if (this.momentum.x < 0) {
+                        this.momentum.x = 0;
+                    }
                 }
             }
-        }
 
-        if (this.momentum.rotation !== 0) {
-            this.rotation += this.momentum.rotation;
+            if (this.momentum.y !== 0) // Vertical motion
+            {
+                this.moveVertical(this.momentum.y);
 
-            if (this.momentum.rotation < 0) {
-                this.momentum.rotation += this.friction.rotation;
+                if (this.momentum.y < 0) // Moving up
+                {
+                    this.momentum.y += this.friction.y;
 
-                if (this.momentum.rotation > 0) {
-                    this.momentum.rotation = 0;
+                    if (this.momentum.y > 0) {
+                        this.momentum.y = 0;
+                    }
+                } else if (this.momentum.y > 0) // Moving down
+                {
+                    this.momentum.y -= this.friction.y;
+
+                    if (this.momentum.y < 0) {
+                        this.momentum.y = 0;
+                    }
                 }
-            } else if (this.momentum.rotation > 0) {
-                this.momentum.rotation -= this.friction.rotation;
+            }
+
+            if (this.momentum.rotation !== 0) {
+                this.rotation += this.momentum.rotation;
 
                 if (this.momentum.rotation < 0) {
-                    this.momentum.rotation = 0;
+                    this.momentum.rotation += this.friction.rotation;
+
+                    if (this.momentum.rotation > 0) {
+                        this.momentum.rotation = 0;
+                    }
+                } else if (this.momentum.rotation > 0) {
+                    this.momentum.rotation -= this.friction.rotation;
+
+                    if (this.momentum.rotation < 0) {
+                        this.momentum.rotation = 0;
+                    }
                 }
             }
-        }
 
-        return this;
-    };
+            return this;
+        };
 };
