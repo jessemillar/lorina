@@ -290,6 +290,15 @@ l.group = function() {
         return this;
     };
 
+    this.stick = function(xMin, xMax, yMin, yMax) {
+        var i = this.database.length;
+        while (i--) {
+            this.database[i].stick(xMin, xMax, yMin, yMax);
+        }
+
+        return this;
+    };
+
     this.setFriction = function(friction) {
         var i = this.database.length;
         while (i--) {

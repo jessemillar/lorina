@@ -1,5 +1,6 @@
 l.entity = function() {
     this.rotation = 0; // Need to instantiate here for the rotate() function to be able to work
+    this.stuck = false; // We're not stuck to a wall
 
     // Engine values (you'll be better off if you only use engine functions to mess with these)
     this.sprite = {
@@ -434,6 +435,37 @@ l.entity = function() {
         return this;
     };
 
+    this.stick = function(xMin, xMax, yMin, yMax) { // Same as contain but causes objects to stick to the edge they collide with
+        if (!xMin && !xMax && !yMin && !yMax) {
+            xMin = 0;
+            xMax = l.globals.room.width;
+            yMin = 0;
+            yMax = l.globals.room.height;
+        }
+
+        if (this.x + this.bound.x < xMin) {
+            this.freeze();
+            this.stuck = true;
+            this.x = xMin - this.bound.x;
+        } else if (this.x + this.bound.x + this.bound.width > xMax) {
+            this.freeze();
+            this.stuck = true;
+            this.x = xMax - this.bound.width - this.bound.x;
+        }
+
+        if (this.y + this.bound.y < yMin) {
+            this.freeze();
+            this.stuck = true;
+            this.y = yMin - this.bound.y;
+        } else if (this.y + this.bound.y + this.bound.height > yMax) {
+            this.freeze();
+            this.stuck = true;
+            this.y = yMax - this.bound.height - this.bound.y;
+        }
+
+        return this;
+    };
+
     this.setFriction = function(movement, rotation) {
         if (rotation) {
             this.friction = {
@@ -566,80 +598,84 @@ l.entity = function() {
 
     this.applyPhysics = function() // Run to continuously update the friction of objects influenced by physics
         {
-            if (this.momentum.x || this.momentum.y) {
-                if (Math.abs(this.momentum.x) > Math.abs(this.momentum.y)) { // Enable natural slowdown so horizontal movement doesn't stop before vertical
-                    this.friction.x = this.friction.movement;
-                    this.friction.y = Math.abs(this.momentum.y / this.momentum.x * this.friction.movement);
-                } else {
-                    this.friction.x = Math.abs(this.momentum.x / this.momentum.y * this.friction.movement);
-                    this.friction.y = this.friction.movement;
-                }
-            }
-
-            if (this.momentum.x !== 0) // Horizontal motion
-            {
-                this.moveHorizontal(this.momentum.x);
-
-                if (this.momentum.x < 0) // Moving left
-                {
-                    this.momentum.x += this.friction.x;
-
-                    if (this.momentum.x > 0) {
-                        this.momentum.x = 0;
-                    }
-                } else if (this.momentum.x > 0) // Moving right
-                {
-                    this.momentum.x -= this.friction.x;
-
-                    if (this.momentum.x < 0) {
-                        this.momentum.x = 0;
+            if (!this.stuck) {
+                if (this.momentum.x || this.momentum.y) {
+                    if (Math.abs(this.momentum.x) > Math.abs(this.momentum.y)) { // Enable natural slowdown so horizontal movement doesn't stop before vertical
+                        this.friction.x = this.friction.movement;
+                        this.friction.y = Math.abs(this.momentum.y / this.momentum.x * this.friction.movement);
+                    } else {
+                        this.friction.x = Math.abs(this.momentum.x / this.momentum.y * this.friction.movement);
+                        this.friction.y = this.friction.movement;
                     }
                 }
-            }
 
-            if (this.momentum.y !== 0) // Vertical motion
-            {
-                this.moveVertical(this.momentum.y);
-
-                if (this.momentum.y < 0) // Moving up
+                if (this.momentum.x !== 0) // Horizontal motion
                 {
-                    this.momentum.y += this.friction.y;
+                    this.moveHorizontal(this.momentum.x);
 
-                    if (this.momentum.y > 0) {
-                        this.momentum.y = 0;
-                    }
-                } else if (this.momentum.y > 0) // Moving down
-                {
-                    this.momentum.y -= this.friction.y;
+                    if (this.momentum.x < 0) // Moving left
+                    {
+                        this.momentum.x += this.friction.x;
 
-                    if (this.momentum.y < 0) {
-                        this.momentum.y = 0;
+                        if (this.momentum.x > 0) {
+                            this.momentum.x = 0;
+                        }
+                    } else if (this.momentum.x > 0) // Moving right
+                    {
+                        this.momentum.x -= this.friction.x;
+
+                        if (this.momentum.x < 0) {
+                            this.momentum.x = 0;
+                        }
                     }
                 }
-            }
 
-            if (this.momentum.rotation !== 0) {
-                this.rotation += this.momentum.rotation;
+                if (this.momentum.y !== 0) // Vertical motion
+                {
+                    this.moveVertical(this.momentum.y);
 
-                if (this.momentum.rotation < 0) {
-                    this.momentum.rotation += this.friction.rotation;
+                    if (this.momentum.y < 0) // Moving up
+                    {
+                        this.momentum.y += this.friction.y;
 
-                    if (this.momentum.rotation > 0) {
-                        this.momentum.rotation = 0;
+                        if (this.momentum.y > 0) {
+                            this.momentum.y = 0;
+                        }
+                    } else if (this.momentum.y > 0) // Moving down
+                    {
+                        this.momentum.y -= this.friction.y;
+
+                        if (this.momentum.y < 0) {
+                            this.momentum.y = 0;
+                        }
                     }
-                } else if (this.momentum.rotation > 0) {
-                    this.momentum.rotation -= this.friction.rotation;
+                }
+
+                if (this.momentum.rotation !== 0) {
+                    this.rotation += this.momentum.rotation;
 
                     if (this.momentum.rotation < 0) {
-                        this.momentum.rotation = 0;
+                        this.momentum.rotation += this.friction.rotation;
+
+                        if (this.momentum.rotation > 0) {
+                            this.momentum.rotation = 0;
+                        }
+                    } else if (this.momentum.rotation > 0) {
+                        this.momentum.rotation -= this.friction.rotation;
+
+                        if (this.momentum.rotation < 0) {
+                            this.momentum.rotation = 0;
+                        }
                     }
                 }
-            }
 
-            if (this.y + this.bound.height < l.globals.room.height) { // Ghetto gravity
-                this.pushVertical(this.gravity);
-            }
+                if (this.y + this.bound.height < l.globals.room.height) { // Ghetto gravity
+                    this.pushVertical(this.gravity);
+                }
 
-            return this;
-        };
+                return this;
+            };
+
+        }
+
 };

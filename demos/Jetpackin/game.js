@@ -68,7 +68,7 @@ var main = function() {
 
     lorina.blank();
     foxy.buffer();//.debug();
-    plungers.steer().contain().applyPhysics().buffer().banish();
+    plungers.steer().stick().applyPhysics().buffer();
     lorina.draw();
 };
 
