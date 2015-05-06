@@ -42,24 +42,6 @@ l.group = function() {
         return this;
     };
 
-    this.setTrait = function(name, value) {
-        var i = this.database.length;
-        while (i--) {
-            this.database[i].setTrait(name, value);
-        }
-
-        return this;
-    };
-
-    this.deleteTrait = function(name) {
-        var i = this.database.length;
-        while (i--) {
-            this.database[i].deleteTrait(name);
-        }
-
-        return this;
-    };
-
     this.setPosition = function(x, y) {
         var i = this.database.length;
         while (i--) {

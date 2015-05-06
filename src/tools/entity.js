@@ -74,18 +74,6 @@ l.entity = function() {
         return this;
     };
 
-    this.setTrait = function(name, value) { // Sets a non-engine value (such as health or ammo)
-        this[name] = value;
-
-        return this;
-    };
-
-    this.deleteTrait = function(name) { // Deletes a non-engine value
-        delete this[name];
-
-        return this;
-    };
-
     this.setPosition = function(x, y) {
         this.x = x;
         this.y = y;
