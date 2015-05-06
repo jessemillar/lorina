@@ -1,13 +1,17 @@
-var gravity = 0.25;
-var jetpackPower = 0.6;
-var horizontalMovement = jetpackPower / 3;
-var friction = 0.1;
-var firePower = 10;
+var jetpackPower = 0.5,
+    horizontalMovement = jetpackPower / 3,
+    firePower = 12,
+    gravity = jetpackPower / 2,
+    friction = jetpackPower / 6;
+
+var facingDirection = 'right',
+    canShoot = true,
+    reloadTime = 250;
 
 var lorina = new l.lorina();
 lorina.setTitle('Jetpackin\'')
     .setColor('#111111')
-    .scale(300) // This is in percent
+    .scale(500) // This is in percent
     .makeFullscreen()
     .appendCanvas();
 
@@ -28,27 +32,43 @@ var main = function() {
     }
 
     if (keyboard.a) {
+        facingDirection = 'right';
         foxy.flip('horizontal').pushHorizontal(-horizontalMovement);
     } else if (keyboard.d) {
+        facingDirection = 'left';
         foxy.unflip().pushHorizontal(horizontalMovement);
     }
 
     if (keyboard.space) {
-        var plunger = new l.entity();
-        plunger.setSprite('images/plunger.png', true, true)
-            .setPosition(foxy.x, foxy.y - 2)
-            .setAnchor(4, 4)
-            .setFriction(friction)
-            .pushHorizontal(firePower)
-            .setGravity(gravity);
-        plungers.add(plunger);
+        if (canShoot) {
+            canShoot = false;
+
+            setTimeout(function() {
+                canShoot = true;
+            }, reloadTime);
+
+            var plunger = new l.entity();
+            plunger.setSprite('images/plunger.png', true, true)
+                .setPosition(foxy.x, foxy.y - 2)
+                .setAnchor(4, 4)
+                .setFriction(friction)
+                .setGravity(gravity);
+
+            if (facingDirection == 'right') {
+                plunger.pushHorizontal(-firePower);
+            } else {
+                plunger.pushHorizontal(firePower);
+            }
+
+            plungers.add(plunger);
+        }
     }
 
-    foxy.bounce().applyPhysics();
+    foxy.contain().applyPhysics();
 
     lorina.blank();
-    foxy.buffer(); //.debug()
-    plungers.steer().bounce().applyPhysics().buffer().banish();
+    foxy.buffer();//.debug();
+    plungers.steer().contain().applyPhysics().buffer().banish();
     lorina.draw();
 };
 

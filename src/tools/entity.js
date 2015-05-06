@@ -415,15 +415,19 @@ l.entity = function() {
             yMax = l.globals.room.height;
         }
 
-        if (this.x + this.bound.x <= xMin) {
+        if (this.x + this.bound.x < xMin) {
+            this.momentum.x = 0;
             this.x = xMin - this.bound.x;
-        } else if (this.x + this.bound.x + this.bound.width >= xMax) {
+        } else if (this.x + this.bound.x + this.bound.width > xMax) {
+            this.momentum.x = 0;
             this.x = xMax - this.bound.width - this.bound.x;
         }
 
-        if (this.y + this.bound.y <= yMin) {
+        if (this.y + this.bound.y < yMin) {
+            this.momentum.y = 0;
             this.y = yMin - this.bound.y;
-        } else if (this.y + this.bound.y + this.bound.height >= yMax) {
+        } else if (this.y + this.bound.y + this.bound.height > yMax) {
+            this.momentum.y = 0;
             this.y = yMax - this.bound.height - this.bound.y;
         }
 
@@ -632,7 +636,7 @@ l.entity = function() {
                 }
             }
 
-            if (this.y < l.globals.room.height) { // Ghetto gravity
+            if (this.y + this.bound.height < l.globals.room.height) { // Ghetto gravity
                 this.pushVertical(this.gravity);
             }
 
